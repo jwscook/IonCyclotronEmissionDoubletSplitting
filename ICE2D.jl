@@ -50,7 +50,7 @@ addprocs(nprocsadded)
   vα = thermalspeed(3.6e6, mα)
   # pitchanglecosine = cos(pitchangle)
   # acos(pitchanglecosine) = pitchangle
-  pitchanglecosine = Float64(@fetchfrom 1 pitchanglecosine) 
+  pitchanglecosine = Float64(@fetchfrom 1 pitchanglecosine)
   vα⊥ = vα * sqrt(1 - pitchanglecosine^2) # perp speed
   vαz = vα * pitchanglecosine # parallel speed
   vthermalfractionz = Float64(@fetchfrom 1 vthermalfractionz)
@@ -74,18 +74,9 @@ addprocs(nprocsadded)
   alpha_delta = SeparableVelocitySpecies(Πα, Ωα,
     FParallelDiracDelta(vαz),
     FPerpendicularDiracDelta(vα⊥))
-  alpha_beamdelta = SeparableVelocitySpecies(Πα, Ωα,
-    FBeam(vαthz, vαz),
-    FPerpendicularDiracDelta(vα⊥))
-  alpha_deltaring = SeparableVelocitySpecies(Πα, Ωα,
-    FParallelDiracDelta(vαz),
-    FRing(vαth⊥, vα⊥))
-  alpha_shell = CoupledVelocitySpecies(Πα, Ωα,
-    FShell(sqrt(vαthz^2 + vαth⊥^2), vα))
 
   Smmr = Plasma([electron_maxw, deuteron_maxw, alpha_ringbeam])
   Smmd = Plasma([electron_maxw, deuteron_maxw, alpha_delta])
-  #Smmb = Plasma([electron_maxw, deuteron_maxw, alpha_beamdelta])
 
   f0 = abs(Ωα)
   k0 = f0 / abs(Va)
@@ -313,8 +304,6 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   end
   xlabel = "\$\\mathrm{Perpendicular\\ Wavenumber} \\ [\\Omega_{i} / V_A]\$"
   ylabel = "\$\\mathrm{Parallel\\ Wavenumber} \\ [\\Omega_{i} / V_A]\$"
-  #colorgrad = Plots.cgrad([:cyan, :lightblue, :blue, :darkblue, :black,
-  #                        :darkred, :red, :orange, :yellow])
   zs = real.(ωs)
   climmax = maximum(zs)
   plotter2d(zs, xlabel, ylabel, Plots.cgrad(), 0.0, climmax)
@@ -323,7 +312,6 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   Plots.plot!(legend=false)
   Plots.savefig("ICE2D_real_$file_extension.pdf")
 
-  #ω0s = [fastmagnetoacousticfrequency(Va, vthd, sol.wavenumber) for
   ω0s = [fastzerobetamagnetoacousticfrequency(Va, sol.wavenumber, Ωd) for
     sol in sols] / f0
   zs = real.(ωs) ./ ω0s
@@ -374,18 +362,9 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
 
 
   ylabel = "\$\\mathrm{Growth\\ Rate} \\ [\\Omega_{i}]\$"
-#  mask = shuffle(findall(imag.(ωs) .>= 0))
-#  h = Plots.scatter(real.(ωs[mask]), imag.(ωs[mask]),
-#    zcolor=kθs[mask] .* 180 / π, framestyle=:box, lims=:round,
-#    markersize=msize, markerstrokewidth=0,
-#    c=colorgrad,
-#    xlabel=xlabel, ylabel=ylabel, legend=:topleft)
-#  Plots.plot!(legend=false)
-#  Plots.savefig("ICE2D_F_$file_extension.pdf")
-
   mask = shuffle(findall(@. (imag(ωs) > imaglolim) & (real(ωs) <= 12)))
   h1 = Plots.scatter(real.(ωs[mask]), imag.(ωs[mask]),
-    zcolor=kθs[mask] .* 180 / π, framestyle=:box, lims=:round,
+    zcolor=kzs[mask], framestyle=:box, lims=:round,
     markersize=msize+1, markerstrokewidth=0, markershape=:circle,
     c=colorgrad, xticks=(0:12),
     xlabel=xlabel, ylabel=ylabel, legend=:topleft)
@@ -403,31 +382,8 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   Plots.plot!(legend=false)
   Plots.savefig("ICE2D_F12_Doppler_$file_extension.pdf")
 
-#  xlabel = "\$\\mathrm{Wavenumber} \\ [\\Omega_{i} / V_A]\$"
-#  ylabel = "\$\\mathrm{Growth\\ Rate} \\ [\\Omega_{i}]\$"
-#  mask = shuffle(findall(imag.(ωs) .>= 0))
-#  h = Plots.scatter(ks[mask], real.(ωs[mask]), zcolor=kθs[mask] * 180 / π,
-#    markersize=msize, markerstrokewidth=0, alpha=0.8, framestyle=:box, lims=:round,
-#    xlabel=xlabel, ylabel=ylabel)
-#  imagscale = 10
-#  h3 = Plots.scatter!(ks[mask], imag.(ωs[mask]) * imagscale,
-#    zcolor=kθs[mask] * 180 / π, framestyle=:box,
-#    markersize=msize, markerstrokewidth=0, alpha=0.8,
-#    xlabel=xlabel, ylabel=ylabel)
-#  Plots.annotate!(minimum(ks) + 1, 1,
-#                  text("\$ \\gamma \\times $imagscale\$", fontsize))
-#  Plots.plot!(legend=false)
-#  Plots.savefig("ICE2D_DR_$file_extension.pdf")
-
   xlabel = "\$\\mathrm{Frequency} \\ [\\Omega_{i}]\$"
   ylabel = "\$\\mathrm{Propagation\\ Angle} \\ [^{\\circ}]\$"
-#  h = Plots.scatter(real.(ωs), kθs .* 180 / π, zcolor=imag.(ωs), lims=:round,
-#    markersize=msize, markerstrokewidth=0, markershape=mshape, framestyle=:box,
-#    c=colorgrad,
-#    clims=(-maximum(imag.(ωs)), maximum(imag.(ωs))),
-#    xlabel=xlabel, ylabel=ylabel)
-#  Plots.plot!(legend=false)
-#  Plots.savefig("ICE2D_θF_$file_extension.pdf")
 
   colorgrad = Plots.cgrad([:cyan, :black, :darkred, :red, :orange, :yellow])
   mask = findall(@. (imag(ωs) > imaglolim) & (real(ωs) <= 12))
@@ -446,7 +402,21 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
     return xlims[1] + rx * (xlims[2]-xlims[1]), ylims[1] + ry * (ylims[2] - ylims[1])
    end
   Plots.xlabel!(h1, "")
-  Plots.xticks!(h1, 0:-1) 
+  Plots.xticks!(h1, 0:-1)
+  if pitchanglecosine == -0.64
+    x_data, y_data =if VERSION >= v"1.7"
+      @load "digitised_ice_1.7.jld2" x y
+      collect(x),y
+    else
+      @load "digitised_ice.jld2" x y
+      collect(x),y
+    end
+    y_data .-= minimum(y_data)
+    y_data ./= (maximum(y_data) - minimum(y_data))
+    y_data .*= maximum(imag.(ωs[mask]))
+    x_data .*= 1e6/(f0/2π)
+    Plots.plot!(h1, x_data, y_data, color=:black)
+  end
   Plots.annotate!(h1, [(relative(h1, 0.02, 0.95)..., text("(a)", fontsize, :black))])
   Plots.annotate!(h0, [(relative(h0, 0.02, 0.95)..., text("(b)", fontsize, :black))])
   Plots.plot(h1, h0, link=:x, layout=@layout [a; b])
@@ -454,15 +424,6 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
 end
 
 if true
-#  for (plasma, ext) in ((Smmr, "ringbeam_"),
-#                        (Smmd, "deltas_"),
-#                        (Smmb, "beamdelta_"))
-#    @time plasmasols = findsolutions(Smmr)
-#    plasmasols = selectlargeestgrowthrate(plasmasols)
-#    jldext = ext * "$name_extension"
-#    @time plotit(plasmasols, jldext)
-#    @save "solutions2D_$jldext.jld" filecontents plasmasols f0 k0
-#  end
   @time plasmasols = findsolutions(Smmr)
   plasmasols = selectlargeestgrowthrate(plasmasols)
   @show length(plasmasols)

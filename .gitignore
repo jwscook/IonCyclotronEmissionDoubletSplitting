@@ -1,3 +1,7 @@
 *.pdf
 *.aux
 *.log
+*.jld2
+*.jld
+*.png
+.DS_Store
