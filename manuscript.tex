@@ -141,13 +141,23 @@ The summation over Bessel function indices continues until the relative change o
 
 \section{Linear growth rates}
 
-The growth rates of unstable modes for the case where the pitch-angle cosine value is zero ($u_\parallel = 0$ in Eq. 1) are plotted in Fig. \ref{fig:2D_F12_zeropitch}(a) against the associated real frequency (only modes with growth rates in excess of the solver tolerance are shown i.e. $\Im(\omega) > 10^{-5} \Omega_i$). In this panel shading indicates the propagation angle, where $90^\circ$ ($0^\circ$) is exactly perpendicular (parallel) to the magnetic field. Fig. \ref{fig:2D_F12_zeropitch}(b) plots the same data in the $(k_\parallel,\omega)$ plane where shading instead indicates growth rates. The simplicity of the consecutive unstable cyclotron harmonics visible in panel (a) betrays the complexity of the structure in the $(k_\parallel, \omega)$ plane. Integration over $k_\parallel$ projects the solutions onto the frequency axis, which loses the structure and produces narrow harmonics. Fig. \ref{fig:2D_imag_zeropitch} plots shows the same data as Fig. \ref{fig:2D_F12_zeropitch} with damped and normal modes in addition, except shading indicates the growth rates in $(k_\parallel, k_\perp)$ space. Overlaid contours indicate the real frequency in units of ion cyclotron harmonics. Only narrow regions around the cyclotron harmonics are unstable. Overlaid straight traces indicate propagation angle. No Doppler shift is present due to the lack of parallel drift in the alpha-particle ring-beam. The growth rate increases approximately linearly with cyclotron harmonic number, which is consistent with the literature\cite{Dendy1994}. Together these figures serves to introduce a 2D view (growth rates in $(k_\parallel, k_\perp)$ space) of traditionally 1D data (growth rates against frequency). This will become important when a non-zero $u_\parallel$ is taken into account next.
+The growth rates of unstable modes for the case where the pitch-angle cosine
+value is zero ($u_\parallel = 0$ in Eq. 1) are plotted in Fig.
+\ref{fig:2D_F12_zeropitch}(a) against the associated real frequency (only modes
+with growth rates in excess of the solver tolerance are shown i.e. $\Im(\omega)
+> 10^{-5} \Omega_i$). In this panel shading indicates the parallel wavenumber in
+units of $\Omega_i/V_A$. Fig. \ref{fig:2D_F12_zeropitch}(b) plots the same data in the $(k_\parallel,\omega)$ plane where shading instead indicates growth rates. The simplicity of the consecutive unstable cyclotron harmonics visible in panel (a) betrays the complexity of the structure in the $(k_\parallel, \omega)$ plane. Integration over $k_\parallel$ projects the solutions onto the frequency axis, which loses the structure and produces narrow harmonics. Fig. \ref{fig:2D_imag_zeropitch} plots shows the same data as Fig. \ref{fig:2D_F12_zeropitch} with damped and normal modes in addition, except shading indicates the growth rates in $(k_\parallel, k_\perp)$ space. Overlaid contours indicate the real frequency in units of ion cyclotron harmonics. Only narrow regions around the cyclotron harmonics are unstable. Overlaid straight traces indicate propagation angle. No Doppler shift is present due to the lack of parallel drift in the alpha-particle ring-beam. The growth rate increases approximately linearly with cyclotron harmonic number, which is consistent with the literature\cite{Dendy1994}. Together these figures serves to introduce a 2D view (growth rates in $(k_\parallel, k_\perp)$ space) of traditionally 1D data (growth rates against frequency). This will become important when a non-zero $u_\parallel$ is taken into account next.
 
 \begin{figure}[ht!]
     % \centering
     \raggedleft
 \includegraphics[scale=0.9]{fig1.pdf}
-    \caption{(colour online) Unstable fast Alfv{\'e}n wave solutions to the linear Maxwell-Vlasov system of equations, Eq. \ref{eq:dettensor}, for thermal electrons, deuterons and a ring distribution of energetic alpha-particles i.e. when there is zero parallel drift, $u_\parallel=0$ in Eq. 1. (a) Upper panel: growth rate as a function of frequency where shading indicates the propagation angle of the complex frequency solution. Consecutive cyclotron harmonics are increasingly unstable and are narrow due to the lack of Doppler shift associated with parallel drifts. (b) Lower panel: the same solutions as in panel (a) in the $(k_\parallel,\omega)$ plane where shading indicates growth rate. The complex structure of the growth rates that exists in wavenumber space is projected into sharp harmonics on the frequency axis.}
+    \caption{(colour online) Unstable fast Alfv{\'e}n wave solutions to the
+    linear Maxwell-Vlasov system of equations, Eq. \ref{eq:dettensor}, for
+    thermal electrons, deuterons and a ring distribution of energetic
+    alpha-particles i.e. when there is zero parallel drift, $u_\parallel=0$ in
+    Eq. 1. (a) Upper panel: growth rate as a function of frequency where shading
+    indicates the parallel wavenumber in units of $\Omega_i/V_A$ of the complex frequency solution. Consecutive cyclotron harmonics are increasingly unstable and are narrow due to the lack of Doppler shift associated with parallel drifts. (b) Lower panel: the same solutions as in panel (a) in the $(k_\parallel,\omega)$ plane where shading indicates growth rate. The complex structure of the growth rates that exists in wavenumber space is projected into sharp harmonics on the frequency axis.}
     \label{fig:2D_F12_zeropitch}
 \end{figure}
 
@@ -186,7 +196,7 @@ drifts\cite{Cottrell1993,Fulop1998}. Qualitatively, Fig. \ref{fig:2D_F12_physica
     % \centering
     \raggedleft
 \includegraphics[scale=0.9]{fig3.pdf}
-    \caption{(colour online) The imaginary component of the frequencies for the case with parallel drift, $u_{\parallel} = -0.64 u_0 \simeq -1.085 V_A$. Panel (a) plots the growth rate against frequency where shading indicates the wave's propagation angle, and (b) plots the solutions in the $k_\parallel, \omega$ plane where shading indicates growth rate. Note that the Doppler shift associated with the non-zero parallel drift speed broadens the unstable peaks in frequency. The 10th cyclotron harmonic is split into a doublet, or has two peaks because both the growth rate and real frequency vary with wavenumber. Compare with Fig. 2 of Cottrel et al 1993.}
+    \caption{(colour online) The imaginary component of the frequencies for the case with parallel drift, $u_{\parallel} = -0.64 u_0 \simeq -1.085 V_A$. Panel (a) plots the growth rate against frequency where shading indicates the wave's parallel wavenumber in units of $\Omega_i/V_A$, and (b) plots the solutions in the $k_\parallel, \omega$ plane where shading indicates growth rate. Note that the Doppler shift associated with the non-zero parallel drift speed broadens the unstable peaks in frequency. The 10th cyclotron harmonic is split into a doublet, or has two peaks because both the growth rate and real frequency vary with wavenumber. Compare with Fig. 2 of Cottrel et al 1993.}
     \label{fig:2D_F12_physicalpitch}
 \end{figure}
 
@@ -211,7 +221,25 @@ drifts\cite{Cottrell1993,Fulop1998}. Qualitatively, Fig. \ref{fig:2D_F12_physica
 
 This paper presents the linear Maxwell-Vlasov dispersion relation of a plasma consisting of thermal electrons, thermal deuteron fuel ions and a minority energetic ring-beam of fusion born alpha-particles. These high resolution $(k_\parallel, k_\perp)$ calculations revisit ICE observations from JET Pulse No. 26148\cite{Cottrell1993,Dendy1995} and reproduce several important features: the step change in signal strength from $\omega < 6$ to $\omega > 6$; the doublet splitting of peaks at $\omega \approx 10\Omega_i$ on Fig. \ref{fig:2D_F12_physicalpitch}, with origins visible in the fine $(k_\parallel, k_\perp)$ structure in Fig. \ref{fig:2D_imag_physicalpitch}. The Doppler shift for large $k_\parallel$ becomes of the order of the alpha-particle cyclotron frequency, which makes it difficult to determine which parts of the signal come from which cyclotron harmonic numbers. Further effort is required to account for the extra doublets visible in the continuous trace associated with JET Pulse No. 26148 in Fig. 2 of Ref. \cite{Cottrell1993}.
 
-These calculations capture the finite perpendicular thermal spread of the alpha particle distribution function, the integral of which has no known analytically tractable form. The computational capabilities of the software, PlasmaDispersionRelations.jl, used to generate the results further enable ICE as a diagnostic for fusion plasmas since the code is capable of: calculating the dispersion relation of plasmas consisting of an arbitrary number of species; and of arbitrary distribution functions, although those with parallel Maxwellians, like those presented here, are faster. It has been shown that it is possible to recreate signals containing lower harmonics of substantial amplitudes by invoking 2D linear physics. The presence of ICE signals at lower harmonics in PIC simulations has been attributed to nonlinear interactions between pairs of more powerful higher harmonics\cite{Carbajal2014}. This work suggests that observations of lower ICE harmonics may arise either due to the effects of 2D linear physics or to nonlinear 1D physics\cite{Chapman2018}, or a combination. An important feature missing from these calculations is the effect of plasma geometry, which impacts the ICE signals according to frequency and propagation angle. Cottrell et al. \cite{Cottrell1993} does discuss the implications of propagation angles on ICE signals and indicate that lower harmonics must propagate increasingly close to exactly perpendicular. These effects remain the subject of further work to incorporate them in linear and nonlinear studies of ICE.
+These calculations capture the finite perpendicular thermal spread of the alpha
+particle distribution function, the integral of which has no known analytically
+tractable form. The computational capabilities of the software,
+PlasmaDispersionRelations.jl, used to generate the results further enable ICE as
+a diagnostic for fusion plasmas since the code is capable of: calculating the
+dispersion relation of plasmas consisting of an arbitrary number of species; and
+of arbitrary distribution functions, although those with parallel Maxwellians,
+like those presented here, are faster. It has been shown that it is possible to
+recreate signals containing lower harmonics of substantial amplitudes by
+invoking 2D linear physics. The presence of ICE signals at lower harmonics in
+PIC simulations has been attributed to nonlinear interactions between pairs of
+more powerful higher harmonics\cite{Carbajal2014}. This work suggests that
+observations of lower ICE harmonics may arise either due to the effects of 2D
+linear physics or to nonlinear 1D physics\cite{Chapman2018}, or a combination.
+There are several important features missing from these calculations. Among them
+are the effect the spatial inhomogeniety of the magnetic field and background
+plasma, and the quantisation associatied with toroidal periodicity. These may
+create an eigenmode structure into which the MCI must fit.
+Cottrell et al. \cite{Cottrell1993} does discuss the implications of propagation angles on ICE signals and indicate that lower harmonics must propagate increasingly close to exactly perpendicular. These effects remain the subject of further work to incorporate them in linear and nonlinear studies of ICE.
 
 This work showcases a new high $(\omega,k)$ resolution tool for studying ICE and captures the fine detail of ICE signals, which is challenging to capture with nonlinear PIC code simulations since they suffer from low resolution in frequency and wavenumber space due to the phenomenon's transience and computational expense, respectively. As such, this work represents a complementary tool that builds upon purely analytical work and nonlinear PIC studies, which in turn enhances the feasibility of exploiting ICE as a passive diagnostic of confined and leaving ions in magnetised fusion plasmas.
 
