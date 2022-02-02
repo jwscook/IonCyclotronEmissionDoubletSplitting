@@ -1,10 +1,10 @@
 using Distributed, Dates
 using Plots, Random, ImageFiltering, Statistics
-using Dierckx, Contour, JLD2
+using Dierckx, Contour, JLD2, DelimitedFiles
 
 println("Starting at ", now())
 # pitchanglecosine of 0 is all vperp, and (-)1 is (anti-)parallel to B field
-const pitchanglecosine = try; parse(Float64, ARGS[1]); catch; -0.64; end
+const pitchanglecosine = try; parse(Float64, ARGS[1]); catch; -0.646; end
 @assert -1 <= pitchanglecosine <= 1
 # thermal width of ring as a fraction of its speed # Dendy PRL 1993
 const vthermalfractionz = try; parse(Float64, ARGS[2]); catch; 0.01; end
@@ -31,7 +31,8 @@ addprocs(nprocsadded)
 
   # Fig 18 Cottrell 1993
   n0 = 1.7e19 # central electron density 3.6e19
-  B0 = 2.07 # OR 2.191 for B field at 4m when 2.8 T on axis R0 3.13m
+  B0 = 2.07 # 2.07T = 2.8T * 2.96 m / 4m
+  # 2.23 T is 17MHz for deuterium cyclotron frequency
   ξ = 1.5e-4 # nα / ni = 1.5 x 10^-4
 
   nd = n0 / (1.0 + 2*ξ)
@@ -78,8 +79,8 @@ addprocs(nprocsadded)
   Smmr = Plasma([electron_maxw, deuteron_maxw, alpha_ringbeam])
   Smmd = Plasma([electron_maxw, deuteron_maxw, alpha_delta])
 
-  f0 = abs(Ωα)
-  k0 = f0 / abs(Va)
+  w0 = abs(Ωα)
+  k0 = w0 / abs(Va)
 
   γmax = abs(Ωα) * 0.15
   γmin = -abs(Ωα) * 0.075
@@ -105,9 +106,9 @@ addprocs(nprocsadded)
 
     config = Configuration(K, options)
 
-    ics = ((@SArray [ω0*0.8, f0*0.08]),
-           (@SArray [ω0*0.9, f0*0.04]),
-           (@SArray [ω0*1.0, f0*0.01]))
+    ics = ((@SArray [ω0*0.8, w0*0.08]),
+           (@SArray [ω0*0.9, w0*0.04]),
+           (@SArray [ω0*1.0, w0*0.01]))
 
 
     function unitobjective!(c, x::T) where {T}
@@ -116,7 +117,7 @@ addprocs(nprocsadded)
     end
     unitobjectivex! = x -> unitobjective!(config, x)
     boundedunitobjective! = boundify(unitobjectivex!)
-    xtol_abs = f0 .* (@SArray [1e-4, 1e-5]) ./ (ub .- lb)
+    xtol_abs = w0 .* (@SArray [1e-4, 1e-5]) ./ (ub .- lb)
     @elapsed for ic ∈ ics
       @assert all(i->lb[i] <= ic[i] <= ub[i], eachindex(ic))
       neldermeadsol = WindingNelderMead.optimise(
@@ -203,7 +204,7 @@ end
 Plots.pyplot()
 function plotit(sols, file_extension=name_extension, fontsize=9)
   sols = sort(sols, by=s->imag(s.frequency))
-  ωs = [sol.frequency for sol in sols]./f0
+  ωs = [sol.frequency for sol in sols]./w0
   kzs = [para(sol.wavenumber) for sol in sols]./k0
   k⊥s = [perp(sol.wavenumber) for sol in sols]./k0
   xk⊥s = sort(unique(k⊥s))
@@ -313,7 +314,7 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   Plots.savefig("ICE2D_real_$file_extension.pdf")
 
   ω0s = [fastzerobetamagnetoacousticfrequency(Va, sol.wavenumber, Ωd) for
-    sol in sols] / f0
+    sol in sols] / w0
   zs = real.(ωs) ./ ω0s
   climmin = minimum(zs)
   climmax = maximum(zs)
@@ -403,18 +404,14 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
    end
   Plots.xlabel!(h1, "")
   Plots.xticks!(h1, 0:-1)
-  if pitchanglecosine == -0.64
-    x_data, y_data =if VERSION >= v"1.7"
-      @load "digitised_ice_1.7.jld2" x y
-      collect(x),y
-    else
-      @load "digitised_ice.jld2" x y
-      collect(x),y
-    end
+  if pitchanglecosine == -0.646
+    xy_data = readdlm("data.csv", ',', Float64)
+    x_data = xy_data[:, 1]
+    y_data = xy_data[:, 2]
     y_data .-= minimum(y_data)
     y_data ./= (maximum(y_data) - minimum(y_data))
     y_data .*= maximum(imag.(ωs[mask]))
-    x_data .*= 1e6/(f0/2π)
+    x_data .*= 1e6 / (w0/2π)
     Plots.plot!(h1, x_data, y_data, color=:black)
   end
   Plots.annotate!(h1, [(relative(h1, 0.02, 0.95)..., text("(a)", fontsize, :black))])
@@ -428,11 +425,11 @@ if true
   plasmasols = selectlargeestgrowthrate(plasmasols)
   @show length(plasmasols)
   @time plotit(plasmasols)
-  @save "solutions2D_$name_extension.jld" filecontents plasmasols f0 k0
+  @save "solutions2D_$name_extension.jld" filecontents plasmasols w0 k0
   rmprocs(nprocsadded)
 else
   rmprocs(nprocsadded)
-  @load "solutions2D_$name_extension.jld" filecontents solutions f0 k0
+  @load "solutions2D_$name_extension.jld" filecontents solutions w0 k0
   @time plotit(solutions)
 end
 

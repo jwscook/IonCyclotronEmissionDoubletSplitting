@@ -96,9 +96,26 @@ In section 2, the computational method is described for calculating the linear g
 
 \section{Computational method}
 
-Solutions to the linearised Maxwell-Vlasov system of equations are found in $(k_\parallel, k_\bot)$ space for a ring-beam distribution of energetic minority alpha-particles and Maxwellian electrons and background thermal majority deuteron ions. Calculations are made for alpha-particles with ring-beams of two pitch-angle cosine values: $u_\parallel=-0.64 u_0 \simeq -1.085 V_A$, which is associated with the ion-cyclotron emission observed on JET Pulse No. 26148, see Figs. 3 and 15 and associated text in Ref. \cite{Cottrell1993}; and $u_\parallel=0 u_0$ representing a ring distribution with no parallel drift, see Fig. 1(a) of Ref \cite{Cook2013}. Here $u_0=\sqrt{u_\parallel^2 + u_\perp^2}$ is the speed of an alpha-particle with an energy of 3.6 MeV. The complex frequency solutions, $\omega$, are found corresponding to the fast Alfv{\'e}n branch on a grid of $(k_\parallel, k_\bot)$. 
+Solutions to the linearised Maxwell-Vlasov system of equations are found in
+$(k_\parallel, k_\bot)$ space for a ring-beam distribution of energetic minority
+alpha-particles and Maxwellian electrons and background thermal majority
+deuteron ions. Calculations are made for alpha-particles with ring-beams of two
+pitch-angle cosine values: $u_\parallel=-0.646 u_0 \approx
+-\cos(\arcsin(\sqrt{R_0 \sin(\psi_0)/R_1})) \simeq -1.1 V_A$, which is
+associated with the ion-cyclotron emission observed on JET Pulse No. 26148 for
+which $R_0=3.46m$ and
+$\psi_0=55.2^\circ$ are the major radius and angle pitch angle at birth, and
+$R_1=4m$ is the major radius of the emission region, see
+Figs. 3 and 14 and associated text in Ref. \cite{Cottrell1993}; and
+$u_\parallel=0 u_0$ representing a ring distribution with no parallel drift, see
+Fig. 1(a) of Ref \cite{Cook2013}. Here $u_0=\sqrt{u_\parallel^2 + u_\perp^2}$ is the speed of an alpha-particle with an energy of 3.6 MeV. The complex frequency solutions, $\omega$, are found corresponding to the fast Alfv{\'e}n branch on a grid of $(k_\parallel, k_\bot)$.
 
-The plasma parameters approximate those found in the region indicated in Fig. 3 of Ref. \cite{Cottrell1993}, which are associated with the continuous trace signal of Fig. 2 (ibid). The electrons and deuterons, both modelled as Maxwellians, have temperatures of 1 keV and the electrons have a number density of $1.7\times 10^{19}$ $\mathrm{m^{-3}}$. The magnetic field is $2.07$ $\mathrm{T}$.
+The plasma parameters approximate those found in the region indicated in Fig. 3
+of Ref. \cite{Cottrell1993}, which are associated with the continuous trace
+signal of Fig. 2 (ibid). The electrons and deuterons, both modelled as
+Maxwellians, have temperatures of 1 keV and the electrons have a number density
+of $1.7\times 10^{19}$ $\mathrm{m^{-3}}$. The magnetic field is $2.07$
+$\mathrm{T}$, which corresponds to a deuterium cyclotron frequency of $17MHz$.
 The ring-beam distribution function, Eq. \ref{eq:alphaf}, is a separable function of $v_\parallel$, i.e. the beam given by Eq. 1, and $v_\perp$, i.e. the ring given by Eq. 2. The component parallel (perpendicular) to the magnetic field is a drifting Maxwellian with thermal speed $v_{\parallel, th}$ ($v_{\perp, th}$) and drift velocity $u_\parallel$ ($u_\perp$). The thermal spread of the alpha particles' distribution function $v_{th}=v_{\parallel,th}=v_{\perp,th}=u_0/100$. The concentration ratio of alpha-particles to deuterons is $1.5\times10^{-4}$.
 
 \begin{align}
@@ -123,12 +140,15 @@ Solutions to the linearised Maxwell-Vlasov system of equations are given by the 
 \begin{align}
 \vec{\vec{S}}_{s,n} &=
 \begin{bmatrix}
-\frac{n^2J_n^2}{z_s^2}v_\perp U_s & \frac{inJ_nJ_n'}{z_s}v_\perp U_s & \frac{n J_n^2}{z_s} v_\perp W_s \\
-\frac{-inJ_nJ_n'}{z_s}v_\perp U_s & (J_n')^2 v_\perp U_s & -iJ_n J_n' v_\perp W_s \\
-\frac{nJ_n^2}{z_s}v_\parallel U_s & iJ_nJ_n'v_\parallel U_s & n J_n^2 v_\parallel W_s \\
+\frac{n^2J_n^2}{z_s^2}v_\perp U_s & \frac{inJ_nJ_n'}{z_s}v_\perp U_s & \frac{n
+  J_n^2}{z_s} v_\perp W_{s,n} \\
+\frac{-inJ_nJ_n'}{z_s}v_\perp U_s & (J_n')^2 v_\perp U_s & -iJ_n J_n' v_\perp
+  W_{s,n} \\
+\frac{nJ_n^2}{z_s}v_\parallel U_s & iJ_nJ_n'v_\parallel U_s & n J_n^2
+  v_\parallel W_{s,n} \\
 \end{bmatrix}\label{eq:stenor},\\
 U_s &= \frac{\partial f_s}{\partial v_\perp} + \frac{k_\parallel}{\omega}  \left(v_\perp \frac{\partial f_s}{\partial v_\parallel} - v_\parallel \frac{\partial f_s}{\partial v_\perp}\right)\label{eq:uterm},\\
-W_s &=\left(1- \frac{n\Omega_s}{\omega}\right)\frac{\partial f_s}{\partial v_\parallel} + \frac{n\Omega v_\parallel}{\omega v_\perp}\frac{\partial f_s}{\partial v_\perp}\label{eq:wterm},
+  W_{s,n} &=\left(1- \frac{n\Omega_s}{\omega}\right)\frac{\partial f_s}{\partial v_\parallel} + \frac{n\Omega v_\parallel}{\omega v_\perp}\frac{\partial f_s}{\partial v_\perp}\label{eq:wterm},
 \end{align}
 
 \noindent $J_n$ is the $n$th Bessel function of the first kind and takes the argument $z_s=\frac{k_\perp v_\perp}{\Omega_s}$ where $J_n'=\frac{\partial J_n}{\partial z}$.
@@ -171,12 +191,12 @@ units of $\Omega_i/V_A$. Fig. \ref{fig:2D_F12_zeropitch}(b) plots the same data 
 \end{figure}
 
 Fig. \ref{fig:2D_F12_physicalpitch} plots solutions for the physical pitch-angle
-case ($u_\parallel = -0.64 u_0$) in the same manner as Fig.
+case ($u_\parallel = -0.646 u_0$) in the same manner as Fig.
 \ref{fig:2D_F12_zeropitch}. There are several points worth noting. First, the
 growth rate is no longer linear with cyclotron harmonic number. Second,
 harmonics are broader due to the non-zero parallel drift that gives rise to
 strong Doppler shift with increasing $|k_\parallel|$. Third, doublet splitting
-of the $10^{th}$ harmonic is observed: see Fig. 2 of Cottrell 1993 for a single
+of the $11^{th}$ harmonic is observed: see Fig. 2 of Cottrell 1993 for a single
 signal showing multiple doublet splittings; Fig. 3 of Dendy et al 1994 (also
 Fig. 9 Dendy et al 1995) shows slices at constant propagation angle that when
 all superimposed point towards doublet splitting, albeit under-resolved in
@@ -196,7 +216,16 @@ drifts\cite{Cottrell1993,Fulop1998}. Qualitatively, Fig. \ref{fig:2D_F12_physica
     % \centering
     \raggedleft
 \includegraphics[scale=0.9]{fig3.pdf}
-    \caption{(colour online) The imaginary component of the frequencies for the case with parallel drift, $u_{\parallel} = -0.64 u_0 \simeq -1.085 V_A$. Panel (a) plots growth rate against frequency where shading indicates parallel wavenumber in units of $\Omega_i/V_A$, and (b) plots the solutions in the $k_\parallel, \omega$ plane where shading indicates growth rate. Note that the Doppler shift associated with the non-zero parallel drift speed broadens the unstable peaks in frequency. The 10th cyclotron harmonic is split into a doublet, or has two peaks because both the growth rate and real frequency vary with wavenumber. Compare with Fig. 2 of Cottrel et al 1993.}
+    \caption{(colour online) The imaginary component of the frequencies for the
+    case with parallel drift, $u_{\parallel} = -0.646 u_0 \simeq -1.1 V_A$.
+    Panel (a) plots growth rate against frequency where shading indicates
+    parallel wavenumber in units of $\Omega_i/V_A$, and (b) plots the solutions
+    in the $k_\parallel, \omega$ plane where shading indicates growth rate. Note
+    that the Doppler shift associated with the non-zero parallel drift speed
+    broadens the unstable peaks in frequency. The $10^{th}$ and $11^{th}$ cyclotron
+    harmonics are split into doublets, i.e. they have two peaks because both
+    the growth rate and real frequency vary with wavenumber. Compare with
+    Fig. 2 of Cottrel et al 1993.}
     \label{fig:2D_F12_physicalpitch}
 \end{figure}
 
@@ -204,7 +233,7 @@ drifts\cite{Cottrell1993,Fulop1998}. Qualitatively, Fig. \ref{fig:2D_F12_physica
     % \centering
     \raggedleft
 \includegraphics[scale=0.9]{fig4.pdf}
-    \caption{(colour online) As in Fig. \ref{fig:2D_imag_zeropitch}, except for a ring-beam of alpha particles, with a physical pitch-angle value resulting in $u_{\parallel} = -0.64 u_0 \simeq -1.085 V_A$. The non-zero parallel drift speed causes up-down asymmetry; this figure for a pitch-angle cosine of the opposite sign, $u_{\parallel} = 0.64 u_0$, is identical expect flipped about $k_\parallel=0$.}
+    \caption{(colour online) As in Fig. \ref{fig:2D_imag_zeropitch}, except for a ring-beam of alpha particles, with a physical pitch-angle value resulting in $u_{\parallel} = -0.646 u_0 \simeq -1.1 V_A$. The non-zero parallel drift speed causes up-down asymmetry; this figure for a pitch-angle cosine of the opposite sign, $u_{\parallel} = 0.646 u_0$, is identical expect flipped about $k_\parallel=0$.}
     \label{fig:2D_imag_physicalpitch}
 \end{figure}
 
@@ -213,7 +242,7 @@ drifts\cite{Cottrell1993,Fulop1998}. Qualitatively, Fig. \ref{fig:2D_F12_physica
     % \centering
     \raggedleft
 \includegraphics[scale=0.9]{fig5.pdf}
-    \caption{(colour online) As in Fig. \ref{fig:2D_imag_zeropitch}, except that the shading indicates the real part of the smoothed solution normalised by the high frequency expression for the fast Alfv{\'e}n wave set out by Eq. 25 of Ref. \cite{Dendy1994}, which is also Eq. 11 in Ref. \cite{McClements1996}. The differences in real frequency for the two sets of calculations, physical pitch-angle cosine of $-0.64$ and zero, are negligible.}
+    \caption{(colour online) As in Fig. \ref{fig:2D_imag_zeropitch}, except that the shading indicates the real part of the smoothed solution normalised by the high frequency expression for the fast Alfv{\'e}n wave set out by Eq. 25 of Ref. \cite{Dendy1994}, which is also Eq. 11 in Ref. \cite{McClements1996}. The differences in real frequency for the two sets of calculations, physical pitch-angle cosine of $-0.646$ and zero, are negligible.}
     \label{fig:2D_real_zeropitch}
 \end{figure}
 
