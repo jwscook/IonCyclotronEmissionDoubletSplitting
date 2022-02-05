@@ -115,7 +115,7 @@ of Ref. \cite{Cottrell1993}, which are associated with the continuous trace
 signal of Fig. 2 (ibid). The electrons and deuterons, both modelled as
 Maxwellians, have temperatures of 1 keV and the electrons have a number density
 of $1.7\times 10^{19}$ $\mathrm{m^{-3}}$. The magnetic field is $2.07$
-$\mathrm{T}$, which corresponds to a deuterium cyclotron frequency of $17MHz$.
+$\mathrm{T}$, which corresponds a major radius of $4m$.
 The ring-beam distribution function, Eq. \ref{eq:alphaf}, is a separable function of $v_\parallel$, i.e. the beam given by Eq. 1, and $v_\perp$, i.e. the ring given by Eq. 2. The component parallel (perpendicular) to the magnetic field is a drifting Maxwellian with thermal speed $v_{\parallel, th}$ ($v_{\perp, th}$) and drift velocity $u_\parallel$ ($u_\perp$). The thermal spread of the alpha particles' distribution function $v_{th}=v_{\parallel,th}=v_{\perp,th}=u_0/100$. The concentration ratio of alpha-particles to deuterons is $1.5\times10^{-4}$.
 
 \begin{align}
@@ -166,7 +166,10 @@ value is zero ($u_\parallel = 0$ in Eq. 1) are plotted in Fig.
 \ref{fig:2D_F12_zeropitch}(a) against the associated real frequency (only modes
 with growth rates in excess of the solver tolerance are shown i.e. $\Im(\omega)
 > 10^{-5} \Omega_i$). In this panel shading indicates parallel wavenumber in
-units of $\Omega_i/V_A$. Fig. \ref{fig:2D_F12_zeropitch}(b) plots the same data in the $(k_\parallel,\omega)$ plane where shading instead indicates growth rates. The simplicity of the consecutive unstable cyclotron harmonics visible in panel (a) betrays the complexity of the structure in the $(k_\parallel, \omega)$ plane. Integration over $k_\parallel$ projects the solutions onto the frequency axis, which loses the structure and produces narrow harmonics. Fig. \ref{fig:2D_imag_zeropitch} plots shows the same data as Fig. \ref{fig:2D_F12_zeropitch} with damped and normal modes in addition, except shading indicates the growth rates in $(k_\parallel, k_\perp)$ space. Overlaid contours indicate the real frequency in units of ion cyclotron harmonics. Only narrow regions around the cyclotron harmonics are unstable. Overlaid straight traces indicate propagation angle. No Doppler shift is present due to the lack of parallel drift in the alpha-particle ring-beam. The growth rate increases approximately linearly with cyclotron harmonic number, which is consistent with the literature\cite{Dendy1994}. Together these figures serves to introduce a 2D view (growth rates in $(k_\parallel, k_\perp)$ space) of traditionally 1D data (growth rates against frequency). This will become important when a non-zero $u_\parallel$ is taken into account next.
+units of $\Omega_i/V_A$. Fig. \ref{fig:2D_F12_zeropitch}(b) plots the same data
+in the $(\omega,k_\parallel)$ plane where shading instead indicates growth
+rates. The simplicity of the consecutive unstable cyclotron harmonics visible in
+panel (a) betrays the complexity of the structure in the $(\omega,k_\parallel)$ plane. Integration over $k_\parallel$ projects the solutions onto the frequency axis, which loses the structure and produces narrow harmonics. Fig. \ref{fig:2D_imag_zeropitch} plots shows the same data as Fig. \ref{fig:2D_F12_zeropitch} with damped and normal modes in addition, except shading indicates the growth rates in $(k_\parallel, k_\perp)$ space. Overlaid contours indicate the real frequency in units of ion cyclotron harmonics. Only narrow regions around the cyclotron harmonics are unstable. Overlaid straight traces indicate propagation angle. No Doppler shift is present due to the lack of parallel drift in the alpha-particle ring-beam. The growth rate increases approximately linearly with cyclotron harmonic number, which is consistent with the literature\cite{Dendy1994}. Together these figures serves to introduce a 2D view (growth rates in $(k_\parallel, k_\perp)$ space) of traditionally 1D data (growth rates against frequency). This will become important when a non-zero $u_\parallel$ is taken into account next.
 
 \begin{figure}[ht!]
     % \centering
@@ -177,7 +180,11 @@ units of $\Omega_i/V_A$. Fig. \ref{fig:2D_F12_zeropitch}(b) plots the same data 
     thermal electrons, deuterons and a ring distribution of energetic
     alpha-particles i.e. when there is zero parallel drift, $u_\parallel=0$ in
     Eq. 1. (a) Upper panel: growth rate as a function of frequency where shading
-    indicates the parallel wavenumber in units of $\Omega_i/V_A$ of the complex frequency solution. Consecutive cyclotron harmonics are increasingly unstable and are narrow due to the lack of Doppler shift associated with parallel drifts. (b) Lower panel: the same solutions as in panel (a) in the $(k_\parallel,\omega)$ plane where shading indicates growth rate. The complex structure of the growth rates that exists in wavenumber space is projected into sharp harmonics on the frequency axis.}
+    indicates the parallel wavenumber in units of $\Omega_i/V_A$ of the complex
+    frequency solution. Consecutive cyclotron harmonics are increasingly
+    unstable and are narrow due to the lack of Doppler shift associated with
+    parallel drifts. (b) Lower panel: the same solutions as in panel (a) in the
+    $(\omega,k_\parallel)$ plane where shading indicates growth rate. The complex structure of the growth rates that exists in wavenumber space is projected into sharp harmonics on the frequency axis.}
     \label{fig:2D_F12_zeropitch}
 \end{figure}
 
@@ -220,7 +227,7 @@ drifts\cite{Cottrell1993,Fulop1998}. Qualitatively, Fig. \ref{fig:2D_F12_physica
     case with parallel drift, $u_{\parallel} = -0.646 u_0 \simeq -1.1 V_A$.
     Panel (a) plots growth rate against frequency where shading indicates
     parallel wavenumber in units of $\Omega_i/V_A$, and (b) plots the solutions
-    in the $k_\parallel, \omega$ plane where shading indicates growth rate. Note
+    in the $(\omega,k_\parallel)$ plane where shading indicates growth rate. Note
     that the Doppler shift associated with the non-zero parallel drift speed
     broadens the unstable peaks in frequency. The $10^{th}$ and $11^{th}$ cyclotron
     harmonics are split into doublets, i.e. they have two peaks because both
@@ -266,15 +273,16 @@ observations of lower ICE harmonics may arise either due to the effects of 2D
 linear physics or to nonlinear 1D physics\cite{Chapman2018}, or a combination.
 There are several important features missing from these calculations. Among them
 are the effect the spatial inhomogeniety of the magnetic field and background
-plasma, and the quantisation associatied with toroidal periodicity. These may
-create an eigenmode structure into which the MCI must fit.
+plasma, and the quantisation associatied with toroidal periodicity. These
+effects may create an eigenmode structure, not accounted for herein,
+associated with the kinetic MCI.
 Cottrell et al. \cite{Cottrell1993} does discuss the implications of propagation angles on ICE signals and indicate that lower harmonics must propagate increasingly close to exactly perpendicular. These effects remain the subject of further work to incorporate them in linear and nonlinear studies of ICE.
 
 This work showcases a new high $(\omega,k)$ resolution tool for studying ICE and captures the fine detail of ICE signals, which is challenging to capture with nonlinear PIC code simulations since they suffer from low resolution in frequency and wavenumber space due to the phenomenon's transience and computational expense, respectively. As such, this work represents a complementary tool that builds upon purely analytical work and nonlinear PIC studies, which in turn enhances the feasibility of exploiting ICE as a passive diagnostic of confined and leaving ions in magnetised fusion plasmas.
 
 \section{Acknowledgements}
 
-It is a pleasure to thank R O Dendy and B Chapman-Oplopoiou useful discussions.
+It is a pleasure to thank R O Dendy and B Chapman-Oplopoiou for useful discussions.
 
 \appendix
 
