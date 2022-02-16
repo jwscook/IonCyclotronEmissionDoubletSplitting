@@ -112,11 +112,12 @@ field), ring speed (the speed perpendicular to the magnetic field) and thermal
 velocity, respectively. Subsequent studies augmented this understanding via
 nonlinear fully-kinetic\cite{Cook2013,Chapman2017} and
 hybrid\cite{Carbajal2014,Reman2019} particle-in-cell (PIC) simulations in one
-dimension and 3 vector components for velocities and electromagnetic field (i.e.
-1D3V), and recently 2D3V hybrid-PIC simulations\cite{Carbajal2021}. These
-computational approaches also operate under the simplification that the plasma
-is both homogeneous and infinite albeit approximately via periodic boundary
-conditions. Linearised fluid approaches that incorporate toroidal geometry and
+spatial dimension and three vector components for velocities and electromagnetic
+field (i.e. 1D3V), and recently 2D3V hybrid-PIC simulations\cite{Carbajal2021}. These
+computational approaches operate under similar simplifications as the analytical
+treatments in that the plasma is initially spatially homogeneous and periodic
+in the spatial domain.
+Linearised fluid approaches that incorporate toroidal geometry and
 inhomogeneous plasma and magnetic fields have shed light of the eigenmode
 structure of compressional Alfv{\'e}n eigenmodes, which like ICE are also fast
 Alfv{\'e}n modes driven by energetic ions, in spherical
@@ -132,8 +133,8 @@ growth is terminated for all modes when the fastest mode enters its nonlinear
 phase meaning that both the amount of free energy available for instability has
 decreased and that the unstable energy ion distribution function has been
 perturbed into a more stable state. Analysis shows that only higher cyclotron
-harmonics are destabilised\cite{McClements2015} to the MCI, however observations
-clearly indicate power at theoretically stable lower
+harmonics are destabilised\cite{McClements2015} to the MCI, however experimental
+observations clearly indicate power at theoretically stable lower
 harmonics\cite{Cottrell1988}. In a further step towards accurate recreation of
 experimental observations, nonlinear phases of hybrid\cite{Carbajal2014} and
 fully kinetic\cite{Cook2013,Chapman2017} PIC simulations went on to show that
@@ -143,14 +144,14 @@ harmonics. Most recently, hybrid 2D simulations have begun to shed light on the
 
 To better enable ICE as a diagnostic for confined fast ions, it is necessary to
 further develop our understanding with a range of tools. In this work, I present
-the 2D $(k_\perp, k_\parallel)$ growth rates of the MCI under the conditions of
+the growth rates in 2D wavenumber space of the MCI under the conditions of
 outer mid-plane of the JET PTE\cite{Cottrell1993} Pulse No. 26148. These growth
 rates are obtained from a dispersion relation solver,
 PlasmaDispersionRelations.jl, written in the Julia programming
 language\cite{Bezanson2017}. These results narrow the gap between analytical
 theory and expensive HPC simulations and can be run readily on desktop computers
 in a matter of minutes, further enabling research into this topic. Note that
-this study focusses on edge-ICE, named for the region from which the signal
+this study focusses on edge-ICE, named for the region of plasma from which the signal
 arises, as opposed to core-ICE\cite{Ochoukov2018}.
 
 In section 2, the computational method is described for calculating the linear growth rates, which are presented for energetic ring-beam alpha-particles with non-zero perpendicular thermal spread in section 3. Results are summarised in section 4.
@@ -158,7 +159,8 @@ In section 2, the computational method is described for calculating the linear g
 \section{Computational method}
 
 Solutions to the linearised Maxwell-Vlasov system of equations are found in
-$(k_\parallel, k_\bot)$ space for a ring-beam distribution of energetic minority
+parallel and perpendicular wavenumber space, $(k_\parallel, k_\bot)$, for a
+ring-beam distribution of energetic minority
 alpha-particles and Maxwellian electrons and background thermal majority
 deuteron ions. Calculations are made for alpha-particles with ring-beams of two
 values of pitch-angle cosine: $u_\parallel=-0.646 u_0 \approx
@@ -175,12 +177,14 @@ solutions, $\omega$, along the fast Alfv{\'e}n branch are found on a grid of $(k
 
 The plasma parameters approximate those found in the region indicated in Fig. 3
 of Ref. \cite{Cottrell1993}, which are associated with the continuous trace
-signal of Fig. 2 (ibid). The electrons and deuterons have temperatures of 1 keV and the electrons have a number density
+signal of Fig. 2 in the same reference. The electrons and deuterons have
+temperatures of 1 keV and the electrons have a number density
 of $1.7\times 10^{19}$ $\mathrm{m^{-3}}$. The magnetic field is $2.07$
 $\mathrm{T}$, which corresponds a major radius of $4$ m.
-The ring-beam distribution function, Eq. \ref{eq:alphaf}, is a separable
-function of the beam in $v_\parallel$ given by Eq. 1 and the ring in $v_\perp$
-given by Eq. 2. This distribution function is parameterised by the drift 
+The ring-beam distribution function, Eq. 1, is a separable
+function of the beam in $v_\parallel$ given by Eq. 2 and the
+ring in $v_\perp$ given by Eq. 3.
+This distribution function is parameterised by the drift
 velocity parallel to the magnetic field $u_\parallel$, the drift speed 
 perpendicular to the magnetic
 field $u_{\perp}$, and the thermal velocity in both directions $v_{th}$. The
@@ -189,10 +193,17 @@ $v_{th}=v_{\parallel,th}=v_{\perp,th}=u_0/100$. The number density
 ratio of alpha-particles to deuterons is $1.5\times10^{-4}$.
 
 \begin{align}
-f_{\alpha,\parallel}\left(v_\parallel\right) &= \frac{\exp\left(-\frac{(v_\parallel - u_\parallel)^2}{v_{\parallel,th}^2}\right)}{v_{\parallel,th} \sqrt{2 \pi}}\\
-f_{\alpha,\perp}\left(v_\perp\right) &= \frac{1}{2\pi}\frac{\exp\left(-\frac{\left(v_\bot - u_\bot\right)^2}{v_{\bot,th}^2}\right)}{\left(\frac{\sqrt \pi}{2} v_{\perp, th} u_\bot (1 - \mathrm{erf}(-\frac{u_\bot}{v_{\perp,th}})) + \exp(-u_\bot^2 / v_{\perp, th}^2) \frac{v_{\perp,th}^2}{2}\right)}\\
-f_\alpha\left(v_\parallel, v_\perp\right) &= f_{\alpha,\parallel}\left(v_\parallel\right)f_{\alpha,\perp}\left(v_\perp\right)
-    \label{eq:alphaf}
+f_\alpha\left(v_\parallel, v_\perp\right) &=
+  f_{\alpha,\parallel}\left(v_\parallel\right)f_{\alpha,\perp}\left(v_\perp\right)\\
+f_{\alpha,\parallel}\left(v_\parallel\right) &=
+  \frac{\exp\left(-\frac{(v_\parallel -
+  u_\parallel)^2}{v_{\parallel,th}^2}\right)}{v_{\parallel,th} \sqrt{2
+  \pi}}\\
+f_{\alpha,\perp}\left(v_\perp\right) &=
+  \frac{1}{2\pi}\frac{\exp\left(-\frac{\left(v_\bot -
+  u_\bot\right)^2}{v_{\bot,th}^2}\right)}{\left(\frac{\sqrt \pi}{2} v_{\perp,
+  th} u_\bot (1 - \mathrm{erf}(-\frac{u_\bot}{v_{\perp,th}})) + \exp(-u_\bot^2 /
+  v_{\perp, th}^2) \frac{v_{\perp,th}^2}{2}\right)}\\
 \end{align}
 
 Solutions to the linearised Maxwell-Vlasov system of equations are given by the
@@ -241,15 +252,15 @@ the parallel integrals can be calculated from the well known plasma dispersion
 function\cite{Fried1961}, which is laid out in the appendix.
 
 The summation over Bessel function indices in Eq. \ref{eq:dielectrictensor}
-continues until the relative change of the L2 norm between the current and
+continues until the relative change between the current and
 previous iteration is less than a tolerance of $10^{-8}$. Root finding of Eq.
-\ref{eq:dettensor} is performed by an amalgamation of the
+\ref{eq:dettensor} in complex frequency plane is performed by an amalgamation of the
 Nelder-Mead\cite{Nelder1965} optimisation method with the winding number method,
-whereby if the Nelder-Mead simplex does not contain a root, as calculated via
-the winding method, then the optimisation procedure follows the Nelder-Mead
-method, otherwise a non-zero winding number indicates that a root is present
-within the simplex and the simplex
-bifurcates. The child simplex that contains the root is used for the next
+whereby if the values at the nodes of the Nelder-Mead simplex, which in this
+case is just a triangle, have a winding number
+of zero and therefore the simplex does not contain a root then the optimisation
+procedure follows the Nelder-Mead method, otherwise the simplex bifurcates.
+The child simplex that contains the root is used for the next
 iteration. The optimisation iteration procedure finishes when the real extent of
 the simplex is less than $10^{-4}\, \Omega_i$ and the imaginary extent is less
 than $10^{-5}\,\Omega_i$, where $\Omega_i$ is the cyclotron frequency of both
@@ -272,9 +283,9 @@ rates. The simplicity of the consecutive unstable cyclotron harmonics visible in
 panel (a) betrays the complexity of the structure in the $(\omega,k_\parallel)$
 plane. Integration over $k_\parallel$ projects the solutions onto the frequency
 axis, which loses the structure and produces narrow harmonics. Figure
-\ref{fig:2D_imag_zeropitch} shows the same data as Fig.
-\ref{fig:2D_F12_zeropitch} in $(k_\perp, k_\parallel)$ space with damped and
-normal modes in addition, except shading indicates the growth rates. Overlaid
+\ref{fig:2D_imag_zeropitch} gives $(k_\perp, k_\parallel)$ space view of the
+same data as Fig. \ref{fig:2D_F12_zeropitch} as well as damped and
+normal modes, except shading indicates the growth rates. Overlaid
 contours indicate the real frequency in units of ion cyclotron harmonics. Only
 narrow regions around the cyclotron harmonics are unstable. Overlaid straight
 traces indicate propagation angle. No Doppler shift is present due to the lack
@@ -282,8 +293,8 @@ of parallel drift in the alpha-particle ring-beam. The growth rate increases
 approximately linearly with cyclotron harmonic number, which is consistent with
 the literature\cite{Dendy1994}. Together these figures serve to introduce a 2D
 view (growth rates in $(k_\perp, k_\parallel)$ space) of traditionally 1D data
-(growth rates against frequency). This will become important when a non-zero
-$u_\parallel$ is taken into account next.
+(growth rates against frequency). The importance of a non-zero $u_\parallel$ is
+discussed next.
 
 \begin{figure}[ht!]
     % \centering
@@ -313,7 +324,7 @@ $u_\parallel$ is taken into account next.
     Alfv{\'e}n waves excited by a ring of fusion born alpha-particles, as a
     function of parallel wavenumber on the ordinate and perpendicular wavenumber
     on the abscissa. No solution is found where shading is absent. The
-    alpha-particle distribution function is given by Eq. \ref{eq:alphaf} with
+    alpha-particle distribution function is given by Eq. 1 with
     $u_{\parallel} = 0$. Consecutive straight traces indicate the propagation
     angle with respect to the magnetic field: the horizontal line is exactly
     perpendicular; solid traces fan out at intervals of five degrees; and dashed
@@ -331,7 +342,10 @@ $u_\parallel$ is taken into account next.
 Fig. \ref{fig:2D_F12_physicalpitch} plots solutions for the physically more
 realistic pitch-angle
 case ($u_\parallel = -0.646 u_0$) in the same manner as Fig.
-\ref{fig:2D_F12_zeropitch}. There are several points worth noting. First, the
+\ref{fig:2D_F12_zeropitch} except there is an additional black trace in the
+upper panel, which represents the measured JET ICE intensity signal; the continuous
+trace from Fig. 2 in Ref. \cite{Cottrell1993}.
+There are several points worth noting. First, the
 growth rate is no longer linear with cyclotron harmonic number. Second,
 harmonics are broader due to the non-zero parallel drift that gives rise to
 strong Doppler shift with increasing $|k_\parallel|$. Third, doublet splitting
@@ -345,12 +359,17 @@ band of instability where
 $k_\parallel$ goes through zero combined with the change in sign of the Doppler
 shift of the real frequency as $k_\parallel$ changes sign. The effect is
 larger for higher harmonics where the growth rate diminishes to zero for
-perpendicular propagation; see e.g. the $12^{th}$ harmonic in Fig.
-\ref{fig:2D_imag_physicalpitch} near $(k_\parallel \simeq 0\; \Omega_{i}/V_A,
-k_\bot \simeq 13\; \Omega_{i}/V_A)$, where $V_A$ is the Alfv{\'e}n speed. Other possible mechanisms for
-doublet splitting could be grad-B or curvature
-drifts\cite{Cottrell1993,Fulop1998}. Qualitatively, Fig.
-\ref{fig:2D_F12_physicalpitch}(a) resembles Fig. 2 of Cottrell 1993 in that the
+perpendicular propagation.
+
+This effect can be seen in Fig. \ref{fig:2D_imag_physicalpitch}, which is the
+counterpart figure to Fig. \ref{fig:2D_F12_physicalpitch} as Fig.
+\ref{fig:2D_imag_zeropitch} is to Fig. \ref{fig:2D_F12_zeropitch},
+at e.g. the $12^{th}$ harmonic  near $(k_\parallel \simeq 0\; \Omega_{i}/V_A,
+k_\bot \simeq 13\; \Omega_{i}/V_A)$, where $V_A$ is the Alfv{\'e}n speed.
+Other possible mechanisms for doublet splitting could be grad-B or curvature
+drifts\cite{Cottrell1993,Fulop1998}. Qualitatively, scattered points in Fig.
+\ref{fig:2D_F12_physicalpitch}(a) resembles the experimental observations given
+by the black trace in that the
 signal below the $7^{th}$ cyclotron harmonics is lower and flatter with well
 defined peaks and the signal beyond the $7^{th}$ harmonic is a step-change
 larger and the harmonics are less easily identifiable. These features cannot be
@@ -358,16 +377,15 @@ be recreated with a 1D calculation for these distributions functions. Note that
 Fig. \ref{fig:2D_imag_physicalpitch} shows these two different regimes more
 clearly. The lower frequency behaviour, where $k_\perp < 7 \Omega_i/V_A$, is
 characterised by narrow regions of instability near Doppler shifted cyclotron
-harmonics that are stabilised when $k_\parallel=0$ but unstable at larger
+harmonics that are stable when $k_\parallel=0$ and unstable at larger
 negative parallel wavenumbers. The higher frequency behaviour in the region
 $\omega\geq 7\Omega_i$ is dominated by broader regions of instability in
 frequency and wavenumber near to Doppler shifted cyclotron harmonics, which have
 a complex structure in wavenumber space. Modes numbering 1, 2, 6, 7, 8, 12, and
 13 are stable when propagating exactly perpendicular whilst obliquely
-propagating modes remain unstable; see Fig. 9 of Dendy et al 1995, which plots
-the analytic expression for the growth rate of the MCI at 5 slices of
-propagation angle. The Doppler shift of the growing modes can reach $\approx
-\Omega_i$ for large propagation angles at lower frequencies and also for
+propagating modes remain unstable. The magnitude of the Doppler shift of
+the growing modes can reach $\approx \Omega_i$ for large propagation angles at 
+lower frequencies and also for
 oblique angles at higher frequencies; see, for example, the mode
 associated with the $15^{th}$ cyclotron harmonic near $k_\parallel \simeq
 -\frac{3}{4} \Omega_i/V_A, k_\perp \simeq 14 \Omega_i/V_A$, i.e. a propagation
@@ -383,12 +401,13 @@ propagation angles.
     \caption{(colour online) The imaginary component of the frequencies for the
     case with parallel drift $u_{\parallel} = -0.646 u_0 \simeq -1.1 V_A$.
     Panel (a) plots growth rate against frequency where shading indicates
-    parallel wavenumber in units of $\Omega_i/V_A$, and (b) plots the solutions
+    parallel wavenumber in units of $\Omega_i/V_A$ and the black trace shows
+    the re-scaled ICE signal from JET Pulse \#21648 digitised from Fig. 2 of
+    Cottrell et al 1993 (with permission from IOP Publishing), (b) plots the solutions
     in the $(\omega,k_\parallel)$ plane where shading indicates growth rate. Note
     that the Doppler shift associated with the non-zero parallel drift speed
     broadens the unstable peaks in frequency. The $10^{th}$ and $11^{th}$ cyclotron
-    harmonics are split into doublets, i.e. they have two peaks. Compare with
-    Fig. 2 of Cottrel et al 1993.}
+    harmonics are split into doublets, i.e. they have two peaks.}
     \label{fig:2D_F12_physicalpitch}
 \end{figure}
 
@@ -400,7 +419,7 @@ propagation angles.
     a ring-beam of alpha particles with a more realistic pitch-angle value
     $u_{\parallel} = -0.646 u_0 \simeq -1.1 V_A$. The non-zero parallel drift
     speed causes up-down asymmetry; this figure for a pitch-angle cosine of the
-    opposite sign, $u_{\parallel} = 0.646 u_0$, is identical expect flipped
+    opposite sign, $u_{\parallel} = 0.646 u_0$, is identical except flipped
     about $k_\parallel=0$.}
     \label{fig:2D_imag_physicalpitch}
 \end{figure}
@@ -449,8 +468,9 @@ qualitatively recreate signals containing lower harmonics of substantial amplitu
 invoking 2D linear physics. The presence of ICE signals at lower harmonics in
 PIC simulations has been attributed to nonlinear interactions between pairs of
 more powerful higher harmonics\cite{Carbajal2014}. This work suggests that
-observations of lower ICE harmonics may arise either due to the effects of 2D
-linear physics or to nonlinear 1D physics\cite{Chapman2018}, or a combination.
+observations of lower ICE harmonics may arise due to 2D
+linear physics effects but does not exclude the possiblity that nonlinear 1D
+physics\cite{Chapman2018} may also play a part.
 There are several important features missing from these calculations. Among them
 are the effects of the spatial inhomogeniety of the magnetic field and background
 plasma, and the quantisation associatied with toroidal periodicity. These
