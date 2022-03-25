@@ -238,21 +238,22 @@ U_s &= \frac{\partial f_s}{\partial v_\perp} + \frac{k_\parallel}{\omega}  \left
 \noindent $J_n$ is the $n$th Bessel function of the first kind taking the
 argument $z_s=k_\perp v_\perp / \Omega_s$ and $J_n'=\frac{\partial J_n}{\partial z}$.
 
-The integrals over perpendicular velocity required for calculating the
+Integrals over perpendicular velocity required for calculating the
 dielectric tensor for Maxwellian distribution functions are given in terms of
 modified Bessel functions of the first kind\cite{Stix} for both electrons and
-ldeuterons i.e. when $u_\perp =0$. The same perpendicular integrals over the
-alpha-particles' ring distribution is calculated numerically via
+deuterons i.e. when $u_\perp =0$. The same perpendicular integrals over the
+alpha-particles' ring distribution are calculated numerically via
 Gauss-Kronrod\cite{Kronrod1965} quadrature using the GaussGK.jl\cite{QuadGK}
 library. An absolute and relative tolerance of $0$ and $10^{-8}$, respectively,
-on the value of the integrals is used.
+is used to confirm convergence of the integral values.
 
 Since all the parallel distribution functions for all species are Maxwellians,
 the parallel integrals can be calculated from the well known plasma dispersion
 function\cite{Fried1961}, which is laid out in the appendix.
 
-The summation over Bessel function indices in Eq. \ref{eq:dielectrictensor}
-continues until the relative change between the current and
+Bessel functions indices in Eq. \ref{eq:dielectrictensor} are summed outwards
+from 0 in both the positive and negative directions
+until the relative change between the current and
 previous iteration is less than a tolerance of $10^{-8}$. Root finding of Eq.
 \ref{eq:dettensor} in complex frequency plane is performed by an amalgamation of the
 Nelder-Mead\cite{Nelder1965} optimisation method with the winding number method,
@@ -346,13 +347,16 @@ case ($u_\parallel = -0.646 u_0$) in the same manner as Fig.
 upper panel, which represents the measured JET ICE intensity signal; the continuous
 trace from Fig. 2 in Ref. \cite{Cottrell1993}.
 The observations of ICE intensity are plotted on a log scale scaled to match
-the range of the linear MCI growth rates. Direct comparison of log-scale
+the range of the linear MCI growth rates.
+Direct comparison of log-scale
 ICE observations and linear growth rates is justified to the extent that
-nonlinear PIC simulations indicate that the linearly unstable modes
+nonlinear PIC simulations indicate that the linearly unstable modes rising
+as $\exp(\gamma t)$, where $\gamma$ is a mode's growth rate,
 cease to grow once the fastest growing mode becomes
-nonlinear\cite{Cook2013}. Hence, the $log$ of a mode's amplitude is
-proportional to its growth rate under the assumption that
-that all modes start growing in unison from identical seed amplitudes.
+nonlinear\cite{Cook2013}.
+Therefore under the assumption that all modes start growing in unison from
+identical seed amplitudes then the log of a mode's amplitude is
+proportional to its growth rate.
 There are several points worth noting about this figure. First, the
 growth rate is no longer linear with cyclotron harmonic number. Second,
 harmonics are broader due to the non-zero parallel drift that gives rise to
@@ -365,11 +369,12 @@ wavenumber space. The following describes how these three features are
 connected. Doublet splitting arises due to the dip in growth rate along the 
 band of instability where
 $k_\parallel$ goes through zero combined with the change in sign of the Doppler
-shift of the real frequency as $k_\parallel$ changes sign. The effect is
+shift of the real frequency as $k_\parallel$ changes sign, which pushes the real
+frequency from one side of the harmonic to the other. The effect is
 larger for higher harmonics where the growth rate diminishes to zero for
 perpendicular propagation.
 
-This effect can be seen in Fig. \ref{fig:2D_imag_physicalpitch}, which is the
+Doublet splitting can be seen in Fig. \ref{fig:2D_imag_physicalpitch}, which is the
 counterpart figure to Fig. \ref{fig:2D_F12_physicalpitch} as Fig.
 \ref{fig:2D_imag_zeropitch} is to Fig. \ref{fig:2D_F12_zeropitch},
 at e.g. the $12^{th}$ harmonic  near $(k_\parallel \simeq 0\; \Omega_{i}/V_A,
