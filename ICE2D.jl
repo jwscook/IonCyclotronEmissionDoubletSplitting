@@ -23,9 +23,9 @@ addprocs(nprocsadded)
 @everywhere using StaticArrays
 @everywhere using FastClosures
 @everywhere begin
-  using PlasmaDispersionRelations, LinearAlgebra, WindingNelderMead
+  using LinearMaxwellVlasov, LinearAlgebra, WindingNelderMead
 
-  mₑ = PlasmaDispersionRelations.mₑ
+  mₑ = LinearMaxwellVlasov.mₑ
   md = 2*1836*mₑ
   mα = 2*md
 
@@ -38,7 +38,7 @@ addprocs(nprocsadded)
   nd = n0 / (1.0 + 2*ξ)
   nα = ξ*nd
   @assert n0 ≈ 2*nα + nd
-  Va = sqrt(B0^2/PlasmaDispersionRelations.μ₀/nd/md)
+  Va = sqrt(B0^2/LinearMaxwellVlasov.μ₀/nd/md)
 
   Ωe = cyclotronfrequency(B0, mₑ, -1)
   Ωd = cyclotronfrequency(B0, md, 1)

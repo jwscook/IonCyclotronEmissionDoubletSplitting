@@ -3,9 +3,9 @@ source ~/.bashrc
 shopt -s expand_aliases
 
 # first arg is pitch, second arg is ring thermal spread as fraction of its speed
-julia1.7 -e 'using Pkg; Pkg.instantiate()'
-julia1.7 --proj ICE2D.jl -0.646 0.01 0.01 physical
-julia1.7 --proj ICE2D.jl  0.0   0.01 0.01 ring
+julia1.7 --proj=. -e 'using Pkg; Pkg.instantiate()'
+julia1.7 --proj=. ICE2D.jl -0.646 0.01 0.01 physical
+julia1.7 --proj=. ICE2D.jl  0.0   0.01 0.01 ring
 
 # now reduce size and improve images
 for j in physical ring
