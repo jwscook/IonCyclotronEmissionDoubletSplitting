@@ -1,11 +1,9 @@
 #!/bin/bash
-source ~/.bashrc
-shopt -s expand_aliases
 
+julia --proj=@. -e 'using Pkg; Pkg.instantiate(); ENV["PYTHON"]=""; Pkg.build("PyCall"); using Conda;Conda.rm("matplotlib"); Conda.add("matplotlib=3.3.4")'
 # first arg is pitch, second arg is ring thermal spread as fraction of its speed
-julia --proj=. -e 'using Pkg; Pkg.instantiate()'
-julia --proj=. ICE2D.jl -0.646 0.01 0.01 physical
-julia --proj=. ICE2D.jl  0.0   0.01 0.01 ring
+julia --proj=@. ICE2D.jl -0.646 0.01 0.01 physical
+julia --proj=@. ICE2D.jl  0.0   0.01 0.01 ring
 
 # now reduce size and improve images
 for j in physical ring

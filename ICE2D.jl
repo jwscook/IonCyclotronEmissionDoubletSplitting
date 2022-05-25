@@ -17,7 +17,7 @@ end
 const filecontents = [i for i in readlines(open(@__FILE__))]
 const nprocsadded = div(Sys.CPU_THREADS, 2)
 
-addprocs(nprocsadded)
+addprocs(nprocsadded, exeflags="--project")
 
 @everywhere using ProgressMeter # for some reason must be up here on its own
 @everywhere using StaticArrays
