@@ -885,6 +885,14 @@ git-tree-sha1 = "4528479aa01ee1b3b4cd0e6faef0e04cf16466da"
 uuid = "2381bf8a-dfd0-557d-9999-79630e7b1b91"
 version = "1.25.0+0"
 
+[[deps.WindingNelderMead]]
+deps = ["LinearAlgebra"]
+git-tree-sha1 = "b44b7667276bd240b2977d867c6fca5f0a3d885f"
+repo-rev = "main"
+repo-url = "https://github.com/jwscook/WindingNelderMead.jl.git"
+uuid = "90331ebb-4c50-4cb3-baac-4577cf398cd8"
+version = "0.1.0"
+
 [[deps.XML2_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Libiconv_jll", "Pkg", "Zlib_jll"]
 git-tree-sha1 = "1acf5bdf07aa0907e0a37d3718bb88d4b687b74a"
