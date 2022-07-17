@@ -162,29 +162,15 @@ Solutions to the linearised Maxwell-Vlasov system of equations are found in
 parallel and perpendicular wavenumber space, $(k_\parallel, k_\bot)$, for a
 ring-beam distribution of energetic minority
 alpha-particles and Maxwellian electrons and background thermal majority
-deuteron ions. Calculations are made for alpha-particles with ring-beams of two
-values of pitch-angle cosine: $u_\parallel=-0.646 u_0 \approx
--\cos(\arcsin(\sqrt{R_0 \sin(\psi_0)/R_{ICE}})) \simeq -1.1 V_A$, which is
-associated with the ion-cyclotron emission observed on JET Pulse No. 26148 for
-which $R_0=3.46$ m and
-$\psi_0=55.2^\circ$ are the major radius and pitch angle at birth, and
-$R_{ICE}=4$ m is the major radius of the emission region, see
-Figs. 3 and 14 and associated text in Ref. \cite{Cottrell1993}; and
-$u_\parallel=0 u_0$ representing a ring distribution with no parallel drift, see
-Fig. 1(a) of Ref \cite{Cook2013}. Here, $V_A$ is the Alfv{\'en} speed and $u_0=\sqrt{u_\parallel^2 + u_\perp^2}$ is
-the speed of an alpha-particle with an energy of 3.6 MeV. The complex frequency
-solutions, $\omega$, along the fast Alfv{\'e}n branch are found on a grid of $(k_\parallel, k_\bot)$.
+deuteron ions.
 
-The plasma parameters approximate those found in the region indicated in Fig. 3
-of Ref. \cite{Cottrell1993}, which are associated with the continuous trace
-signal of Fig. 2 in the same reference. The electrons and deuterons have
-temperatures of 1 keV and the electrons have a number density
-of $1.7\times 10^{19}$ $\mathrm{m^{-3}}$. The magnetic field is $2.07$
-$\mathrm{T}$, which corresponds a major radius of $4$ m.
 The ring-beam distribution function, Eq. 1, is a separable
 function of the beam in $v_\parallel$ given by Eq. 2 and the
 ring in $v_\perp$ given by Eq. 3.
-This distribution function is parameterised by the drift
+In the context of the fully kinetic Maxwell-Vlasov linear theory,
+which rests upon the assumption of
+an infinite homogeneous plasma and a straight uniform magnetic field,
+this distribution function is parameterised  by the drift
 velocity parallel to the magnetic field $u_\parallel$, the drift speed 
 perpendicular to the magnetic
 field $u_{\perp}$, and the thermal velocity in both directions $v_{th}$. The
@@ -206,9 +192,34 @@ f_{\alpha,\perp}\left(v_\perp\right) &=
   v_{\perp, th}^2) \frac{v_{\perp,th}^2}{2}\right)}\\
 \end{align}
 
+Although curvature and grad-B drift terms would be present in fast
+alpha-particle populations on JET, it is worth noting that they are both of
+order $\rho^*$ and have been neglected in these calculations where $u_\bot$ is
+always large.
+
+Calculations are made for alpha-particles with ring-beams of two
+values of pitch-angle cosine: $u_\parallel=-0.646 u_0 \approx
+-\cos(\arcsin(\sqrt{R_0 \sin(\psi_0)/R_{ICE}})) u_0 \simeq -1.1 V_A$, which is
+associated with the ion-cyclotron emission observed on JET Pulse No. 26148 for
+which $R_0=3.46$ m and
+$\psi_0=55.2^\circ$ are the major radius and pitch angle at birth, and
+$R_{ICE}=4$ m is the major radius of the emission region, see
+Figs. 3 and 14 and associated text in Ref. \cite{Cottrell1993}; and
+$u_\parallel=0 u_0$ representing a ring distribution with no parallel drift, see
+Fig. 1(a) of Ref \cite{Cook2013}. Here, $V_A$ is the Alfv{\'en} speed and $u_0=\sqrt{u_\parallel^2 + u_\perp^2}$ is
+the speed of an alpha-particle with an energy of 3.6 MeV.
+
+The plasma parameters approximate those found in the region indicated in Fig. 3
+of Ref. \cite{Cottrell1993}, which are associated with the continuous trace
+signal of Fig. 2 in the same reference. The electrons and deuterons have
+temperatures of 1 keV and the electrons have a number density
+of $1.7\times 10^{19}$ $\mathrm{m^{-3}}$. The magnetic field is $2.07$
+$\mathrm{T}$, which corresponds a major radius of $4$ m.
+
 Solutions to the linearised Maxwell-Vlasov system of equations are given by the
 dispersion relation, Eq. \ref{eq:dettensor}, which is satisfied for sets of
-$(\omega,\vec{k})$ given the distribution functions of all the species present.
+$(\omega,\vec{k})$ given the distribution functions of all the species present
+along the fast Alfv{\'e}n branch  on a grid of $(k_\parallel, k_\bot)$.
 The hot dielectric tensor\cite{Stix}, $\vec{\vec{\epsilon}}$, Eq. \ref{eq:dielectrictensor} is calculated for each species.
 
 \begin{align}
@@ -357,13 +368,19 @@ nonlinear\cite{Cook2013}.
 Therefore under the assumption that all modes start growing in unison from
 identical seed amplitudes then the log of a mode's amplitude is
 proportional to its growth rate.
+
+Although this simplication neglects possibly important effects, such as particle sink
+and source terms, and their influence on the nonlinear amplitudes of the
+observed ICE signals it is still possible to obtain important information
+regarding the signals' structure and overall trends.
+
 There are several points worth noting about this figure. First, the
 growth rate is no longer linear with cyclotron harmonic number. Second,
 harmonics are broader due to the non-zero parallel drift that gives rise to
 strong Doppler shift with increasing $|k_\parallel|$. Third, doublet splitting
 of the $10^{th}$ and $11^{th}$ harmonics is observed: see Fig. 2 of Cottrell 1993 for a single
-signal showing multiple doublet splittings; Fig. 3 of Dendy et al 1994 (also
-Fig. 9 Dendy et al 1995) shows slices at constant propagation angle that when
+signal showing multiple doublet splittings; Fig. 3 of Ref. \cite{Dendy1994} (also
+Fig. 9 Ref. \cite{Dendy1995}) shows slices at constant propagation angle that when
 all superimposed point towards doublet splitting, albeit under-resolved in
 wavenumber space. The following describes how these three features are
 connected. Doublet splitting arises due to the dip in growth rate along the 
@@ -459,7 +476,7 @@ consisting of thermal electrons, thermal deuteron fuel ions and a minority
 energetic ring-beam of fusion born alpha-particles. These high resolution
 $(k_\perp, k_\parallel)$ calculations revisit ICE observations from JET Pulse
 No. 26148\cite{Cottrell1993,Dendy1995} and reproduce several important features:
-the step change in signal strength from $\omega < 6$ to $\omega > 6$; the
+the step change in signal strength from $\omega < 6\Omega_i$ to $\omega > 6\Omega_i$; the
 doublet splitting of peaks at $\omega \approx 10\Omega_i$ in Fig.
 \ref{fig:2D_F12_physicalpitch}, with origins visible in the fine $(k_\parallel,
 k_\perp)$ structure in Fig. \ref{fig:2D_imag_physicalpitch}. The Doppler shift
