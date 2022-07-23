@@ -133,7 +133,8 @@ growth is terminated for all modes when the fastest mode enters its nonlinear
 phase meaning that both the amount of free energy available for instability has
 decreased and that the unstable energy ion distribution function has been
 perturbed into a more stable state. Analysis shows that only higher cyclotron
-harmonics are destabilised\cite{McClements2015} to the MCI, however experimental
+harmonics are destabilised\cite{McClements2015} to the MCI under these
+conditions, however experimental
 observations clearly indicate power at theoretically stable lower
 harmonics\cite{Cottrell1988}. In a further step towards accurate recreation of
 experimental observations, nonlinear phases of hybrid\cite{Carbajal2014} and
@@ -141,6 +142,16 @@ fully kinetic\cite{Cook2013,Chapman2017} PIC simulations went on to show that
 wave-wave coupling was responsible for raising the amplitude of lower cyclotron
 harmonics. Most recently, hybrid 2D simulations have begun to shed light on the
 2D3V dynamics of ICE\cite{Carbajal2021}.
+
+Finer detailed structure has been obvserved in ICE spectra, such as doublet
+splitting of individual harmonics on JET\cite{Cottrell1993} and
+DIII-D\cite{Thome2018} and even
+multiplet splitting on TUMAN-3M\cite{Askinazi2018} on EAST\cite{Lui2020}.
+This paper highlights one underlying kinetic mechinism that produces
+doublet splitting due to Doppler shifted resonances. In general,
+splitting could be produced by grad-B or curvature
+drifts\cite{Cottrell1993,Fulop1998} or potentially any mechanism that is capable
+of adding a Doppler shift to the wave-particle resonance condition.
 
 To better enable ICE as a diagnostic for confined fast ions, it is necessary to
 further develop our understanding with a range of tools. In this work, I present
@@ -195,11 +206,6 @@ f_{\alpha,\perp}\left(v_\perp\right) &=
   v_{\perp, th}^2) \frac{v_{\perp,th}^2}{2}\right)}\\
 \end{align}
 
-Although curvature and grad-B drift terms would be present in fast
-alpha-particle populations on JET, it is worth noting that they are both of
-order $\rho^*$ and have been neglected in these calculations where $u_\bot$ is
-always large.
-
 Calculations are made for alpha-particles with ring-beams of two
 values of pitch-angle cosine: $u_\parallel=-0.646 u_0 \approx
 -\cos(\arcsin(\sqrt{R_0 \sin(\psi_0)/R_{ICE}})) u_0 \simeq -1.1 V_A$, which is
@@ -218,6 +224,11 @@ signal of Fig. 2 in the same reference. The electrons and deuterons have
 temperatures of 1 keV and the electrons have a number density
 of $1.7\times 10^{19}$ $\mathrm{m^{-3}}$. The magnetic field is $2.07$
 $\mathrm{T}$, which corresponds a major radius of $4$ m.
+
+Although curvature and grad-B drift terms would be present in fast
+alpha-particle populations on JET, it is worth noting that they are both of
+order $\rho^*$ and have been neglected in these calculations where $u_\bot \gg
+\rho^* u_0$ is always the case.
 
 Solutions to the linearised Maxwell-Vlasov system of equations are given by the
 dispersion relation, Eq. \ref{eq:dettensor}, which is satisfied for sets of
@@ -399,9 +410,6 @@ counterpart figure to Fig. \ref{fig:2D_F12_physicalpitch} as Fig.
 \ref{fig:2D_imag_zeropitch} is to Fig. \ref{fig:2D_F12_zeropitch},
 at e.g. the $12^{th}$ harmonic  near $(k_\parallel \simeq 0\; \Omega_{i}/V_A,
 k_\bot \simeq 13\; \Omega_{i}/V_A)$, where $V_A$ is the Alfv{\'e}n speed.
-Other possible mechanisms for doublet splitting could be grad-B or curvature
-drifts\cite{Cottrell1993,Fulop1998} or potentially any mechanism that is capable
-of modifying the wave-particle resonance condition.
 Qualitatively, scattered points in Fig.
 \ref{fig:2D_F12_physicalpitch}(a) resembles the experimental observations given
 by the black trace in that the
@@ -437,7 +445,7 @@ propagation angles.
     case with parallel drift $u_{\parallel} = -0.646 u_0 \simeq -1.1 V_A$.
     Panel (a) plots growth rate against frequency where shading indicates
     parallel wavenumber in units of $\Omega_i/V_A$ and the black trace shows
-    the re-scaled ICE signal from JET Pulse \#21648 digitised from Fig. 2 of
+    the re-scaled ICE signal from JET Pulse \#26148 digitised from Fig. 2 of
     Cottrell et al 1993 (with permission from IOP Publishing), (b) plots the solutions
     in the $(\omega,k_\parallel)$ plane where shading indicates growth rate. Note
     that the Doppler shift associated with the non-zero parallel drift speed
@@ -527,7 +535,8 @@ leaving ions in magnetised fusion plasmas.
 
 \section{Acknowledgements}
 
-It is a pleasure to thank R O Dendy and B Chapman-Oplopoiou for useful discussions.
+It is a pleasure to thank R O Dendy and B Chapman-Oplopoiou for useful
+discussions.
 
 \appendix
 
@@ -679,6 +688,15 @@ Reman B \textit{et al} 2019 \textit{Nucl. Fusion} \textbf{59} 096013
 Carbajal L, and Calderón F A 2021 \textit{Phys. Plasmas} \textbf{28} 014505
 % , "On the 2D dynamics of the magnetoacoustic cyclotron instability driven by fusion-born ions",
 
+\bibitem{Thome2018}
+Thome K E \textit{et al} 2018 \textit{Rev. Sci. Instrum.} \textbf{89} 10I102
+
+\bibitem{Askinazi2018}
+Askinazi L G  \textit{et al} 2018 \textit{Nucl. Fusion} \textbf{58} 082003
+
+\bibitem{Lui2020}
+Liu L \text{et al} 2020 \textit{Nucl. Fusion} \textbf{60} 044002
+
 \bibitem{Sharapov2014}
 Sharapov S E \textit{et al} 2014 \textit{Phys. Plasmas} \textbf{21} 082501
 %Sharapov S E, Lilley M K, Akers R, Ayed N B, Cecconello M, Cook J W S, Cunningham G, and Verwichte E 2014 \textit{Phys. Plasmas} \textbf{21} 082501
@@ -706,9 +724,6 @@ Bezanson J, Edelman A, Karpinski S, and Shah V B 2017 \textit{SIAM review} \text
 
 \bibitem{Ochoukov2019}
 Ochoukov R \textit{et al} 2019 \textit{Nucl. Fusion} \textbf{59} 086032
-
-\bibitem{Lui2020}
-Liu L \text{et al} 2020 \textit{Nucl. Fusion} \textbf{60} 044002
 
 \bibitem{Fredrickson2019}
 Fredrickson E D \textit{et al} 2019 \textit{Physics of Plasmas} \textbf{26}, 032111
