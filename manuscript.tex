@@ -388,7 +388,8 @@ and source terms, and their influence on the nonlinear amplitudes of the
 observed ICE signals it is still possible to obtain important information
 regarding the signals' structure and overall trends.
 
-There are several points worth noting about this figure. First, the
+There are several points worth noting about Fig. \ref{fig:2D_F12_physicalpitch}.
+First, the
 growth rate is no longer linear with cyclotron harmonic number. Second,
 harmonics are broader due to the non-zero parallel drift that gives rise to
 strong Doppler shift with increasing $|k_\parallel|$. Third, doublet splitting
@@ -434,8 +435,28 @@ associated with the $15^{th}$ cyclotron harmonic near $k_\parallel \simeq
 -\frac{3}{4} \Omega_i/V_A, k_\perp \simeq 14 \Omega_i/V_A$, i.e. a propagation
 angle of $93^\circ$. Furthermore, the breadth of the harmonics can be
 attributed to the contributions from multiple propagation angles even though the
-lower harmonics are largely stable for forward travelling and perpendicular
-propagation angles.
+lower harmonics are largely stable for forward travelling and
+propagation angles that are close to perpendicular.
+
+Figure \ref{fig:2D_real_zeropitch}
+shows the smoothed real part of the solution for the case of zero pitch angle
+cosine and is some normalised by
+the high frequency expression for the fast Alfv{\'e}n wave set out in Eq.
+25 of Ref. \cite{Dendy1994} (also Eq. 11 of Ref. \cite{McClements1996}),
+
+\begin{equation}
+  \omega^2 = \frac{V_A^2}{2}\left[
+    k^2 + k_\parallel^2 + k^2k_\parallel^2 \frac{V_A^2}{\Omega_i^2}
+  + \sqrt{
+    \left(k^2 + k_\parallel^2 + k^2k_\parallel^2 \frac{V_A^2}{\Omega_i^2}\right)^2
+    - 4k^2 k_\parallel^2
+}
+  \right],
+\end{equation}
+
+\noindent where $k^2 = k_\parallel^2 + k_\perp^2$. The real part of the
+solutions for the case of non-zero pitch angle cosine is not discernably
+different.
 
 \begin{figure}[ht!]
     % \centering
@@ -489,7 +510,8 @@ consisting of thermal electrons, thermal deuteron fuel ions and a minority
 energetic ring-beam of fusion born alpha-particles. These high resolution
 $(k_\perp, k_\parallel)$ calculations revisit ICE observations from JET Pulse
 No. 26148\cite{Cottrell1993,Dendy1995} and reproduce several important features:
-the step change in signal strength from $\omega < 6\Omega_i$ to $\omega > 6\Omega_i$; the
+the step change in signal strength from $\omega < 6\Omega_i$
+to $\omega > 6\Omega_i$; the
 doublet splitting of peaks at $\omega \approx 10\Omega_i$ in Fig.
 \ref{fig:2D_F12_physicalpitch}, with origins visible in the fine $(k_\parallel,
 k_\perp)$ structure in Fig. \ref{fig:2D_imag_physicalpitch}. The Doppler shift
@@ -498,6 +520,7 @@ frequency, which makes it difficult to determine which parts of the signal come
 from which cyclotron harmonic numbers. Further effort is required to account for
 the extra doublets visible in the continuous trace associated with JET Pulse No.
 26148 in Fig. 2 of Ref. \cite{Cottrell1993}.
+
 
 These calculations capture the finite perpendicular thermal spread of the alpha
 particle distribution function, the integral of which has no known analytically
