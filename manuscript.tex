@@ -98,34 +98,36 @@ Ion cyclotron emission (ICE) originating from confined populations of fast ions
 \section{Introduction}
 
 Observations of ion cyclotron emission (ICE) have been reported from
-magnetically confined plasmas first in TFTR\cite{Cauffman1995,Dendy1995}
-and JET\cite{Cottrell1988,Cottrell1993,Dendy1995}, followed by other tokamaks
-PDX\cite{Heidbrink1994}, JT-60-U\cite{Ichimura2008}, DIII-D\cite{Heidbrink2011},
-ASDEX\cite{DInca2014}, KSTAR\cite{Chapman2017,Chapman2018},
-ASDEX-Upgrade\cite{Ochoukov2018},
-TUMAN-3M\cite{Askinazi2018}, EAST\cite{Liu2020}. Stellarators\cite{Saito2013} and
-FRCs\cite{Nicks2020} have also exhibited this phenomenon. Energetic ion
+magnetically confined plasmas first in TFTR \cite{Cauffman1995,Dendy1995}
+and JET \cite{Cottrell1988,Cottrell1993,Dendy1995}, followed by other tokamaks
+PDX \cite{Heidbrink1994}, JT-60-U \cite{Ichimura2008}, DIII-D \cite{Heidbrink2011},
+ASDEX \cite{DInca2014}, KSTAR \cite{Chapman2017,Chapman2018},
+ASDEX-Upgrade \cite{Ochoukov2018},
+TUMAN-3M \cite{Askinazi2018}, both NSTX and NSTX-U \cite{Fredrickson2019},
+and EAST \cite{Liu2020}. Stellarators \cite{Saito2013} and
+FRCs \cite{Nicks2020} have also exhibited this phenomenon. Energetic ion
 populations that give rise to ICE have their origins in fusion
-reactions in DT plasmas\cite{Cottrell2000, Cauffman1995},
-ICRH\cite{Cottrell2000}, and neutral beam injection\cite{Ochoukov2018}. ICE
+reactions in DT plasmas \cite{Cottrell2000, Cauffman1995},
+ICRH \cite{Cottrell2000}, and neutral beam injection \cite{Ochoukov2018}. ICE
 arising from fusion $\alpha$-particles is a proposed route to further
-the understanding of burning plasmas in ITER\cite{Dendy2015,McClements2015}. 
+the understanding of burning plasmas in ITER \cite{Dendy2015,McClements2015}. 
 
 The foremost explanation of the mechanism responsible for ICE is the
-magnetoacoustic cyclotron instability (MCI)\cite{Belikov1976}, which arises from
+magnetoacoustic cyclotron instability (MCI) \cite{Belikov1976}, which arises from
 the free energy present in energetic ions with inverted distributions in
-velocity space. Theoretical understanding of ICE is based in analytical
-solutions to the linearised Maxwell-Vlasov system of equations\cite{Stix} where
-the energetic ion species was modelled as ring-beam for which $f(v_\parallel,
+velocity space. Theoretical understanding of ICE is based on analytical
+solutions to the linearised Maxwell-Vlasov system of equations \cite{Stix} where
+the energetic ion species is modelled as ring-beam for which $f(v_\parallel,
 v_\perp) \propto \exp(-(v_\parallel-u_\parallel)^2/ v_{th}^2)\delta(v_\perp -
 u_\bot)$ \cite{Dendy1994, McClements1996}. Here $u_\parallel$, $u_\perp$ and
 $v_{th}$ are the beam velocity (the signed drift speed along the magnetic
-field), ring speed (the particle speed perpendicular to the magnetic field)
+field), ring speed (the speed of the shifted centre of the inverted population
+perpendicular to the magnetic field)
 and thermal velocity, respectively. Subsequent studies augmented this
-understanding via nonlinear fully-kinetic\cite{Cook2013,Chapman2017} and
-hybrid\cite{Carbajal2014,Reman2019} particle-in-cell (PIC) simulations in one
-spatial dimension and three vector components for velocities and electromagnetic
-field (i.e. 1D3V), and recently 2D3V hybrid-PIC simulations\cite{Carbajal2021}. These
+understanding via nonlinear fully-kinetic \cite{Cook2013,Chapman2017} and
+hybrid \cite{Carbajal2014,Reman2019} particle-in-cell (PIC) simulations in one
+spatial dimension with three vector components for velocities and electromagnetic
+field (i.e. 1D3V), and recently 2D3V hybrid-PIC simulations \cite{Carbajal2021}. These
 computational approaches operate under similar simplifications as the analytical
 treatments in that the plasma is initially spatially homogeneous and periodic
 in the spatial domain.
@@ -133,12 +135,12 @@ Linearised fluid approaches that incorporate toroidal geometry and
 inhomogeneous plasma and magnetic fields have shed light of the eigenmode
 structure of compressional Alfv{\'e}n eigenmodes, which as with ICE are also fast
 Alfv{\'e}n modes driven by energetic ions, in spherical
-tokamaks\cite{Sharapov2014, Gorelenkov2016} and conventional aspect ratio
+tokamaks \cite{Sharapov2014, Gorelenkov2016} and conventional aspect ratio
 tokamaks \cite{Kolesnichenko2000, Fulop2000, Heidbrink2006}.
 
-The effectiveness of analytical theory to reproduce the observed cyclotron
+The effectiveness of linear theory to reproduce the observed cyclotron
 harmonic peaks in the fluctuations of the magnetic field was first explained
-somewhat by 1D PIC simulations\cite{Cook2013}.
+somewhat by 1D PIC simulations \cite{Cook2013}.
 In these simulations the onset of nonlinearity
 appeared to imprint the amplitudes of each of the harmonics into the signal as
 they are at the end of the linear phase; each mode grows independently until 
@@ -146,62 +148,64 @@ growth is terminated for all modes when the fastest mode enters its nonlinear
 phase meaning that both the amount of free energy available for instability has
 decreased and that the unstable ion distribution function has been
 perturbed into a more stable state. Analysis shows that only higher cyclotron
-harmonics are destabilised\cite{McClements2015} to the MCI under these
-conditions, however experimental
+harmonics are destabilised \cite{McClements2015} to the MCI under these
+particular conditions, however experimental
 observations clearly indicate power at theoretically stable lower
-harmonics\cite{Cottrell1988}. In a further step towards accurate recreation of
-experimental observations, nonlinear phases of hybrid\cite{Carbajal2014} and
-fully kinetic\cite{Cook2013,Chapman2017} PIC simulations went on to show that
+harmonics \cite{Cottrell1988}. In a further step towards accurate recreation of
+experimental observations, nonlinear phases of hybrid \cite{Carbajal2014} and
+fully kinetic \cite{Cook2013,Chapman2017} PIC simulations went on to show that
 wave-wave coupling was responsible for raising the amplitude of lower cyclotron
 harmonics. Most recently, hybrid 2D simulations have begun to shed light on the
-2D3V dynamics of ICE\cite{Carbajal2021}.
+2D3V dynamics of ICE \cite{Carbajal2021}.
 
 Finer detailed structure has been obvserved in ICE spectra, such as doublet
-splitting of individual harmonics on JET\cite{Cottrell1993} and
-DIII-D\cite{Thome2018} and even multiplet splitting on TUMAN-3M\cite{Askinazi2018},
-ASDEX-Upgrade\cite{Ochoukov2019} and EAST\cite{Lui2020}.
+splitting of individual harmonics on JET \cite{Cottrell1993} and
+DIII-D \cite{Thome2018} and even multiplet splitting on TUMAN-3M \cite{Askinazi2018},
+ASDEX-Upgrade \cite{Ochoukov2019} and EAST \cite{Liu2020}, which has been made
+possible by advances in resolution of diagnostic techniques.
 This paper highlights one underlying kinetic mechinism that produces
 doublet splitting due to Doppler shifted resonances and the
 intricate landscape of the MCI growth rate on the fast Alfv{\'e}n dispersion
-surface. In principle, splitting could be produced by grad-B or curvature
-drifts\cite{Cottrell1993,Fulop1998} or potentially any mechanism that is capable
+surface in $(k_\bot, k_\parallel)$ space.
+In principle, splitting could be produced by grad-B or curvature
+drifts \cite{Cottrell1993,Fulop1998} or potentially any mechanism that is capable
 of adding a Doppler shift to the wave-particle resonance condition. Note that
 this study focusses on edge-ICE, named for the region of plasma from which the signal
-arises, as opposed to core-ICE\cite{Ochoukov2018, Liu2020}. 
+arises, as opposed to core-ICE \cite{Ochoukov2018, Liu2020}. 
 
 To better enable ICE as a diagnostic for confined fast ions, it is necessary to
-further develop our understanding with a range of tools. In this work, I present
+further develop our understanding with a range of tools. This work presents
 the growth rates in 2D wavenumber space of the MCI under the conditions of
-outer mid-plane of the JET PTE\cite{Cottrell1993} Pulse No. 26148. These growth
+outer mid-plane of the JET PTE \cite{Cottrell1993} Pulse No. 26148. These growth
 rates are obtained from a dispersion relation solver,
-LinearMaxwellVlasov.jl\cite{LinearMaxwellVlasov.jl}, written in the Julia programming
-language\cite{Bezanson2017}. These results narrow the gap between analytical
+LinearMaxwellVlasov.jl \cite{LinearMaxwellVlasov.jl}, written in the Julia programming
+language \cite{Bezanson2017}. These results narrow the gap between analytical
 theory and expensive HPC simulations and can be run on desktop computers
 in a matter of minutes, further enabling research into this topic.
 
 In section 2, the computational method is described for calculating
 the linear growth rates of the MCI, which are presented for energetic ring-beam
 alpha-particles with non-zero perpendicular thermal spread in section 3
-where a comparison is ade to the observations on JET..
+where a comparison is made to the observations on JET.
 Results are summarised in section 4.
 
 \section{Computational method}
 
 Solutions to the linearised Maxwell-Vlasov system of equations are found in
-parallel and perpendicular wavenumber space, $(k_\bot, k_\parallel)$, for a
+perpendicular and parallel wavenumber space, $(k_\bot, k_\parallel)$, for a
 ring-beam distribution of energetic minority
-alpha-particles and Maxwellian electrons and background thermal majority
+alpha-particles, Maxwellian electrons and background thermal majority
 deuteron ions. The ring-beam distribution function, Eq. 1, is a separable
 function of the beam in $v_\parallel$ given by Eq. 2 and the
 ring in $v_\perp$ given by Eq. 3.
 In the context of the fully kinetic Maxwell-Vlasov linear theory,
 which rests upon the assumption of
 an infinite homogeneous plasma and a straight uniform magnetic field,
-this distribution function is parameterised  by the drift
-velocity parallel to the magnetic field $u_\parallel$, the drift speed 
-perpendicular to the magnetic
+this distribution function is parameterised by the drift
+velocity parallel to the magnetic field $u_\parallel$, the speed of the
+Maxwellian distribution perpendicular to the magnetic
 field $u_{\perp}$, and the isotropric thermal velocity $v_{th}$. The
-thermal spread of the alpha particles' distribution function 
+thermal spread of the alpha-particles' distribution function 
 $v_{th}=v_{\parallel,th}=v_{\perp,th}=u_0/100$. The number density
 ratio of alpha-particles to the majority fuel deuterons is $1.5\times10^{-4}$.
 
@@ -241,15 +245,16 @@ $\mathrm{T}$ at this major radius.
 Although curvature and grad-B drift terms would be present in fast
 alpha-particle populations on JET and these drifts would alter the wave-particle
 resonance condition, it is worth noting that they are both of
-order $\rho^*$ and have been neglected in these calculations where $u_\bot \gg
+order of the ratio of the Larmor radius to the machine size, $\rho^*$,
+and have been neglected in these calculations where $u_\bot \gg
 \rho^* u_0$ is always the case.
 
 Solutions to the linearised Maxwell-Vlasov system of equations are given by the
 dispersion relation, Eq. \ref{eq:dettensor}, which is satisfied for sets of
-$(\omega,\vec{k})$ given the distribution functions of all the species present
+$(\omega,\vec{k})$ 
 along the fast Alfv{\'e}n branch  on a grid of $(k_\parallel, k_\bot)$.
-The hot dielectric tensor\cite{Stix}, $\vec{\vec{\epsilon}}$ given by Eq.
-\ref{eq:dielectrictensor} is calculated for each species, $s$,
+The hot dielectric tensor \cite{Stix} $\vec{\vec{\epsilon}}$, given by Eq.
+\ref{eq:dielectrictensor}, is calculated for each species, $s$,
 
 \begin{align}
     0 &= ||\vec{\vec{\epsilon}} + \left(\vec{k} \otimes \vec{k} - \vec{\vec{I}}(\vec{k}\cdot\vec{k})\right) \frac{c^2}{\omega^2}||,\label{eq:dettensor}\\
@@ -280,32 +285,32 @@ argument $z_s=k_\perp v_\perp / \Omega_s$ and $J_n'=\frac{\partial J_n}{\partial
 
 Integrals over perpendicular velocity required for calculating the
 dielectric tensor for Maxwellian distribution functions are given in terms of
-modified Bessel functions of the first kind\cite{Stix} for both electrons and
+modified Bessel functions of the first kind \cite{Stix} for both electrons and
 deuterons i.e. when $u_\perp =0$. The same perpendicular integrals over the
 alpha-particles' ring distribution given by Eq. 3 are calculated numerically via
-Gauss-Kronrod\cite{Kronrod1965} quadrature using the GaussGK.jl\cite{QuadGK}
+Gauss-Kronrod \cite{Kronrod1965} quadrature using the GaussGK.jl \cite{QuadGK}
 library. An absolute and relative tolerance of $0$ and $10^{-8}$, respectively,
 is used to confirm convergence of the integral values.
 Since all the parallel distribution functions for all species are Maxwellians,
 the parallel integrals can be calculated from the well known plasma dispersion
 function\cite{Fried1961}, which is laid out in the appendix.
 
-Bessel function indices, $n$, in Eq. \ref{eq:dielectrictensor} are summed outwards
-from 0 in both the positive and negative directions
-until the relative change between the current and
+Bessel function indices, $n$, in Eq. \ref{eq:dielectrictensor} are incremented
+outwards from 0 in both the positive and negative directions
+until the relative change between the current summand and that of the
 previous iteration is less than a tolerance of $10^{-8}$. 
 Root finding of Eq. \ref{eq:dettensor} in the complex frequency plane
-for a given $(k_\bot, k_\parallel)$ is performed by an amalgamation of the
-Nelder-Mead\cite{Nelder1965} optimisation method with the winding number method.
+for a given $(k_\bot, k_\parallel)$-pair is performed by an amalgamation of the
+Nelder-Mead \cite{Nelder1965} optimisation method with the winding number method.
 If the complex values at the nodes of the Nelder-Mead simplex, which in this
 case is just a triangle, have a winding number
 of zero and therefore the simplex does not contain a root then the optimisation
 procedure follows the Nelder-Mead method, otherwise the simplex bifurcates.
 The child simplex that contains the root is used for the next
 iteration. The optimisation iteration procedure finishes successfully when
-a simplex that encircles a root is small enough such that its extent in real
-(imaginary) frequency is less than $10^{-4}\, \Omega_i$ $(10^{-5}\, \Omega_i)$
-, where $\Omega_i$ is the cyclotron frequency of both
+the simplex that encircles a root is small enough such that its extent in real
+(imaginary) frequency is less than $10^{-4}\, \Omega_i$ $(10^{-5}\, \Omega_i)$,
+where $\Omega_i$ is the cyclotron frequency of both
 the alpha-particles and deuterons since they share a charge-mass ratio.
 This approach is found to be adequately robust and
 faster than either the Nelder-Mead method or winding number approach used
@@ -321,20 +326,20 @@ with growth rates in excess of the solver tolerance are shown i.e. $\Im(\omega)
 > 10^{-5} \Omega_i$). In this panel shading indicates parallel wavenumber in
 units of $\Omega_i/V_A$. Fig. \ref{fig:2D_F12_zeropitch}(b) plots the same data
 in the $(\omega,k_\parallel)$ plane where shading instead indicates growth
-rates in units of $\Omega_i$.
+rate in units of $\Omega_i$.
 The simplicity of the consecutive unstable cyclotron harmonics visible in
 panel (a) betrays the complexity of the structure in the $(\omega,k_\parallel)$
 plane. Integration over $k_\parallel$ projects the solutions onto the frequency
 axis, which loses the structure and produces narrow harmonics. Figure
-\ref{fig:2D_imag_zeropitch} gives $(k_\perp, k_\parallel)$ space view of the
+\ref{fig:2D_imag_zeropitch} gives a $(k_\perp, k_\parallel)$ space view of the
 same data as Fig. \ref{fig:2D_F12_zeropitch} as well as damped and
-normal modes, except shading indicates the growth rates. Overlaid
+normal modes, except shading indicates growth rate. Overlaid
 contours indicate the real frequency in units of ion cyclotron harmonics. Only
 narrow regions around the cyclotron harmonics are unstable. Overlaid straight
-traces indicate propagation angle. No Doppler shift is present due to the lack
+traces show propagation angle. No Doppler shift is present due to the lack
 of parallel drift in the alpha-particle ring-beam. The growth rate increases
 approximately linearly with cyclotron harmonic number, which is consistent with
-the literature\cite{Dendy1994}. Together these figures serve to introduce a 2D
+the literature \cite{Dendy1994}. Together these figures serve to introduce a 2D
 view (growth rates in $(k_\perp, k_\parallel)$ space) of traditionally 1D data
 (growth rates against frequency). The importance of a non-zero $u_\parallel$ is
 discussed next.
@@ -384,19 +389,18 @@ discussed next.
 \end{figure}
 
 Fig. \ref{fig:2D_F12_physicalpitch} plots solutions for the physically more
-realistic pitch-angle
-case ($u_\parallel = -0.646 u_0$) in the same manner as Fig.
+realistic pitch case ($u_\parallel = -0.646 u_0$) in the same manner as Fig.
 \ref{fig:2D_F12_zeropitch} except there is an additional black trace in the
 upper panel, which represents the measured JET ICE intensity signal; the continuous
 trace from Fig. 2 in Ref. \cite{Cottrell1993}.
-The observations of ICE intensity are plotted on a log scale scaled to match
+These observations of ICE intensity are plotted on a log scale scaled to match
 the range of the linear MCI growth rates.
 Direct comparison of log-scale
 ICE observations and linear growth rates is justified to the extent that
 nonlinear PIC simulations indicate that the linearly unstable modes rising
 as $\exp(\gamma t)$, where $\gamma$ is a mode's growth rate,
 cease to grow once the fastest growing mode becomes
-nonlinear\cite{Cook2013}.
+nonlinear \cite{Cook2013}.
 Therefore under the assumption that all modes start growing in unison from
 identical seed amplitudes then the log of a mode's amplitude is
 proportional to its growth rate.
@@ -440,15 +444,15 @@ defined peaks and the signal beyond the $7^{th}$ harmonic is a step-change
 larger and the harmonics are less easily identifiable. These features cannot be
 be recreated with a 1D calculation for these distributions functions
 since they arise from contributions from a range of propagation angles.
-Note that Fig. \ref{fig:2D_imag_physicalpitch} shows these two different regimes
+Fig. \ref{fig:2D_imag_physicalpitch} shows these two different regimes
 more clearly. The lower frequency behaviour, where $k_\perp < 7 \Omega_i/V_A$, is
 characterised by narrow regions of instability near Doppler shifted cyclotron
 harmonics that are stable when $k_\parallel=0$ and unstable at larger
 negative parallel wavenumbers. The higher frequency behaviour in the region
 $k_\bot \geq 7\Omega_i/V_A$ is dominated by broader bands of instability
 near to Doppler shifted cyclotron harmonics, which have
-an intricate structure in wavenumber space. Modes numbering 1, 2, 6, 7, 8, 12, and
-13 are stable when propagating exactly perpendicular whilst obliquely
+an intricate structure in wavenumber space. Modes numbering 1-5 and
+14 are stable when propagating exactly perpendicular whilst obliquely
 propagating modes remain unstable. The magnitude of the Doppler shift of
 the growing modes can reach $\approx \Omega_i$ for large propagation angles at 
 lower frequencies and also for
@@ -461,8 +465,10 @@ lower harmonics are largely stable for forward travelling modes and
 propagation angles that are close to perpendicular.
 
 Figure \ref{fig:2D_real_zeropitch}
-shows the smoothed real frequency part of the solution for the case of
-zero pitch angle cosine and is some normalised by
+shows the smoothed real frequency part of the solution, as depicted
+by contours on Figs. \ref{fig:2D_imag_zeropitch} and
+\ref{fig:2D_imag_physicalpitch}, for the case of
+zero pitch angle cosine and is normalised by
 the high frequency expression for the fast Alfv{\'e}n wave set out in Eq.
 25 of Ref. \cite{Dendy1994} (also Eq. 11 of Ref. \cite{McClements1996}),
 
@@ -477,7 +483,8 @@ the high frequency expression for the fast Alfv{\'e}n wave set out in Eq.
 \label{eqn:fastalfven}
 \end{equation}
 
-\noindent where $k^2 = k_\parallel^2 + k_\perp^2$. There is no discernable difference for the non-zero pitch angle cosine case.
+\noindent where $k^2 = k_\parallel^2 + k_\perp^2$. There is no discernable
+difference for the non-zero pitch case.
 
 \begin{figure}[ht!]
     % \centering
@@ -502,7 +509,7 @@ the high frequency expression for the fast Alfv{\'e}n wave set out in Eq.
     \raggedleft
 \includegraphics[scale=0.9]{fig4.pdf}
     \caption{(colour online) As in Fig. \ref{fig:2D_imag_zeropitch}, except for
-    a ring-beam of alpha particles with a more realistic pitch-angle value
+    a ring-beam of alpha-particles with a more realistic pitch-angle value
     $u_{\parallel} = -0.646 u_0 \simeq -1.1 V_A$. The non-zero parallel drift
     speed causes up-down asymmetry; this figure for a pitch-angle cosine of the
     opposite sign, $u_{\parallel} = 0.646 u_0$, is identical except flipped
@@ -532,12 +539,12 @@ This paper presents the linear Maxwell-Vlasov dispersion relation of a plasma
 consisting of thermal electrons, thermal deuteron fuel ions and a minority
 energetic ring-beam of fusion born alpha-particles. These high resolution
 $(k_\perp, k_\parallel)$ calculations revisit ICE observations from JET Pulse
-No. 26148\cite{Cottrell1993,Dendy1995} and reproduce several important features:
-the step change in signal strength from $\omega \leq 6\Omega_i$
-to $\omega > 6\Omega_i$; the
+No. 26148 \cite{Cottrell1993,Dendy1995} and reproduce several important features:
+the step-change in signal strength from $\omega \leq 7\Omega_i$
+to $\omega > 7\Omega_i$; the
 doublet splitting of peaks at $\omega \approx 10\Omega_i$ in Fig.
-\ref{fig:2D_F12_physicalpitch}, with origins visible in the fine $(k_\parallel,
-k_\perp)$ structure in Fig. \ref{fig:2D_imag_physicalpitch}. The Doppler shift
+\ref{fig:2D_F12_physicalpitch}, with origins visible in the fine $(k_\bot,
+k_\parallel)$ structure in Fig. \ref{fig:2D_imag_physicalpitch}. The Doppler shift
 for large $k_\parallel$ becomes of the order of the alpha-particle cyclotron
 frequency making it difficult to determine which parts of the signal come
 from which cyclotron harmonic numbers, which has important implications for
@@ -551,36 +558,38 @@ These calculations capture the finite perpendicular thermal spread of the alpha
 particle distribution function, the integral of which has no known analytically
 tractable form. The computational capabilities of the software,
 LinearMaxwellVlasov.jl, used to generate the results further enable ICE as
-a diagnostic for fusion plasmas since the code is capable of: calculating the
-dispersion relation of plasmas consisting of an arbitrary number of species; and
+a diagnostic for fusion plasmas since the code is capable of calculating the
+dispersion relation of plasmas consisting of an arbitrary number of species and
 of arbitrary distribution functions, although those with parallel Maxwellians,
-like those presented here, are faster. It has been shown that it is possible to
+like those presented here, are handled faster.
+It has been shown that it is possible to
 qualitatively recreate signals containing lower harmonics of substantial amplitudes by
 invoking 2D linear physics. The presence of ICE signals at lower harmonics in
 PIC simulations has been attributed to nonlinear interactions between pairs of
-more powerful higher harmonics\cite{Carbajal2014}. This work suggests that
+more powerful higher harmonics \cite{Carbajal2014}. This work suggests that
 observations of lower ICE harmonics may arise due to 2D
 linear physics effects but does not exclude the possiblity that nonlinear 1D
-physics\cite{Chapman2018} may also play a part.
+physics \cite{Chapman2018} may also play a part.
 
 There are several important features missing from these calculations. Among them
 are the effects of the spatial inhomogeniety of the magnetic field and background
 plasma giving rise to drifts,
-and the quantisation associatied with toroidal periodicity. These
+and the quantisation arising from toroidal periodicity. These
 effects may create an eigenmode structure, not accounted for herein,
 associated with the kinetic MCI.
-Cottrell et al. \cite{Cottrell1993} does discuss the implications of propagation
-angles on ICE signals and indicate that lower harmonics must propagate
-increasingly close to exactly perpendicular. These effects remain the subject of
-further work to incorporate them in linear and nonlinear studies of ICE.
+Cottrell et al. \cite{Cottrell1993} discusses the implications of propagation
+angles on ICE signals and indicates that lower harmonics must propagate
+increasingly close to exactly perpendicular. It remains the subject of
+further work to incorporate these effects into linear and nonlinear studies of ICE.
 
 This work showcases a new high resolution tool for studying ICE and captures
-some of the fine detail of ICE signals, which is challenging to capture
+some of the fine detail of ICE signals, which are challenging to capture
 with nonlinear PIC
 code simulations since they suffer from low resolution in frequency and
 wavenumber space due to the phenomenon's transience and computational expense,
 respectively. As such, this work represents a complementary tool that builds
-upon purely analytical work and nonlinear PIC studies, which in turn enhances
+upon purely analytical work and nonlinear PIC studies to provide
+an explanation of doublet splitting, which in turn enhances
 the feasibility of exploiting ICE as a passive diagnostic of confined and
 leaving ions in magnetised fusion plasmas.
 
@@ -593,13 +602,13 @@ discussions.
 
 \section{}
 
-The plasma dispersion function\cite{Fried1961}
+The plasma dispersion function \cite{Fried1961}
 
 \begin{equation}
 \it{Z}_n(z)=\frac{1}{\sqrt{\pi}}\int_{-\infty}^{\infty}\frac{x^n e^{-x^2}}{x-z}dx,
 \end{equation}
 
-\noindent can be calculated via the recurrence relation\cite{Sampoorna2007}
+\noindent can be calculated via the recurrence relation \cite{Sampoorna2007}
 
 \begin{equation}
 {\it Z}_n(z) = z {\it Z}_{n-1}(z) + \begin{cases}
@@ -680,6 +689,11 @@ Ochoukov R et al 2018 \textit{Rev. Sci. Instrum.} 2018 \textbf{89}, 10J101
 
 \bibitem{Askinazi2018}
 Askinazi L G  \textit{et al} 2018 \textit{Nucl. Fusion} \textbf{58} 082003
+
+\bibitem{Fredrickson2019}
+Fredrickson E D \textit{et al} 2019 \textit{Physics of Plasmas} \textbf{26}, 032111
+%Fredrickson E D, Gorelenkov  N N, Bell R E, Diallo A, LeBlanc B P, Podestà  M, and NSTX Team 2019 \textit{Physics of Plasmas} \textbf{26}, 032111
+% "Emission in the ion cyclotron range of frequencies (ICE) on NSTX and NSTX-U",
 
 \bibitem{Liu2020}
 Liu L et al 2020  \textit{Nucl. Fusion} \textbf{60} 044002
@@ -766,8 +780,8 @@ Thome K E \textit{et al} 2018 \textit{Rev. Sci. Instrum.} \textbf{89} 10I102
 \bibitem{Ochoukov2019}
 Ochoukov R \textit{et al} 2019 \textit{Nucl. Fusion} \textbf{59} 086032
 
-\bibitem{Lui2020}
-Liu L \text{et al} 2020 \textit{Nucl. Fusion} \textbf{60} 044002
+\bibitem{Fulop1998}
+F{\"u}l{\"o}p T and Lisak M 1998 \textit{Nucl. Fusion} \textbf{38} 761
 
 \bibitem{LinearMaxwellVlasov.jl}
   Cook J W S, \textit{LinearMaxwellVlasov.jl (0.1.0)}, Zenodo. https://doi.org/10.5281/zenodo.6529288
@@ -776,11 +790,6 @@ Liu L \text{et al} 2020 \textit{Nucl. Fusion} \textbf{60} 044002
 \bibitem{Bezanson2017}
 Bezanson J, Edelman A, Karpinski S, and Shah V B 2017 \textit{SIAM review} \textbf{59} 1
 % Julia: A fresh approach to numerical computing,
-
-\bibitem{Fredrickson2019}
-Fredrickson E D \textit{et al} 2019 \textit{Physics of Plasmas} \textbf{26}, 032111
-%Fredrickson E D, Gorelenkov  N N, Bell R E, Diallo A, LeBlanc B P, Podestà  M, and NSTX Team 2019 \textit{Physics of Plasmas} \textbf{26}, 032111
-% "Emission in the ion cyclotron range of frequencies (ICE) on NSTX and NSTX-U",
 
 \bibitem{Kronrod1965}
 Kronrod A S 1965 \textit{Nodes and weights of quadrature formulas. Sixteen-place tables} (New York: Consultants Bureau (Authorized translation from the Russian))
@@ -791,9 +800,6 @@ Johnson S G \textit{QuadGK.jl: Gauss-Kronrod integration in Julia} https://githu
 \bibitem{Nelder1965}
 Nelder J A and Mead R 1965 \textit{Computer Journal} \textbf{7} 4
 % , A simplex method for function minimization,
-
-\bibitem{Fulop1998}
-F{\"u}l{\"o}p T and Lisak M 1998 \textit{Nucl. Fusion} \textbf{38} 761
 
 \bibitem{Fried1961}
 Fried B D and Conte S C 1961 \textit{The Plasma Dispersion Function} (Academic Press, New York)
