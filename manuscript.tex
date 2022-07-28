@@ -58,7 +58,7 @@
 \ead{james.cook@ukaea.uk}
 \vspace{10pt}
 \begin{indented}
-\item[]Jan 2022
+\item[]Jul 2022
 \end{indented}
 
 \begin{abstract}
@@ -132,7 +132,7 @@ computational approaches operate under similar simplifications as the analytical
 treatments in that the plasma is initially spatially homogeneous and periodic
 in the spatial domain.
 Linearised fluid approaches that incorporate toroidal geometry and
-inhomogeneous plasma and magnetic fields have shed light of the eigenmode
+inhomogeneous plasma and magnetic fields have shed light on the eigenmode
 structure of compressional Alfv{\'e}n eigenmodes, which as with ICE are also fast
 Alfv{\'e}n modes driven by energetic ions, in spherical
 tokamaks \cite{Sharapov2014, Gorelenkov2016} and conventional aspect ratio
@@ -194,7 +194,7 @@ Results are summarised in section 4.
 Solutions to the linearised Maxwell-Vlasov system of equations are found in
 perpendicular and parallel wavenumber space, $(k_\bot, k_\parallel)$, for a
 ring-beam distribution of energetic minority
-alpha-particles, Maxwellian electrons and background thermal majority
+alpha-particles, Maxwellian electrons and Maxwellian majority
 deuteron ions. The ring-beam distribution function, Eq. 1, is a separable
 function of the beam in $v_\parallel$ given by Eq. 2 and the
 ring in $v_\perp$ given by Eq. 3.
@@ -202,7 +202,7 @@ In the context of the fully kinetic Maxwell-Vlasov linear theory,
 which rests upon the assumption of
 an infinite homogeneous plasma and a straight uniform magnetic field,
 this distribution function is parameterised by the drift
-velocity parallel to the magnetic field $u_\parallel$, the speed of the
+velocity parallel to the magnetic field $u_\parallel$, the shift of the
 Maxwellian distribution perpendicular to the magnetic
 field $u_{\perp}$, and the isotropric thermal velocity $v_{th}$. The
 thermal spread of the alpha-particles' distribution function 
@@ -228,8 +228,8 @@ values of pitch-angle cosine: $u_\parallel=-0.646 u_0 \approx
 -\cos(\arcsin(\sqrt{R_0 \sin(\psi_0)/R_{ICE}})) u_0 \simeq -1.1 V_A$, which is
 associated with the ion-cyclotron emission observed on JET Pulse No. 26148 for
 which $R_0=3.46$ m and
-$\psi_0=55.2^\circ$ are the major radius and pitch angle at birth, and
-$R_{ICE}=4$ m is the major radius of the emission region; see
+$\psi_0=55.2^\circ$ are the major radius and pitch-angle at birth, and
+$R_{ICE}=4$ m is the major radius of the emission region: see
 Figs. 3 and 14 and associated text in Ref. \cite{Cottrell1993}; and
 $(u_\parallel=0 u_0, u_\bot=u_0)$ representing a ring distribution with
 no parallel drift, see
@@ -252,12 +252,12 @@ and have been neglected in these calculations where $u_\bot \gg
 Solutions to the linearised Maxwell-Vlasov system of equations are given by the
 dispersion relation, Eq. \ref{eq:dettensor}, which is satisfied for sets of
 $(\omega,\vec{k})$ 
-along the fast Alfv{\'e}n branch  on a grid of $(k_\parallel, k_\bot)$.
+along the fast Alfv{\'e}n branch on a grid of $(k_\parallel, k_\bot)$.
 The hot dielectric tensor \cite{Stix} $\vec{\vec{\epsilon}}$, given by Eq.
 \ref{eq:dielectrictensor}, is calculated for each species, $s$,
 
 \begin{align}
-    0 &= ||\vec{\vec{\epsilon}} + \left(\vec{k} \otimes \vec{k} - \vec{\vec{I}}(\vec{k}\cdot\vec{k})\right) \frac{c^2}{\omega^2}||,\label{eq:dettensor}\\
+    0 &= |\vec{\vec{\epsilon}} + \left(\vec{k} \otimes \vec{k} - \vec{\vec{I}}(\vec{k}\cdot\vec{k})\right) \frac{c^2}{\omega^2}|,\label{eq:dettensor}\\
     \vec{\vec{\epsilon}} &= \vec{\vec{1}} + \sum_s \frac{\Pi_s^2}{\omega}\sum_{n=-\infty}^{\infty}
     \int_0^{\infty}
     \int_{-\infty}^{\infty}\frac{\vec{\vec{S}}_{s,n} 2\pi v_\perp dv_\perp dv_\parallel}{\omega - k_\parallel v_\parallel - n \Omega_s}
@@ -292,7 +292,7 @@ Gauss-Kronrod \cite{Kronrod1965} quadrature using the GaussGK.jl \cite{QuadGK}
 library. An absolute and relative tolerance of $0$ and $10^{-8}$, respectively,
 is used to confirm convergence of the integral values.
 Since all the parallel distribution functions for all species are Maxwellians,
-the parallel integrals can be calculated from the well known plasma dispersion
+the parallel integrals can be calculated from the well-known plasma dispersion
 function\cite{Fried1961}, which is laid out in the appendix.
 
 Bessel function indices, $n$, in Eq. \ref{eq:dielectrictensor} are incremented
@@ -380,7 +380,7 @@ discussed next.
     traces indicate intervals of one degree. Curved grey traces indicate the
     location in $(k_\perp, k_\parallel)$ of the cyclotron harmonics (i.e. the
     real component of the complex $\omega$ solutions), which are annotated along
-    the left hand side and upper edge of the figure. Frequencies are in units of
+    the left-hand side and upper edge of the figure. Frequencies are in units of
     the alpha-particle cyclotron frequency, and wavenumbers are in
     alpha-particle cyclotron frequencies per Alfv{\'e}n speed. Note the up-down
     symmetry due to the lack of parallel drift in the energetic alpha
@@ -435,14 +435,14 @@ Doublet splitting can be seen in Fig. \ref{fig:2D_imag_physicalpitch}, which is 
 counterpart figure to Fig. \ref{fig:2D_F12_physicalpitch} as Fig.
 \ref{fig:2D_imag_zeropitch} is to Fig. \ref{fig:2D_F12_zeropitch},
 at e.g. the $12^{th}$ harmonic  near $(k_\parallel \simeq 0\; \Omega_{i}/V_A,
-k_\bot \simeq 13\; \Omega_{i}/V_A)$, where $V_A$ is the Alfv{\'e}n speed.
+k_\bot \simeq 13\; \Omega_{i}/V_A)$.
 Qualitatively, scattered points in Fig.
-\ref{fig:2D_F12_physicalpitch}(a) resembles the experimental observations given
+\ref{fig:2D_F12_physicalpitch}(a) resemble the experimental observations given
 by the black trace in that the
-signal below the $7^{th}$ cyclotron harmonics is lower and flatter with well
+signal below the $7^{th}$ cyclotron harmonic is lower and flatter with well
 defined peaks and the signal beyond the $7^{th}$ harmonic is a step-change
-larger and the harmonics are less easily identifiable. These features cannot be
-be recreated with a 1D calculation for these distributions functions
+larger and the harmonics are less easily identifiable. These features cannot
+be recreated with a 1D calculation for these distribution functions
 since they arise from contributions from a range of propagation angles.
 Fig. \ref{fig:2D_imag_physicalpitch} shows these two different regimes
 more clearly. The lower frequency behaviour, where $k_\perp < 7 \Omega_i/V_A$, is
@@ -468,7 +468,7 @@ Figure \ref{fig:2D_real_zeropitch}
 shows the smoothed real frequency part of the solution, as depicted
 by contours on Figs. \ref{fig:2D_imag_zeropitch} and
 \ref{fig:2D_imag_physicalpitch}, for the case of
-zero pitch angle cosine and is normalised by
+zero pitch-angle cosine and is normalised by
 the high frequency expression for the fast Alfv{\'e}n wave set out in Eq.
 25 of Ref. \cite{Dendy1994} (also Eq. 11 of Ref. \cite{McClements1996}),
 
@@ -479,8 +479,7 @@ the high frequency expression for the fast Alfv{\'e}n wave set out in Eq.
     \left(k^2 + k_\parallel^2 + k^2k_\parallel^2 \frac{V_A^2}{\Omega_i^2}\right)^2
     - 4k^2 k_\parallel^2
 }
-  \right],
-\label{eqn:fastalfven}
+  \right]\label{eqn:fastalfven},
 \end{equation}
 
 \noindent where $k^2 = k_\parallel^2 + k_\perp^2$. There is no discernable
@@ -525,7 +524,7 @@ difference for the non-zero pitch case.
     \caption{(colour online) As in Fig. \ref{fig:2D_imag_zeropitch}, except that
     the shading indicates the real part of the smoothed solution normalised by
     the high frequency expression for the fast Alfv{\'e}n wave set out in
-    Eq. \label{eqn:fastalfven} (Eq. 25 of Ref. \cite{Dendy1994},
+    Eq. \ref{eqn:fastalfven} (Eq. 25 of Ref. \cite{Dendy1994},
     which is also Eq. 11 in Ref. \cite{McClements1996}).
     The differences in real frequency for the two sets of
     calculations, a pitch-angle cosine of $-0.646$ and zero, are
@@ -545,9 +544,9 @@ to $\omega > 7\Omega_i$; the
 doublet splitting of peaks at $\omega \approx 10\Omega_i$ in Fig.
 \ref{fig:2D_F12_physicalpitch}, with origins visible in the fine $(k_\bot,
 k_\parallel)$ structure in Fig. \ref{fig:2D_imag_physicalpitch}. The Doppler shift
-for large $k_\parallel$ becomes of the order of the alpha-particle cyclotron
+for large $k_\parallel$ is comparable in magnitude to the alpha-particle cyclotron
 frequency making it difficult to determine which parts of the signal come
-from which cyclotron harmonic numbers, which has important implications for
+from which cyclotron harmonic numbers. This has important implications for
 determining the major radius of origin of ICE.
 Further effort is required to account for
 the extra doublets visible in the continuous trace associated with JET Pulse No.
