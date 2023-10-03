@@ -4,6 +4,7 @@ using Dierckx, Contour, JLD2, DelimitedFiles
 
 println("Starting at ", now())
 # pitchanglecosine of 0 is all vperp, and (-)1 is (anti-)parallel to B field
+# pitch angle is defined as vpara/v0
 const pitchanglecosine = try; parse(Float64, ARGS[1]); catch; -0.646; end
 @assert -1 <= pitchanglecosine <= 1
 # thermal width of ring as a fraction of its speed # Dendy PRL 1993
@@ -55,7 +56,9 @@ addprocs(nprocsadded, exeflags="--project")
   nmin = ξ*n0
   n1 = (1/z1)*(n0-z2*n2-zmin*nmin) # 1 / (1.0 + 2*ξ)
   @assert n0 ≈ z1*n1 + z2*n2 + zmin*nmin
-  Va = sqrt(B0^2/LinearMaxwellVlasov.μ₀/n1/m1)
+  mass_weighted = n1*m1 + n2*m2 + nmin*mmin
+#  density_weighted = 
+  Va = sqrt(B0^2/LinearMaxwellVlasov.μ₀/n0/mass_weighted)
 #  Va = B0/sqrt(LinearMaxwellVlasov.μ₀*(m1*n1+m2*n2+mmin*nmin))
 
   Te = 3e3# eV
