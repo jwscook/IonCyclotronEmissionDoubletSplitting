@@ -9,8 +9,11 @@ const pitchanglecosine = try; parse(Float64, ARGS[1]); catch; -0.646; end
 # thermal width of ring as a fraction of its speed # Dendy PRL 1993
 const vthermalfractionz = try; parse(Float64, ARGS[2]); catch; 0.01; end
 const vthermalfraction⊥ = try; parse(Float64, ARGS[3]); catch; 0.01; end
-const name_extension = if length(ARGS) >= 4
-  ARGS[4]
+# secondary fuel concentration
+const xi2 = try; parse(Float64, ARGS[4]); catch; 0.0; end
+# name of file
+const name_extension = if length(ARGS) >= 5
+  ARGS[5]
 else
   "$(pitchanglecosine)_$(vthermalfractionz)_$(vthermalfraction⊥)"
 end
@@ -25,65 +28,91 @@ addprocs(nprocsadded, exeflags="--project")
 @everywhere begin
   using LinearMaxwellVlasov, LinearAlgebra, WindingNelderMead
 
+  # mass ratios 
+  const mp = 1836.2
+  const md = 3671.5
+  const mT = 5497.93
+  const mHe3 = 5497.885
+  const mα = 7294.3
+
   mₑ = LinearMaxwellVlasov.mₑ
-  md = 2*1836*mₑ
-  mα = 2*md
-
+  m1 = md*mₑ
+  m2 = mHe3*mₑ
+  mmin = mp*mₑ # mα*mₑ
+  
+  ze = -1
+  z1 = 1
+  z2 = 2
+  zmin = 1
+  
   # Fig 18 Cottrell 1993
-  n0 = 1.7e19 # central electron density 3.6e19
-  B0 = 2.07 # 2.07T = 2.8T * 2.96 m / 4m
+  n0 = 5e19 #5e19 # 1.7e19 # central electron density 3.6e19
+  B0 = 3.7 # 2.07T = 2.8T * 2.96 m / 4m
   # 2.23 T is 17MHz for deuterium cyclotron frequency
-  ξ = 1.5e-4 # nα / ni = 1.5 x 10^-4
+  ξ = 1e-3#1.5e-4 # nα / ni = 1.5 x 10^-4
+  ξ2 = Float64(@fetchfrom 1 xi2) # 0.15
+  n2 = ξ2*n0
+  nmin = ξ*n0
+  n1 = (1/z1)*(n0-z2*n2-zmin*nmin) # 1 / (1.0 + 2*ξ)
+  @assert n0 ≈ z1*n1 + z2*n2 + zmin*nmin
+  Va = sqrt(B0^2/LinearMaxwellVlasov.μ₀/n1/m1)
+#  Va = B0/sqrt(LinearMaxwellVlasov.μ₀*(m1*n1+m2*n2+mmin*nmin))
 
-  nd = n0 / (1.0 + 2*ξ)
-  nα = ξ*nd
-  @assert n0 ≈ 2*nα + nd
-  Va = sqrt(B0^2/LinearMaxwellVlasov.μ₀/nd/md)
-
-  Ωe = cyclotronfrequency(B0, mₑ, -1)
-  Ωd = cyclotronfrequency(B0, md, 1)
-  Ωα = cyclotronfrequency(B0, mα, 2)
-  Πe = plasmafrequency(n0, mₑ, -1)
-  Πd = plasmafrequency(nd, md, 1)
-  Πα = plasmafrequency(nα, mα, 2)
-  vthe = thermalspeed(1e3, mₑ)
-  vthd = thermalspeed(1e3, md)
-  vα = thermalspeed(3.6e6, mα)
+  Te = 3e3# eV
+  T1 = Te # eV
+  T2 = T1 # eV
+  Emin = 14.68e6 # eV # 14.67e6
+  Ωe = cyclotronfrequency(B0, mₑ, ze)
+  Ω1 = cyclotronfrequency(B0, m1, z1)
+  Ω2 = cyclotronfrequency(B0, m2, z2)
+  Ωmin = cyclotronfrequency(B0, mmin, zmin)
+  Πe = plasmafrequency(n0, mₑ, ze)
+  Π1 = plasmafrequency(n1, m1, z1)
+  Π2 = plasmafrequency(n2, m2, z2)
+  Πmin = plasmafrequency(nmin, mmin, zmin)
+  vthe = thermalspeed(Te, mₑ) # temperature, mass
+  vth1 = thermalspeed(T1, m1) # temperature, mass
+  vth2 = thermalspeed(T2, m2) # temperature, mass
+  vmin = thermalspeed(Emin, mmin) # energy in terms of eV (3.5e6)
   # pitchanglecosine = cos(pitchangle)
   # acos(pitchanglecosine) = pitchangle
   pitchanglecosine = Float64(@fetchfrom 1 pitchanglecosine)
-  vα⊥ = vα * sqrt(1 - pitchanglecosine^2) # perp speed
-  vαz = vα * pitchanglecosine # parallel speed
+  vα⊥ = vmin * sqrt(1 - pitchanglecosine^2) # perp speed
+  vαz = vmin * pitchanglecosine # parallel speed
   vthermalfractionz = Float64(@fetchfrom 1 vthermalfractionz)
   vthermalfraction⊥ = Float64(@fetchfrom 1 vthermalfraction⊥)
-  vαthz = vα * vthermalfractionz
-  vαth⊥ = vα * vthermalfraction⊥
+  vαthz = vmin * vthermalfractionz
+  vαth⊥ = vmin * vthermalfraction⊥
 
   electron_cold = ColdSpecies(Πe, Ωe)
   electron_warm = WarmSpecies(Πe, Ωe, vthe)
   electron_maxw = MaxwellianSpecies(Πe, Ωe, vthe, vthe)
 
-  deuteron_cold = ColdSpecies(Πd, Ωd)
-  deuteron_warm = WarmSpecies(Πd, Ωd, vthd)
-  deuteron_maxw = MaxwellianSpecies(Πd, Ωd, vthd, vthd)
+  spec1_cold = ColdSpecies(Π1, Ω1)
+  spec1_warm = WarmSpecies(Π1, Ω1, vth1)
+  spec1_maxw = MaxwellianSpecies(Π1, Ω1, vth1, vth1)
 
-  alpha_cold = ColdSpecies(Πα, Ωα)
-  alpha_maxw = MaxwellianSpecies(Πα, Ωα, vαthz, vαth⊥, vαz)
-  alpha_ringbeam = SeparableVelocitySpecies(Πα, Ωα,
+  spec2_cold = ColdSpecies(Π2, Ω2)
+  spec2_warm = WarmSpecies(Π2, Ω2, vth2)
+  spec2_maxw = MaxwellianSpecies(Π2, Ω2, vth2, vth2)
+
+  minspec_cold = ColdSpecies(Πmin, Ωmin)
+  minspec_maxw = MaxwellianSpecies(Πmin, Ωmin, vαthz, vαth⊥, vαz)
+  minspec_ringbeam = SeparableVelocitySpecies(Πmin, Ωmin,
     FBeam(vαthz, vαz),
     FRing(vαth⊥, vα⊥))
-  alpha_delta = SeparableVelocitySpecies(Πα, Ωα,
+  minspec_delta = SeparableVelocitySpecies(Πmin, Ωmin,
     FParallelDiracDelta(vαz),
     FPerpendicularDiracDelta(vα⊥))
 
-  Smmr = Plasma([electron_maxw, deuteron_maxw, alpha_ringbeam])
-  Smmd = Plasma([electron_maxw, deuteron_maxw, alpha_delta])
+  Smmr = Plasma([electron_maxw, spec1_maxw, spec2_maxw, minspec_ringbeam]) #spec2_maxw change these for multiple ions
+  Smmd = Plasma([electron_maxw, spec1_maxw, spec2_maxw, minspec_delta]) # 
 
-  w0 = abs(Ωα)
+  w0 = abs(Ωmin)
   k0 = w0 / abs(Va)
 
-  γmax = abs(Ωα) * 0.15
-  γmin = -abs(Ωα) * 0.075
+  γmax = abs(Ωmin) * 0.15
+  γmin = -abs(Ωmin) * 0.075
   function bounds(ω0)
     lb = @SArray [ω0 * 0.5, γmin]
     ub = @SArray [ω0 * 1.2, γmax]
@@ -93,7 +122,7 @@ addprocs(nprocsadded, exeflags="--project")
   options = Options(memoiseparallel=false, memoiseperpendicular=true)
 
   function solve_given_ks(K, objective!)
-    ω0 = fastzerobetamagnetoacousticfrequency(Va, K, Ωd)
+    ω0 = fastzerobetamagnetoacousticfrequency(Va, K, Ω1)
 
     lb, ub = bounds(ω0)
 
@@ -201,7 +230,7 @@ function selectpropagationrange(sols, lowangle=0, highangle=180)
   return output
 end
 
-Plots.pyplot()
+Plots.gr() # .pyplot()
 function plotit(sols, file_extension=name_extension, fontsize=9)
   sols = sort(sols, by=s->imag(s.frequency))
   ωs = [sol.frequency for sol in sols]./w0
@@ -311,9 +340,9 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   Plots.title!(" ")
   plotangles(writeangles=false)
   Plots.plot!(legend=false)
-  Plots.savefig("ICE2D_real_$file_extension.pdf")
+  Plots.savefig(file_extension*"/ICE2D_real_$file_extension.png")
 
-  ω0s = [fastzerobetamagnetoacousticfrequency(Va, sol.wavenumber, Ωd) for
+  ω0s = [fastzerobetamagnetoacousticfrequency(Va, sol.wavenumber, Ω1) for
     sol in sols] / w0
   zs = real.(ωs) ./ ω0s
   climmin = minimum(zs)
@@ -322,7 +351,7 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   Plots.title!(" ")
   plotangles(writeangles=false)
   Plots.plot!(legend=false)
-  Plots.savefig("ICE2D_real_div_guess_$file_extension.pdf")
+  Plots.savefig(file_extension*"/ICE2D_real_div_guess_$file_extension.png")
 
   zs = iseven.(Int64.(floor.(real.(ωs))))
   climmax = maximum(zs)
@@ -331,7 +360,7 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   plotangles(writeangles=false)
   plotcontours(realspline, collect(1:50), y -> y[end] < 0)
   Plots.plot!(legend=false)
-  Plots.savefig("ICE2D_evenfloorreal_real_$file_extension.pdf")
+  Plots.savefig(file_extension*"/ICE2D_evenfloorreal_real_$file_extension.png")
 
   zs = imag.(ωs)
   climmax = maximum(zs)
@@ -341,7 +370,7 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   Plots.plot!(legend=false)
   plotcontours(realspline, collect(1:50), y -> y[end] < 0)
   plotangles(writeangles=false)
-  Plots.savefig("ICE2D_imag_$file_extension.pdf")
+  Plots.savefig(file_extension*"/ICE2D_imag_$file_extension.png")
 
   colorgrad = Plots.cgrad()
 
@@ -355,11 +384,12 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   perm = sortperm(imag.(ωs[mask]))
   h0 = Plots.scatter(real.(ωs[mask][perm]), kzs[mask][perm],
      zcolor=imag.(ωs[mask][perm]), framestyle=:box, lims=:round,
-    markersize=msize+1, markerstrokewidth=0, markershape=:circle,
+    markersize=msize+1, markerstrokewidth=0, 
+    markershape=:circle, lw=0, msc=:auto,
     c=colorgrad, xticks=(0:12), yticks=unique(Int.(round.(ykzs))),
     xlabel=xlabel, ylabel=ylabel, legend=:topleft)
   Plots.plot!(legend=false)
-  Plots.savefig("ICE2D_KF12_$file_extension.pdf")
+  Plots.savefig(file_extension*"/ICE2D_KF12_$file_extension.png")
 
 
   ylabel = "\$\\mathrm{Growth\\ Rate} \\ [\\Omega_{i}]\$"
@@ -367,10 +397,10 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   h1 = Plots.scatter(real.(ωs[mask]), imag.(ωs[mask]),
     zcolor=kzs[mask], framestyle=:box, lims=:round,
     markersize=msize+1, markerstrokewidth=0, markershape=:circle,
-    c=colorgrad, xticks=(0:12),
+    c=colorgrad, xticks=(0:12), lw=0, msc=:auto,
     xlabel=xlabel, ylabel=ylabel, legend=:topleft)
   Plots.plot!(legend=false)
-  Plots.savefig("ICE2D_F12_$file_extension.pdf")
+  Plots.savefig(file_extension*"/ICE2D_F12_$file_extension.png")
 
   colorgrad1 = Plots.cgrad([:cyan, :red, :blue, :orange, :green,
                             :black, :yellow])
@@ -378,10 +408,10 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   h2 = Plots.scatter(real.(ωs[mask]), imag.(ωs[mask]),
     zcolor=(real.(ωs[mask]) .- vαz/Va .* kzs[mask]), framestyle=:box, lims=:round,
     markersize=msize+1, markerstrokewidth=0, markershape=:circle,
-    c=colorgrad1, clims=(0, 13), xticks=(0:12),
+    c=colorgrad1, clims=(0, 13), xticks=(0:12), lw=0, msc=:auto,
     xlabel=xlabel, ylabel=ylabel, legend=:topleft)
   Plots.plot!(legend=false)
-  Plots.savefig("ICE2D_F12_Doppler_$file_extension.pdf")
+  Plots.savefig(file_extension*"/ICE2D_F12_Doppler_$file_extension.png")
 
   xlabel = "\$\\mathrm{Frequency} \\ [\\Omega_{i}]\$"
   ylabel = "\$\\mathrm{Propagation\\ Angle} \\ [^{\\circ}]\$"
@@ -392,10 +422,10 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
     zcolor=imag.(ωs[mask]), lims=:round,
     markersize=msize, markerstrokewidth=0, markershape=mshape, framestyle=:box,
     c=Plots.cgrad([:black, :darkred, :red, :orange, :yellow]),
-    clims=(0, maximum(imag.(ωs[mask]))),
+    clims=(0, maximum(imag.(ωs[mask]))), lw=0, msc=:auto,
     yticks=(0:10:180), xticks=(0:12), xlabel=xlabel, ylabel=ylabel)
   Plots.plot!(legend=false)
-  Plots.savefig("ICE2D_TF12_$file_extension.pdf")
+  Plots.savefig(file_extension*"/ICE2D_TF12_$file_extension.png")
 
   function relative(p, rx, ry)
     xlims = Plots.xlims(p)
@@ -417,19 +447,21 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   Plots.annotate!(h1, [(relative(h1, 0.02, 0.95)..., text("(a)", fontsize, :black))])
   Plots.annotate!(h0, [(relative(h0, 0.02, 0.95)..., text("(b)", fontsize, :black))])
   Plots.plot(h1, h0, link=:x, layout=@layout [a; b])
-  Plots.savefig("ICE2D_Combo_$file_extension.pdf")
+  Plots.savefig(file_extension*"/ICE2D_Combo_$file_extension.png")
 end
 
 if true
   @time plasmasols = findsolutions(Smmr)
   plasmasols = selectlargeestgrowthrate(plasmasols)
+  mkdir(name_extension)
   @show length(plasmasols)
   @time plotit(plasmasols)
-  @save "solutions2D_$name_extension.jld" filecontents plasmasols w0 k0
+  @save name_extension*"/solutions2D_$name_extension.jld" filecontents plasmasols w0 k0
   rmprocs(nprocsadded)
 else
+  cd(name_extension)
   rmprocs(nprocsadded)
-  @load "solutions2D_$name_extension.jld" filecontents solutions w0 k0
+  @load name_extension*"/solutions2D_$name_extension.jld" filecontents solutions w0 k0
   @time plotit(solutions)
 end
 
