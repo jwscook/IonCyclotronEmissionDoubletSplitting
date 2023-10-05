@@ -56,10 +56,8 @@ addprocs(nprocsadded, exeflags="--project")
   nmin = ξ*n0
   n1 = (1/z1)*(n0-z2*n2-zmin*nmin) # 1 / (1.0 + 2*ξ)
   @assert n0 ≈ z1*n1 + z2*n2 + zmin*nmin
-  mass_weighted = n1*m1 + n2*m2 + nmin*mmin
-#  density_weighted = 
-  Va = sqrt(B0^2/LinearMaxwellVlasov.μ₀/n0/mass_weighted)
-#  Va = B0/sqrt(LinearMaxwellVlasov.μ₀*(m1*n1+m2*n2+mmin*nmin))
+  density_weighted = n1*m1 + n2*m2 + nmin*mmin
+  Va = sqrt(B0^2/LinearMaxwellVlasov.μ₀*density_weighted)
 
   Te = 3e3# eV
   T1 = Te # eV
