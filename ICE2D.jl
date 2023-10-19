@@ -1,3 +1,4 @@
+
 using Distributed, Dates
 using Plots, Random, ImageFiltering, Statistics
 using Dierckx, Contour, JLD2, DelimitedFiles
@@ -37,20 +38,20 @@ addprocs(nprocsadded, exeflags="--project")
   const mα = 7294.3
 
   mₑ = LinearMaxwellVlasov.mₑ
-  m1 = md*mₑ
-  m2 = mHe3*mₑ
-  mmin = mp*mₑ # mα*mₑ
+  m1 = mp*mₑ
+  m2 = 0 #mT*mₑ
+  mmin = mₑ #mα*mₑ #mp*mₑ
   
   ze = -1
   z1 = 1
-  z2 = 2
-  zmin = 1
+  z2 = 0
+  zmin = -1
   
   # Fig 18 Cottrell 1993
-  n0 = 5e19 #5e19 # 1.7e19 # central electron density 3.6e19
-  B0 = 3.7 # 2.07T = 2.8T * 2.96 m / 4m
+  n0 = 1.5e19 #1e19# 5e19 # 1.7e19 # central electron density 3.6e19
+  B0 = 1.9 #2.1 #2.07 = 2.8T * 2.96 m / 4m
   # 2.23 T is 17MHz for deuterium cyclotron frequency
-  ξ = 1e-3#1.5e-4 # nα / ni = 1.5 x 10^-4
+  ξ = 1e-2#1.5e-4 # nα / ni = 1.5 x 10^-4
   ξ2 = Float64(@fetchfrom 1 xi2) # 0.15
   n2 = ξ2*n0
   nmin = ξ*n0
@@ -62,19 +63,31 @@ addprocs(nprocsadded, exeflags="--project")
   Te = 3e3# eV
   T1 = Te # eV
   T2 = T1 # eV
-  Emin = 14.68e6 # eV # 14.67e6
+  Emin = 100e3 #3.5e6 # eV # 14.67e6
   Ωe = cyclotronfrequency(B0, mₑ, ze)
   Ω1 = cyclotronfrequency(B0, m1, z1)
-  Ω2 = cyclotronfrequency(B0, m2, z2)
   Ωmin = cyclotronfrequency(B0, mmin, zmin)
   Πe = plasmafrequency(n0, mₑ, ze)
   Π1 = plasmafrequency(n1, m1, z1)
-  Π2 = plasmafrequency(n2, m2, z2)
   Πmin = plasmafrequency(nmin, mmin, zmin)
   vthe = thermalspeed(Te, mₑ) # temperature, mass
   vth1 = thermalspeed(T1, m1) # temperature, mass
-  vth2 = thermalspeed(T2, m2) # temperature, mass
   vmin = thermalspeed(Emin, mmin) # energy in terms of eV (3.5e6)
+  if m2 != 0
+    Ω2 = cyclotronfrequency(B0, m2, z2)
+    Π2 = plasmafrequency(n2, m2, z2)
+    vth2 = thermalspeed(T2, m2) # temperature, mass
+    spec2_cold = ColdSpecies(Π2, Ω2)
+    spec2_warm = WarmSpecies(Π2, Ω2, vth2)
+    spec2_maxw = MaxwellianSpecies(Π2, Ω2, vth2, vth2)  
+  else
+    Ω2 = 0
+    Π2 = 0
+    vth2 = 0
+    spec2_cold = 0
+    spec2_warm = 0
+    spec2_maxw = 0
+  end
   # pitchanglecosine = cos(pitchangle)
   # acos(pitchanglecosine) = pitchangle
   pitchanglecosine = Float64(@fetchfrom 1 pitchanglecosine)
@@ -93,10 +106,6 @@ addprocs(nprocsadded, exeflags="--project")
   spec1_warm = WarmSpecies(Π1, Ω1, vth1)
   spec1_maxw = MaxwellianSpecies(Π1, Ω1, vth1, vth1)
 
-  spec2_cold = ColdSpecies(Π2, Ω2)
-  spec2_warm = WarmSpecies(Π2, Ω2, vth2)
-  spec2_maxw = MaxwellianSpecies(Π2, Ω2, vth2, vth2)
-
   minspec_cold = ColdSpecies(Πmin, Ωmin)
   minspec_maxw = MaxwellianSpecies(Πmin, Ωmin, vαthz, vαth⊥, vαz)
   minspec_ringbeam = SeparableVelocitySpecies(Πmin, Ωmin,
@@ -106,8 +115,13 @@ addprocs(nprocsadded, exeflags="--project")
     FParallelDiracDelta(vαz),
     FPerpendicularDiracDelta(vα⊥))
 
-  Smmr = Plasma([electron_maxw, spec1_maxw, spec2_maxw, minspec_ringbeam]) #spec2_maxw change these for multiple ions
-  Smmd = Plasma([electron_maxw, spec1_maxw, spec2_maxw, minspec_delta]) # 
+  if m2 != 0
+    Smmr = Plasma([electron_maxw, spec1_maxw, spec2_maxw, minspec_ringbeam]) #spec2_maxw change these for multiple ions
+    Smmd = Plasma([electron_maxw, spec1_maxw, spec2_maxw, minspec_delta]) # 
+  else
+    Smmr = Plasma([electron_maxw, spec1_maxw, spec2_maxw, minspec_ringbeam]) #spec2_maxw change these for multiple ions
+    Smmd = Plasma([electron_maxw, spec1_maxw, spec2_maxw, minspec_delta]) # 
+  end
 
   w0 = abs(Ωmin)
   k0 = w0 / abs(Va)
