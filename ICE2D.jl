@@ -119,8 +119,8 @@ addprocs(nprocsadded, exeflags="--project")
     Smmr = Plasma([electron_maxw, spec1_maxw, spec2_maxw, minspec_ringbeam]) #spec2_maxw change these for multiple ions
     Smmd = Plasma([electron_maxw, spec1_maxw, spec2_maxw, minspec_delta]) # 
   else
-    Smmr = Plasma([electron_maxw, spec1_maxw, spec2_maxw, minspec_ringbeam]) #spec2_maxw change these for multiple ions
-    Smmd = Plasma([electron_maxw, spec1_maxw, spec2_maxw, minspec_delta]) # 
+    Smmr = Plasma([electron_maxw, spec1_maxw, minspec_ringbeam]) #spec2_maxw change these for multiple ions
+    Smmd = Plasma([electron_maxw, spec1_maxw, minspec_delta]) # 
   end
 
   w0 = abs(Ωmin)
