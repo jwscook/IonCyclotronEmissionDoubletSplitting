@@ -164,23 +164,40 @@ addprocs(nprocsadded, exeflags="--project")
     xtol_abs = w0 .* (@SArray [1e-4, 1e-5]) ./ (ub .- lb)
     @elapsed for ic ∈ ics
       @assert all(i->lb[i] <= ic[i] <= ub[i], eachindex(ic))
-      neldermeadsol = WindingNelderMead.optimise(
-        boundedunitobjective!, SArray((ic .- lb) ./ (ub .- lb)),
-        1.1e-2 * (@SArray ones(2)); stopval=1e-15, timelimit=30,
-        maxiters=200, ftol_rel=0, ftol_abs=0, xtol_rel=0, xtol_abs=xtol_abs)
-      simplex, windingnumber, returncode, numiterations = neldermeadsol
-      if (windingnumber == 1 && returncode == :XTOL_REACHED)# || returncode == :STOPVAL_REACHED
-        c = deepcopy(config)
-        minimiser = if windingnumber == 0
-          WindingNelderMead.position(WindingNelderMead.bestvertex(simplex))
-        else
-          WindingNelderMead.centre(simplex)
+#      neldermeadsol = WindingNelderMead.optimise(
+#        boundedunitobjective!, SArray((ic .- lb) ./ (ub .- lb)),
+#        1.1e-2 * (@SArray ones(2)); stopval=1e-15, timelimit=30,
+#        maxiters=200, ftol_rel=0, ftol_abs=0, xtol_rel=0, xtol_abs=xtol_abs)
+#      simplex, windingnumber, returncode, numiterations = neldermeadsol
+#      if (windingnumber == 1 && returncode == :XTOL_REACHED)# || returncode == :STOPVAL_REACHED
+#        c = deepcopy(config)
+#        minimiser = if windingnumber == 0
+#          WindingNelderMead.position(WindingNelderMead.bestvertex(simplex))
+#        else
+#          WindingNelderMead.centre(simplex)
+#        end
+#        unitobjective!(c, minimiser)
+#        return c
+#      end
+        try
+          nlsolution = nlsolve(x->reim(boundedunitobjective!(x)),
+                             MArray((ic .- lb) ./ (ub .- lb)),
+                             xtol=1e-8, factor=0.1)
+          if nlsolution.x_converged || nlsolution.f_converged
+            c = deepcopy(config)
+            objective!(c, scaleup(lb, ub, nlsolution.zero))
+          return c
         end
-        unitobjective!(c, minimiser)
-        return c
+      catch
       end
     end
     return nothing
+  end
+
+  scaleup(lb, ub, x) = (x .* (ub .- lb) .+ lb)
+  
+  function scaleup(pg::AbstractPlasmaGenerator, x)
+    return scaleup(lowerbounds(pg), upperbounds(pg), x)
   end
 
   function f2Dω!(config::Configuration, x::AbstractArray, plasma, cache)
