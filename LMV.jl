@@ -27,10 +27,11 @@ addprocs(nprocsadded, exeflags="--project")
 @everywhere using ProgressMeter # for some reason must be up here on its own
 @everywhere using StaticArrays
 @everywhere using FastClosures
+@everywhere using NLsolve
 @everywhere begin
   using LinearMaxwellVlasov, LinearAlgebra, WindingNelderMead
 
-  # mass ratios 
+  # mass ratios
   const mp = 1836.2
   const md = 3671.5
   const mT = 5497.93
@@ -41,12 +42,12 @@ addprocs(nprocsadded, exeflags="--project")
   m1 = md*mₑ
   m2 = mT*mₑ# mHe3*mₑ #mT*mₑ
   mmin = mp*mₑ #mα*mₑ #mp*mₑ
-  
+
   ze = -1
   z1 = 1
   z2 = 1
   zmin = 2
-  
+
   # Fig 18 Cottrell 1993
   n0 = 1e19 #1.5e19# 5e19 # 1.7e19 # central electron density 3.6e19
   B0 = 2.1 #3.7 #2.07 = 2.8T * 2.96 m / 4m
@@ -79,7 +80,7 @@ addprocs(nprocsadded, exeflags="--project")
     vth2 = thermalspeed(T2, m2) # temperature, mass
     spec2_cold = ColdSpecies(Π2, Ω2)
     spec2_warm = WarmSpecies(Π2, Ω2, vth2)
-    spec2_maxw = MaxwellianSpecies(Π2, Ω2, vth2, vth2)  
+    spec2_maxw = MaxwellianSpecies(Π2, Ω2, vth2, vth2)
   else
     Ω2 = 0
     Π2 = 0
@@ -117,10 +118,10 @@ addprocs(nprocsadded, exeflags="--project")
 
   if ξ2 != 0
     Smmr = Plasma([electron_maxw, spec1_maxw, spec2_maxw, minspec_ringbeam]) #spec2_maxw change these for multiple ions
-    Smmd = Plasma([electron_maxw, spec1_maxw, spec2_maxw, minspec_delta]) # 
+    Smmd = Plasma([electron_maxw, spec1_maxw, spec2_maxw, minspec_delta]) #
   else
     Smmr = Plasma([electron_maxw, spec1_maxw, minspec_ringbeam]) #spec2_maxw change these for multiple ions
-    Smmd = Plasma([electron_maxw, spec1_maxw, minspec_delta]) # 
+    Smmd = Plasma([electron_maxw, spec1_maxw, minspec_delta]) #
   end
 
   w0 = abs(Ωmin)
@@ -195,10 +196,6 @@ addprocs(nprocsadded, exeflags="--project")
   end
 
   scaleup(lb, ub, x) = (x .* (ub .- lb) .+ lb)
-  
-  function scaleup(pg::AbstractPlasmaGenerator, x)
-    return scaleup(lowerbounds(pg), upperbounds(pg), x)
-  end
 
   function f2Dω!(config::Configuration, x::AbstractArray, plasma, cache)
     config.frequency = Complex(x[1], x[2])
@@ -339,7 +336,7 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
           skipannotation(ys) && continue
           yi, index = findmax(ys)
           xi = xs[index]
-          if !(isapprox(xi, minimum(k⊥s), rtol=0.01, atol=0.5) || 
+          if !(isapprox(xi, minimum(k⊥s), rtol=0.01, atol=0.5) ||
                isapprox(yi, maximum(kzs), rtol=0.01, atol=0.01))
             continue
           end
@@ -416,7 +413,7 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   perm = sortperm(imag.(ωs[mask]))
   h0 = Plots.scatter(real.(ωs[mask][perm]), kzs[mask][perm],
      zcolor=imag.(ωs[mask][perm]), framestyle=:box, lims=:round,
-    markersize=msize+1, markerstrokewidth=0, 
+    markersize=msize+1, markerstrokewidth=0,
     markershape=:circle, lw=0, msc=:auto,
     c=colorgrad, xticks=(0:12), yticks=unique(Int.(round.(ykzs))),
     xlabel=xlabel, ylabel=ylabel, legend=:topleft)
