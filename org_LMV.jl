@@ -201,7 +201,7 @@ function selectpropagationrange(sols, lowangle=0, highangle=180)
   return output
 end
 
-Plots.pyplot()
+Plots.gr() # .pyplot()
 function plotit(sols, file_extension=name_extension, fontsize=9)
   sols = sort(sols, by=s->imag(s.frequency))
   ωs = [sol.frequency for sol in sols]./w0
