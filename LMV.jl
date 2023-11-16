@@ -44,7 +44,7 @@ addprocs(nprocsadded, exeflags="--project")
   m2 = mHe3*mₑ# mHe3*mₑ #mT*mₑ
   mmin = mp*mₑ #mα*mₑ #mp*mₑ
 
-  # charge numbers 
+  # charge numbers
   ze = -1
   z1 = 1
   z2 = 2
@@ -484,7 +484,7 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
 end
 
 if true
-  @time plasmasols = findsolutions(Smmr)
+  @time plasmasols = findsolutions(Smmr)#d
   plasmasols = selectlargeestgrowthrate(plasmasols)
   mkdir(name_extension)
   @show length(plasmasols)
