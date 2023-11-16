@@ -20,6 +20,7 @@
 ../julia-1.9.3/bin/julia --proj LMV.jl 0.8112002343710549 0.01 0.001 0.95 D_T_alpha_095
 ../julia-1.9.3/bin/julia --proj LMV.jl 0.8146936751829144 0.01 0.001 1.0 D_T_alpha_0100
 
+
 ../julia-1.9.3/bin/julia --proj LMV.jl 0.990568983260767 0.01 0.001 0.0 D_He3_p_00
 ../julia-1.9.3/bin/julia --proj LMV.jl 0.9903245842401066 0.01 0.001 0.05 D_He3_p_05
 ../julia-1.9.3/bin/julia --proj LMV.jl 0.9900671810043928 0.01 0.001 0.1 D_He3_p_010

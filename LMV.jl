@@ -38,19 +38,22 @@ addprocs(nprocsadded, exeflags="--project")
   const mHe3 = 5497.885
   const mα = 7294.3
 
+  # masses of ions
   mₑ = LinearMaxwellVlasov.mₑ
   m1 = md*mₑ
-  m2 = mT*mₑ# mHe3*mₑ #mT*mₑ
+  m2 = mHe3*mₑ# mHe3*mₑ #mT*mₑ
   mmin = mp*mₑ #mα*mₑ #mp*mₑ
 
+  # charge numbers 
   ze = -1
   z1 = 1
-  z2 = 1
-  zmin = 2
+  z2 = 2
+  zmin = 1
 
+  # concentrations and densities
   # Fig 18 Cottrell 1993
-  n0 = 1e19 #1.5e19# 5e19 # 1.7e19 # central electron density 3.6e19
-  B0 = 2.1 #3.7 #2.07 = 2.8T * 2.96 m / 4m
+  n0 = 5e19 #1.5e19# 5e19 # 1.7e19 # central electron density 3.6e19
+  B0 = 3.7 #3.7 #2.07 = 2.8T * 2.96 m / 4m
   # 2.23 T is 17MHz for deuterium cyclotron frequency
   ξ = 1e-3#1.5e-4 # nα / ni = 1.5 x 10^-4
   ξ2 = Float64(@fetchfrom 1 xi2) # 0.15
@@ -61,10 +64,11 @@ addprocs(nprocsadded, exeflags="--project")
   density_weighted = n1*m1 + n2*m2 + nmin*mmin
   Va = B0 / sqrt(LinearMaxwellVlasov.μ₀*density_weighted)
 
-  Te = 1e3# eV
+  # temperatures and energies
+  Te = 2e3# eV
   T1 = Te # eV
   T2 = T1 # eV
-  Emin = 3.5e6 # eV # 14.68e6
+  Emin = 14.68e6 # eV # 3.5e6
   Ωe = cyclotronfrequency(B0, mₑ, ze)
   Ω1 = cyclotronfrequency(B0, m1, z1)
   Ωmin = cyclotronfrequency(B0, mmin, zmin)
