@@ -510,7 +510,13 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   zlabel = "\$\\mathrm{Frequency} \\ [\\Omega_{i}]\$"
   xlabel = "\$\\mathrm{Parallel\\ Wavenumber} \\ [\\Omega_{i} / V_A]\$"
   ylabel = "\$\\mathrm{Perpendicular\\ Wavenumber} \\ [\\Omega_{i} / V_A]\$"
-  Plots.scatter(kzs[mask], k⊥s[mask], real.(ωs[mask]), zcolor=imag.(ωs[mask]),
+  Plots.scatter(kzs[mask], k⊥s[mask], 0.0 .* real.(ωs[mask]), framestyle=:box, lims=:round,
+     markeralpha=0.1, markersize=msize+1, markerstrokewidth=-1, markershape=:circle, c=:grey)
+  Plots.scatter!(0 .* kzs[mask] .+ minimum(kzs), k⊥s[mask], real.(ωs[mask]), framestyle=:box, lims=:round,
+     markeralpha=0.1, markersize=msize+1, markerstrokewidth=-1, markershape=:circle, c=:grey)
+  Plots.scatter!(kzs[mask], 0 .* k⊥s[mask] .+ maximum(k⊥s), real.(ωs[mask]), framestyle=:box, lims=:round,
+     markeralpha=0.1, markersize=msize+1, markerstrokewidth=-1, markershape=:circle, c=:grey)
+  Plots.scatter!(kzs[mask], k⊥s[mask], real.(ωs[mask]), zcolor=imag.(ωs[mask]),
     framestyle=:box, lims=:round, markeralpha=0.2,
     markersize=msize+1, markerstrokewidth=-1, markershape=:circle,
     c=colorgrad, zticks=(0:1:maxrealfreq), camera = (10, 30),
