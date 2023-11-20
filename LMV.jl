@@ -1,24 +1,68 @@
 
+using ArgParse
+
+const argsettings = ArgParseSettings()
+
+@add_arg_table! argsettings begin
+    "--secondfuelionconcentrationratio"
+        help = "The concentration ratio of the second fuel ion species with respect to electron density"
+        arg_type = Float64
+        default = 0.0
+    "--pitch"
+        help = "The coseine of the pitch angle, or pitch of the energetic species"
+        arg_type = Float64
+        default = -0.646
+    "--ngridpoints"
+        help = "The number of grid points in each direciton cyclotronfrequency wavenumber space"
+        arg_type = Int
+        default = 2^10
+    "--kparamax"
+        help = "The upper limit in kpara in units of Ωi / Va"
+        arg_type = Float64
+        default = 4.0
+    "--kperpmax"
+        help = "The upper limit in kperp in units of Ωi / Va"
+        arg_type = Float64
+        default = 15.0
+    "--vthpararatio"
+        help = "The parallel thermal speed of the enerrgtic speices as a function of its bulk speed"
+        arg_type = Float64
+        default = 0.01
+    "--vthperpratio"
+        help = "The perpendicular thermal speed of the enerrgtic speices as a function of its bulk speed"
+        arg_type = Float64
+        default = 0.01
+    "--nameextension"
+        help = "The name extension to append to the figure files"
+        arg_type = String
+        default = ""
+end
+
+const parsedargs = parse_args(ARGS, argsettings)
+@show parsedargs
+
 using Distributed, Dates
 using Plots, Random, ImageFiltering, Statistics
 using Dierckx, Contour, JLD2, DelimitedFiles
 
+
 println("Starting at ", now())
 # pitchanglecosine of 0 is all vperp, and (-)1 is (anti-)parallel to B field
 # pitch angle is defined as vpara/v0
-const pitchanglecosine = try; parse(Float64, ARGS[1]); catch; -0.646; end
+const pitchanglecosine = parsedargs["pitch"]
 @assert -1 <= pitchanglecosine <= 1
 # thermal width of ring as a fraction of its speed # Dendy PRL 1993
-const vthermalfractionz = try; parse(Float64, ARGS[2]); catch; 0.01; end
-const vthermalfraction⊥ = try; parse(Float64, ARGS[3]); catch; 0.01; end
+const vthermalfractionz = parsedargs["vthpararatio"]
+const vthermalfraction⊥ = parsedargs["vthperpratio"]
+const _kparamax = parsedargs["kparamax"]
+const _kperpmax = parsedargs["kperpmax"]
+const _ngridpoints = parsedargs["ngridpoints"]
 # secondary fuel concentration
-const xi2 = try; parse(Float64, ARGS[4]); catch; 0.0; end
+const xi2 = parsedargs["secondfuelionconcentrationratio"]
 # name of file
-const name_extension = if length(ARGS) >= 5
-  ARGS[5]
-else
-  "$(pitchanglecosine)_$(vthermalfractionz)_$(vthermalfraction⊥)"
-end
+const name_extension = parsedargs["nameextension"]
+const dirpath = mapreduce(i->"_$(i[2])", *, parsedargs; init="run")
+@show dirpath
 const filecontents = [i for i in readlines(open(@__FILE__))]
 const nprocsadded = div(Sys.CPU_THREADS, 2)
 
@@ -131,7 +175,7 @@ addprocs(nprocsadded, exeflags="--project")
   w0 = abs(Ωmin)
   k0 = w0 / abs(Va)
 
-  γmax = abs(Ωmin) * 0.15
+  γmax = abs(Ωmin) * 0.3
   γmin = -abs(Ωmin) * 0.075
   function bounds(ω0)
     lb = @SArray [ω0 * 0.5, γmin]
@@ -155,9 +199,10 @@ addprocs(nprocsadded, exeflags="--project")
 
     config = Configuration(K, options)
 
-    ics = ((@SArray [ω0*0.8, w0*0.08]),
-           (@SArray [ω0*0.9, w0*0.04]),
-           (@SArray [ω0*1.0, w0*0.01]))
+    ics = ((@SArray [ω0*0.8, γmax*0.9]),
+           (@SArray [ω0*0.9, γmax*0.7]),
+           (@SArray [ω0*0.9, γmax*0.3]),
+           (@SArray [ω0*1.0, γmax*0.1]))
 
 
     function unitobjective!(c, x::T) where {T}
@@ -167,6 +212,8 @@ addprocs(nprocsadded, exeflags="--project")
     unitobjectivex! = x -> unitobjective!(config, x)
     boundedunitobjective! = boundify(unitobjectivex!)
     xtol_abs = w0 .* (@SArray [1e-4, 1e-5]) ./ (ub .- lb)
+
+    innersolutions = []
     @elapsed for ic ∈ ics
       @assert all(i->lb[i] <= ic[i] <= ub[i], eachindex(ic))
 #      neldermeadsol = WindingNelderMead.optimise(
@@ -184,19 +231,19 @@ addprocs(nprocsadded, exeflags="--project")
 #        unitobjective!(c, minimiser)
 #        return c
 #      end
-        try
-          nlsolution = nlsolve(x->reim(boundedunitobjective!(x)),
+      try
+        nlsolution = nlsolve(x->reim(boundedunitobjective!(x)),
                              MArray((ic .- lb) ./ (ub .- lb)),
                              xtol=1e-8, factor=0.1)
-          if nlsolution.x_converged || nlsolution.f_converged
-            c = deepcopy(config)
-            objective!(c, scaleup(lb, ub, nlsolution.zero))
-          return c
+        if nlsolution.x_converged || nlsolution.f_converged
+          c = deepcopy(config)
+          objective!(c, scaleup(lb, ub, nlsolution.zero))
+          push!(innersolutions, c)
         end
       catch
       end
     end
-    return nothing
+    return innersolutions
   end
 
   scaleup(lb, ub, x) = (x .* (ub .- lb) .+ lb)
@@ -206,10 +253,13 @@ addprocs(nprocsadded, exeflags="--project")
     return det(tensor(plasma, config, cache))
   end
 
+  kparamax = Float64(@fetchfrom 1 _kparamax)
+  kperpmax = Float64(@fetchfrom 1 _kperpmax)
+
   function findsolutions(plasma)
-    ngridpoints = 2^9
-    kzs = range(-2.0, stop=2.0, length=ngridpoints) * k0
-    k⊥s = range(0.0, stop=15.0, length=ngridpoints) * k0
+    ngridpoints = Int(@fetchfrom 1 _ngridpoints)
+    kzs = range(-kparamax, stop=kparamax, length=ngridpoints) * k0
+    k⊥s = range(0.0, stop=kperpmax, length=ngridpoints) * k0
 
     # change order for better distributed scheduling
     k⊥s = shuffle(vcat([k⊥s[i:nprocs():end] for i ∈ 1:nprocs()]...))
@@ -222,7 +272,7 @@ addprocs(nprocsadded, exeflags="--project")
         K = Wavenumber(parallel=kz, perpendicular=k⊥)
         output = solve_given_ks(K, objective!)
         isnothing(output) && continue
-        push!(innersolutions, output)
+        push!(innersolutions, output...)
       end
       innersolutions
     end
@@ -264,33 +314,47 @@ function selectpropagationrange(sols, lowangle=0, highangle=180)
 end
 
 Plots.gr() # .pyplot()
+function make2d(rowedges, coledges, rowvals, colvals, vals)
+  @assert issorted(rowedges)
+  @assert issorted(coledges)
+  @assert length(rowvals) == length(colvals) == length(vals)
+  Z = Array{Union{Float64, Missing}}(zeros(length(rowedges), length(coledges)) .- Inf)
+  for k in eachindex(rowvals, colvals, vals)
+    (rowedges[1] <= rowvals[k] <= rowedges[end]) || continue
+    (coledges[1] <= colvals[k] <= coledges[end]) || continue
+    i = findlast(rowvals[k] >= x for x in rowedges)
+    j = findlast(colvals[k] >= x for x in coledges)
+    isnothing(i) && continue
+    isnothing(j) && continue
+    @assert 1 <= i <= size(Z, 1)
+    @assert 1 <= j <= size(Z, 2)
+    Z[i, j] = max(Z[i, j], vals[k])
+  end
+  for i in eachindex(Z)
+      Z[i] == -Inf && (Z[i] = missing)
+  end
+  return Z
+end
+
 function plotit(sols, file_extension=name_extension, fontsize=9)
   sols = sort(sols, by=s->imag(s.frequency))
   ωs = [sol.frequency for sol in sols]./w0
+  nunstable = sum(imag(sol.frequency) > 0 for sol in sols)
+  @info "There are $nunstable unstable solutions out of $(length(sols))"
   kzs = [para(sol.wavenumber) for sol in sols]./k0
   k⊥s = [perp(sol.wavenumber) for sol in sols]./k0
   xk⊥s = sort(unique(k⊥s))
   ykzs = sort(unique(kzs))
-
-  function make2d(z1d)
-    z2d = Array{Union{Float64, Missing}, 2}(zeros(Missing, length(ykzs),
-                                            length(xk⊥s)))
-    for (j, k⊥) in enumerate(xk⊥s), (i, kz) in enumerate(ykzs)
-      index = findlast((k⊥ .== k⊥s) .& (kz .== kzs))
-      isnothing(index) || (z2d[i, j] = z1d[index])
-    end
-    return z2d
-  end
 
   ks = [abs(sol.wavenumber) for sol in sols]./k0
   kθs = atan.(k⊥s, kzs)
   extremaangles = collect(extrema(kθs))
 
   _median(patch) = median(filter(x->!ismissing(x), patch))
-  realωssmooth = make2d(real.(ωs))
+  realωssmooth = make2d(ykzs, xk⊥s, kzs, k⊥s, real.(ωs))
   try
-    realωssmooth = mapwindow(_median, realωssmooth, (5, 5))
-    realωssmooth = imfilter(realωssmooth, Kernel.gaussian(3))
+#    realωssmooth = mapwindow(_median, realωssmooth, (5, 5))
+#    realωssmooth = imfilter(realωssmooth, Kernel.gaussian(3))
   catch
     @warn "Smoothing failed"
   end
@@ -299,8 +363,8 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   imagspline = nothing
   try
     smoothing = length(ωs) * 1e-4
-    realspline = Dierckx.Spline2D(xk⊥s, ykzs, realωssmooth'; kx=4, ky=4, s=smoothing)
-    imagspline = Dierckx.Spline2D(k⊥s, kzs, imag.(ωs); kx=4, ky=4, s=smoothing)
+#    realspline = Dierckx.Spline2D(xk⊥s, ykzs, realωssmooth'; kx=4, ky=4, s=smoothing)
+#    imagspline = Dierckx.Spline2D(k⊥s, kzs, imag.(ωs); kx=4, ky=4, s=smoothing)
   catch err
     @warn "Caught $err. Continuing."
   end
@@ -318,7 +382,7 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
         isapprox(yi, maximum(kzs), rtol=0.01, atol=0.01) && (yi += 0.075)
         isapprox(xi, maximum(k⊥s), rtol=0.01, atol=0.01) && (xi += 0.1)
         isapprox(xi, minimum(k⊥s), rtol=0.01, atol=0.01) && (xi -= 0.2)
-        Plots.annotate!([(xi, yi, text("\$ $(θdeg)^{\\circ}\$", fontsize, :black))])
+        Plots.annotate!([(xi, yi, Plots.text("\$ $(θdeg)^{\\circ}\$", fontsize, :black))])
       end
     end
   end
@@ -347,7 +411,7 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
           isapprox(xi, maximum(k⊥s), rtol=0.1, atol=0.5) && continue
           isapprox(yi, maximum(kzs), rtol=0.1, atol=0.5) && (yi += 0.075)
           isapprox(xi, minimum(k⊥s), rtol=0.1, atol=0.5) && (xi = -0.1)
-          Plots.annotate!([(xi, yi, text("\$\\it{$lvl}\$", fontsize-1, :black))])
+          Plots.annotate!([(xi, yi, Plots.text("\$\\it{$lvl}\$", fontsize-1, :black))])
       end
     end
   end
@@ -356,7 +420,7 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   mshape = :square
   function plotter2d(z, xlabel, ylabel, colorgrad,
       climmin=minimum(z[@. !ismissing(z)]), climmax=maximum(z[@. !ismissing(z)]))
-    zcolor = make2d(z)
+    zcolor = make2d(ykzs, xk⊥s, kzs, k⊥s, z)
     dx = (xk⊥s[2] - xk⊥s[1]) / (length(xk⊥s) - 1)
     dy = (ykzs[2] - ykzs[1]) / (length(ykzs) - 1)
     h = Plots.heatmap(xk⊥s, ykzs, zcolor, framestyle=:box, c=colorgrad,
@@ -373,7 +437,7 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   Plots.title!(" ")
   plotangles(writeangles=false)
   Plots.plot!(legend=false)
-  Plots.savefig(file_extension*"/ICE2D_real_$file_extension.png")
+  Plots.savefig("$dirpath/ICE2D_real_$file_extension.pdf")
 
   ω0s = [fastzerobetamagnetoacousticfrequency(Va, sol.wavenumber, Ω1) for
     sol in sols] / w0
@@ -384,7 +448,7 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   Plots.title!(" ")
   plotangles(writeangles=false)
   Plots.plot!(legend=false)
-  Plots.savefig(file_extension*"/ICE2D_real_div_guess_$file_extension.png")
+  Plots.savefig("$dirpath/ICE2D_real_div_guess_$file_extension.pdf")
 
   zs = iseven.(Int64.(floor.(real.(ωs))))
   climmax = maximum(zs)
@@ -393,109 +457,142 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   plotangles(writeangles=false)
   plotcontours(realspline, collect(1:50), y -> y[end] < 0)
   Plots.plot!(legend=false)
-  Plots.savefig(file_extension*"/ICE2D_evenfloorreal_real_$file_extension.png")
+  Plots.savefig("$dirpath/ICE2D_evenfloorreal_real_$file_extension.pdf")
 
   zs = imag.(ωs)
   climmax = maximum(zs)
-  colorgrad = Plots.cgrad([:cyan, :black, :darkred, :red, :orange, :yellow])
-  plotter2d(zs, xlabel, ylabel, colorgrad, -climmax / 4, climmax)
+  colorgrad = Plots.cgrad([:cyan, :blue, :darkblue, :midnightblue, :black, :darkred, :red, :orange, :yellow])
+  plotter2d(zs, xlabel, ylabel, colorgrad, -climmax, climmax)
   Plots.title!(" ")
   Plots.plot!(legend=false)
   plotcontours(realspline, collect(1:50), y -> y[end] < 0)
   plotangles(writeangles=false)
-  Plots.savefig(file_extension*"/ICE2D_imag_$file_extension.png")
-
-  colorgrad = Plots.cgrad()
+  Plots.savefig("$dirpath/ICE2D_imag_$file_extension.pdf")
 
   xlabel = "\$\\mathrm{Frequency} \\ [\\Omega_{i}]\$"
   ylabel = "\$\\mathrm{Parallel\\ Wavenumber} \\ [\\Omega_{i} / V_A]\$"
 
-  imaglolim = 1e-5
+  maxrealfreq = 15
 
-  mask = shuffle(findall(@. (imag(ωs) > imaglolim) & (real(ωs) <= 12)))
+  xωrs = collect(range(0, stop=maxrealfreq, length=length(ykzs)))
+  ykzs_ = ykzs[1:2:end]
+  xωrs_ = xωrs[1:2:end]
+  zcolor = make2d(ykzs_, xωrs_, kzs, real.(ωs), imag.(ωs))
+  climmin, climmax = extrema(zcolor[@. !ismissing(zcolor)])
+  dx = (xωrs_[2] - xωrs_[1]) / (length(xωrs_) - 1)
+  dy = (ykzs_[2] - ykzs_[1]) / (length(ykzs_) - 1)
+  h_kwhp = Plots.heatmap(xωrs_, ykzs_, zcolor, framestyle=:box, c=colorgrad,
+    xlims=(minimum(xωrs_) - dx/2, maximum(xωrs_) + dx/2),
+    ylims=(minimum(ykzs_) - dy/2, maximum(ykzs_) + dy/2),
+    clims=(-climmax, climmax), xticks=0:Int(round(maximum(xωrs))),
+    xlabel=xlabel, ylabel=ylabel)
+  Plots.title!(" ")
+  Plots.plot!(legend=false)
+  #plotcontours(realspline, collect(1:50), y -> y[end] < 0)
+  #plotangles(writeangles=false)
+  Plots.savefig("$dirpath/ICE2D_kw_grid_$file_extension.pdf")
+
+  imaglolim = 1e-5
+  mask = shuffle(findall(@. (imag(ωs) > imaglolim) & (real(ωs) <= maxrealfreq)))
   @warn "Scatter plots rendering with $(length(mask)) points."
+
+
+  colorgrad = Plots.cgrad([:black, :darkred, :red, :orange, :yellow])
   perm = sortperm(imag.(ωs[mask]))
-  h0 = Plots.scatter(real.(ωs[mask][perm]), kzs[mask][perm],
-     zcolor=imag.(ωs[mask][perm]), framestyle=:box, lims=:round,
-    markersize=msize+1, markerstrokewidth=0,
-    markershape=:circle, lw=0, msc=:auto,
-    c=colorgrad, xticks=(0:12), yticks=unique(Int.(round.(ykzs))),
+  h_kwsc = Plots.scatter(real.(ωs[mask][perm]), kzs[mask][perm],
+    zcolor=imag.(ωs[mask][perm]), framestyle=:box, lims=:round,
+    markersize=msize+1, markerstrokewidth=-1, markershape=:circle,
+    c=colorgrad, xticks=(0:maxrealfreq), yticks=unique(Int.(round.(ykzs))),
     xlabel=xlabel, ylabel=ylabel, legend=:topleft)
   Plots.plot!(legend=false)
-  Plots.savefig(file_extension*"/ICE2D_KF12_$file_extension.png")
+  Plots.savefig("$dirpath/ICE2D_KF_scatter_$file_extension.pdf")
+
+  zlabel = "\$\\mathrm{Frequency} \\ [\\Omega_{i}]\$"
+  xlabel = "\$\\mathrm{Parallel\\ Wavenumber} \\ [\\Omega_{i} / V_A]\$"
+  ylabel = "\$\\mathrm{Perpendicular\\ Wavenumber} \\ [\\Omega_{i} / V_A]\$"
+  Plots.scatter(kzs[mask], k⊥s[mask], 0.0 .* real.(ωs[mask]), framestyle=:box, lims=:round,
+     markeralpha=0.1, markersize=msize+1, markerstrokewidth=-1, markershape=:circle, c=:grey)
+  Plots.scatter!(0 .* kzs[mask] .+ minimum(kzs), k⊥s[mask], real.(ωs[mask]), framestyle=:box, lims=:round,
+     markeralpha=0.1, markersize=msize+1, markerstrokewidth=-1, markershape=:circle, c=:grey)
+  Plots.scatter!(kzs[mask], 0 .* k⊥s[mask] .+ maximum(k⊥s), real.(ωs[mask]), framestyle=:box, lims=:round,
+     markeralpha=0.1, markersize=msize+1, markerstrokewidth=-1, markershape=:circle, c=:grey)
+  Plots.scatter!(kzs[mask], k⊥s[mask], real.(ωs[mask]), zcolor=imag.(ωs[mask]),
+    framestyle=:box, lims=:round, markeralpha=0.2,
+    markersize=msize+1, markerstrokewidth=-1, markershape=:circle,
+    c=colorgrad, zticks=(0:1:maxrealfreq), camera = (10, 30),
+    xlabel=xlabel, ylabel=ylabel, zlabel=zlabel)
+  Plots.plot!(legend=false)
+  Plots.savefig("$dirpath/ICE2D_KKF_$file_extension.pdf")
+
+  xlabel = "\$\\mathrm{Frequency} \\ [\\Omega_{i}]\$"
+  ylabel = "\$\\mathrm{Parallel\\ Wavenumber} \\ [\\Omega_{i} / V_A]\$"
 
 
   ylabel = "\$\\mathrm{Growth\\ Rate} \\ [\\Omega_{i}]\$"
-  mask = shuffle(findall(@. (imag(ωs) > imaglolim) & (real(ωs) <= 12)))
-  h1 = Plots.scatter(real.(ωs[mask]), imag.(ωs[mask]),
+  mask = shuffle(findall(@. (imag(ωs) > imaglolim) & (real(ωs) <= maxrealfreq)))
+  h_gf = Plots.scatter(real.(ωs[mask]), imag.(ωs[mask]),
     zcolor=kzs[mask], framestyle=:box, lims=:round,
-    markersize=msize+1, markerstrokewidth=0, markershape=:circle,
-    c=colorgrad, xticks=(0:12), lw=0, msc=:auto,
+    markersize=msize+1, markerstrokewidth=-1, markershape=:circle,
+    c=colorgrad, xticks=(0:maxrealfreq),
     xlabel=xlabel, ylabel=ylabel, legend=:topleft)
   Plots.plot!(legend=false)
-  Plots.savefig(file_extension*"/ICE2D_F12_$file_extension.png")
+  Plots.savefig("$dirpath/ICE2D_F_$file_extension.pdf")
 
   colorgrad1 = Plots.cgrad([:cyan, :red, :blue, :orange, :green,
                             :black, :yellow])
-  mask = shuffle(findall(@. (imag(ωs) > imaglolim) & (real(ωs) <= 12)))
+  mask = shuffle(findall(@. (imag(ωs) > imaglolim) & (real(ωs) <= maxrealfreq)))
+  zcolor=(real.(ωs[mask]) .- vαz/Va .* kzs[mask])
   h2 = Plots.scatter(real.(ωs[mask]), imag.(ωs[mask]),
-    zcolor=(real.(ωs[mask]) .- vαz/Va .* kzs[mask]), framestyle=:box, lims=:round,
-    markersize=msize+1, markerstrokewidth=0, markershape=:circle,
-    c=colorgrad1, clims=(0, 13), xticks=(0:12), lw=0, msc=:auto,
+    zcolor=zcolor, framestyle=:box, lims=:round,
+    markersize=msize+1, markerstrokewidth=-1, markershape=:circle,
+    c=colorgrad1, clims=(0, 13), xticks=(0:maxrealfreq),
     xlabel=xlabel, ylabel=ylabel, legend=:topleft)
   Plots.plot!(legend=false)
-  Plots.savefig(file_extension*"/ICE2D_F12_Doppler_$file_extension.png")
+  Plots.savefig("$dirpath/ICE2D_F_Doppler_$file_extension.pdf")
 
   xlabel = "\$\\mathrm{Frequency} \\ [\\Omega_{i}]\$"
   ylabel = "\$\\mathrm{Propagation\\ Angle} \\ [^{\\circ}]\$"
 
   colorgrad = Plots.cgrad([:cyan, :black, :darkred, :red, :orange, :yellow])
-  mask = findall(@. (imag(ωs) > imaglolim) & (real(ωs) <= 12))
+  mask = findall(@. (imag(ωs) > imaglolim) & (real(ωs) <= maxrealfreq))
+  zcolor=imag.(ωs[mask])
   h4 = Plots.scatter(real.(ωs[mask]), kθs[mask] .* 180 / π,
     zcolor=imag.(ωs[mask]), lims=:round,
-    markersize=msize, markerstrokewidth=0, markershape=mshape, framestyle=:box,
+    markersize=msize, markerstrokewidth=-1, markershape=mshape, framestyle=:box,
     c=Plots.cgrad([:black, :darkred, :red, :orange, :yellow]),
-    clims=(0, maximum(imag.(ωs[mask]))), lw=0, msc=:auto,
-    yticks=(0:10:180), xticks=(0:12), xlabel=xlabel, ylabel=ylabel)
+    clims=(0, maximum(imag.(ωs[mask]))),
+    yticks=(0:10:180), xticks=(0:maxrealfreq), xlabel=xlabel, ylabel=ylabel)
   Plots.plot!(legend=false)
-  Plots.savefig(file_extension*"/ICE2D_TF12_$file_extension.png")
+  Plots.savefig("$dirpath/ICE2D_TF_$file_extension.pdf")
 
   function relative(p, rx, ry)
     xlims = Plots.xlims(p)
     ylims = Plots.ylims(p)
     return xlims[1] + rx * (xlims[2]-xlims[1]), ylims[1] + ry * (ylims[2] - ylims[1])
    end
-  Plots.xlabel!(h1, "")
-  Plots.xticks!(h1, 0:-1)
-  if pitchanglecosine == -0.646
-    xy_data = readdlm("data.csv", ',', Float64)
-    x_data = xy_data[:, 1]
-    y_data = xy_data[:, 2]
-    y_data .-= minimum(y_data)
-    y_data ./= (maximum(y_data) - minimum(y_data))
-    y_data .*= maximum(imag.(ωs[mask]))
-    x_data .*= 1e6 / (w0/2π)
-    Plots.plot!(h1, x_data, y_data, color=:black)
-  end
-  Plots.annotate!(h1, [(relative(h1, 0.02, 0.95)..., text("(a)", fontsize, :black))])
-  Plots.annotate!(h0, [(relative(h0, 0.02, 0.95)..., text("(b)", fontsize, :black))])
-  Plots.plot(h1, h0, link=:x, layout=@layout [a; b])
-  Plots.savefig(file_extension*"/ICE2D_Combo_$file_extension.png")
+  Plots.xlabel!(h_gf, "")
+  Plots.xticks!(h_gf, 0:maxrealfreq)
+  Plots.annotate!(h_gf, [(relative(h_gf, 0.02, 0.95)..., Plots.text("(a)", fontsize, :black))])
+  Plots.annotate!(h_kwsc, [(relative(h_kwsc, 0.02, 0.95)..., Plots.text("(b)", fontsize, :black))])
+  Plots.plot!(h_gf, xlims=(0, maxrealfreq))
+  Plots.plot!(h_kwsc, xlims=(0, maxrealfreq), ylims=(-kparamax, kparamax))
+  Plots.plot(h_gf, h_kwsc, link=:x, layout=@layout [a; b])
+  Plots.plot!(size=(800,600))
+  Plots.savefig("$dirpath/ICE2D_Combo_$file_extension.pdf")
 end
 
-if true
+
+if false#true
   @time plasmasols = findsolutions(Smmr)#d
-  plasmasols = selectlargeestgrowthrate(plasmasols)
-  mkdir(name_extension)
-  @show length(plasmasols)
+#  plasmasols = selectlargeestgrowthrate(plasmasols)
+  mkpath(dirpath)
+  @save "$dirpath/solutions2D_$name_extension.jld" filecontents plasmasols w0 k0
   @time plotit(plasmasols)
-  @save name_extension*"/solutions2D_$name_extension.jld" filecontents plasmasols w0 k0
   rmprocs(nprocsadded)
 else
-  cd(name_extension)
   rmprocs(nprocsadded)
-  @load name_extension*"/solutions2D_$name_extension.jld" filecontents solutions w0 k0
-  @time plotit(solutions)
+  @load "$dirpath/solutions2D_$name_extension.jld" filecontents plasmasols w0 k0
+  @time plotit(plasmasols)
 end
 
 println("Ending at ", now())
