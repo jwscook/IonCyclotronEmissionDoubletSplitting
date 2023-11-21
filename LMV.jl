@@ -4,6 +4,10 @@ using ArgParse
 const argsettings = ArgParseSettings()
 
 @add_arg_table! argsettings begin
+    "--minorityenergyMeV"
+        help = "The energy (in MeV) of the minority particle"
+        arg_type = Float64
+        default = 3.5
     "--secondfuelionconcentrationratio"
         help = "The concentration ratio of the second fuel ion species with respect to electron density"
         arg_type = Float64
@@ -51,6 +55,8 @@ println("Starting at ", now())
 # pitch angle is defined as vpara/v0
 const pitchanglecosine = parsedargs["pitch"]
 @assert -1 <= pitchanglecosine <= 1
+# energy of minority particle
+const Emin = parsedargs["minorityenergyMeV"]
 # thermal width of ring as a fraction of its speed # Dendy PRL 1993
 const vthermalfractionz = parsedargs["vthpararatio"]
 const vthermalfraction⊥ = parsedargs["vthperpratio"]
@@ -112,7 +118,8 @@ addprocs(nprocsadded, exeflags="--project")
   Te = 2e3# eV
   T1 = Te # eV
   T2 = T1 # eV
-  Emin = 14.68e6 # eV # 3.5e6
+  Emin = Float64(@fetchfrom 1 Emin) * 1e6 # eV
+  #Emin = 14.68e6 # eV # 3.5e6
   Ωe = cyclotronfrequency(B0, mₑ, ze)
   Ω1 = cyclotronfrequency(B0, m1, z1)
   Ωmin = cyclotronfrequency(B0, mmin, zmin)
