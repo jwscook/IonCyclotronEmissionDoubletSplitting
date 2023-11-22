@@ -28,12 +28,13 @@ prcnt_conc = np.arange(0,110,5) # concentrations as %
 th_spread_beam = ' 0.01'   # with spacing before
 th_spread_ring = ' 0.001 ' # "			" and after
 th_spreads = th_spread_beam+th_spread_ring
-l = 9 # 10^9 eV == 10^3 MeV
-Eminarr = np.logspace(0,l,l+1)
+upper = 3 ; lower = -6
+l = upper-lower # 10^l eV == 10^(l-6) MeV
+Eminarr = np.logspace(lower,upper,l+1)
 with open('Erun.txt', 'a') as file:
     # loop over each concentration
     for Emin in Eminarr:
-        file.write(btext+str(Emin)+' --nameextension '+str(int(Emin))+'eV'+'\n')
+        file.write(btext+str(Emin)+' --nameextension '+str(int(Emin))+'MeV'+'\n')
 #    for xi2 in prcnt_conc:
 #        print(xi2)
 #        xi2 /= 100 # decimal

@@ -7,14 +7,14 @@
 ../julia-1.9.3/bin/julia --proj LMV.jl  10000000.0
 ../julia-1.9.3/bin/julia --proj LMV.jl  100000000.0
 
-../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 1.0 --nameextension 1eV
-../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 10.0 --nameextension 10eV
-../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 100.0 --nameextension 100eV
-../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 1000.0 --nameextension 1000eV
-../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 10000.0 --nameextension 10000eV
-../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 100000.0 --nameextension 100000eV
-../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 1000000.0 --nameextension 1000000eV
-../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 10000000.0 --nameextension 10000000eV
-../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 100000000.0 --nameextension 100000000eV
-../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 1000000000.0 --nameextension 1000000000eV
 
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 1e-06 --nameextension 0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 1e-05 --nameextension 0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 0.0001 --nameextension 0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 0.001 --nameextension 0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 0.01 --nameextension 0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 0.1 --nameextension 0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 1.0 --nameextension 1MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 10.0 --nameextension 10MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 100.0 --nameextension 100MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 1000.0 --nameextension 1000MeV
