@@ -56,7 +56,7 @@ println("Starting at ", now())
 const pitchanglecosine = parsedargs["pitch"]
 @assert -1 <= pitchanglecosine <= 1
 # energy of minority particle
-const Emin = parsedargs["minorityenergyMeV"]
+const _Emin = parsedargs["minorityenergyMeV"]
 # thermal width of ring as a fraction of its speed # Dendy PRL 1993
 const vthermalfractionz = parsedargs["vthpararatio"]
 const vthermalfraction⊥ = parsedargs["vthperpratio"]
@@ -88,24 +88,36 @@ addprocs(nprocsadded, exeflags="--project")
   const mHe3 = 5497.885
   const mα = 7294.3
 
-  # masses of ions
+  # electron mass and charge
   mₑ = LinearMaxwellVlasov.mₑ
-  m1 = md*mₑ
-  m2 = mHe3*mₑ# mHe3*mₑ #mT*mₑ
-  mmin = mp*mₑ #mα*mₑ #mp*mₑ
-
-  # charge numbers
   ze = -1
+
+  # mass and charge of ions
+  # D-T-α
+  # masses
+  m1 = md*mₑ
+  m2 = mT*mₑ
+  mmin = mα*mₑ
+  # charge numbers
+  z1 = 1
+  z2 = 1
+  zmin = 2
+  # D-He3-p
+  # masses
+  m1 = md*mₑ
+  m2 = mHe3*mₑ
+  mmin = mp*mₑ
+  # charge numbers
   z1 = 1
   z2 = 2
   zmin = 1
 
   # concentrations and densities
   # Fig 18 Cottrell 1993
-  n0 = 5e19 #1.5e19# 5e19 # 1.7e19 # central electron density 3.6e19
-  B0 = 3.7 #3.7 #2.07 = 2.8T * 2.96 m / 4m
+  n0 = 1.7e19 #1.5e19# 5e19 # 1.7e19 # central electron density 3.6e19
+  B0 = 2.07 #3.7 #2.07 = 2.8T * 2.96 m / 4m
   # 2.23 T is 17MHz for deuterium cyclotron frequency
-  ξ = 1e-3#1.5e-4 # nα / ni = 1.5 x 10^-4
+  ξ = 1.5e-4#1.5e-4 # nα / ni = 1.5 x 10^-4
   ξ2 = Float64(@fetchfrom 1 xi2) # 0.15
   n2 = ξ2*n0
   nmin = ξ*n0
@@ -115,10 +127,10 @@ addprocs(nprocsadded, exeflags="--project")
   Va = B0 / sqrt(LinearMaxwellVlasov.μ₀*density_weighted)
 
   # temperatures and energies
-  Te = 2e3# eV
+  Te = 1e3# eV
   T1 = Te # eV
   T2 = T1 # eV
-  Emin = 1e6 * Float64(@fetchfrom 1 Emin) # eV
+  Emin = 1e6 * Float64(@fetchfrom 1 _Emin) # eV
   #Emin = 14.68e6 # eV # 3.5e6
   Ωe = cyclotronfrequency(B0, mₑ, ze)
   Ω1 = cyclotronfrequency(B0, m1, z1)
