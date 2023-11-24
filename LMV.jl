@@ -606,7 +606,7 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
 end
 
 
-if false#true
+if true#false
   @time plasmasols = findsolutions(Smmr)#d
 #  plasmasols = selectlargeestgrowthrate(plasmasols)
   mkpath(dirpath)
