@@ -29,11 +29,11 @@ th_spread_beam = ' 0.01'   # with spacing before
 th_spread_ring = ' 0.001 ' # "			" and after
 th_spreads = th_spread_beam+th_spread_ring
 upperlog = 3 ; lowerlog = -6
-upperlin = 1.0; lowerlin = 10.0
+upperlin = 10.0; lowerlin = 1.0
 llog = upperlog-lowerlog # 10^l MeV == 10^(l+6) eV
 llin = upperlin-lowerlin # l MeV == l * 10^6 eV
-Eminarr = np.logspace(lower,upper,l+1)
-Eminarr = np.linspace(lowerlin,upperlin,l+1)
+Eminarr = np.logspace(lowerlog,upperlog,int(llog+1))
+Eminarr = np.linspace(lowerlin,upperlin,int(llin+1))
 with open('Erun.txt', 'a') as file:
     # loop over each concentration
     for Emin in Eminarr:

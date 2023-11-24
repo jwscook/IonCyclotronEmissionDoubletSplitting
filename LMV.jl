@@ -40,6 +40,10 @@ const argsettings = ArgParseSettings()
         help = "The name extension to append to the figure files"
         arg_type = String
         default = ""
+    "--temperature"
+        help = "The temperature (in keV) of the electrons and bulks ions, assumed equal"
+        arg_type = Float64
+        default = 1.0
 end
 
 const parsedargs = parse_args(ARGS, argsettings)
@@ -55,8 +59,9 @@ println("Starting at ", now())
 # pitch angle is defined as vpara/v0
 const pitchanglecosine = parsedargs["pitch"]
 @assert -1 <= pitchanglecosine <= 1
-# energy of minority particle
+# energy of minority particle and temperature
 const _Emin = parsedargs["minorityenergyMeV"]
+const _Te = parsedargs["temperature"] # temperature of the electrons
 # thermal width of ring as a fraction of its speed # Dendy PRL 1993
 const vthermalfractionz = parsedargs["vthpararatio"]
 const vthermalfraction⊥ = parsedargs["vthperpratio"]
@@ -102,15 +107,15 @@ addprocs(nprocsadded, exeflags="--project")
   z1 = 1
   z2 = 1
   zmin = 2
-  # D-He3-p
-  # masses
-  m1 = md*mₑ
-  m2 = mHe3*mₑ
-  mmin = mp*mₑ
-  # charge numbers
-  z1 = 1
-  z2 = 2
-  zmin = 1
+#  # D-He3-p
+#  # masses
+#  m1 = md*mₑ
+#  m2 = mHe3*mₑ
+#  mmin = mp*mₑ
+#  # charge numbers
+#  z1 = 1
+#  z2 = 2
+#  zmin = 1
 
   # concentrations and densities
   # Fig 18 Cottrell 1993
@@ -127,7 +132,7 @@ addprocs(nprocsadded, exeflags="--project")
   Va = B0 / sqrt(LinearMaxwellVlasov.μ₀*density_weighted)
 
   # temperatures and energies
-  Te = 1e3# eV
+  Te = 1e3 * Float64(@fetchfrom 1 _Te)
   T1 = Te # eV
   T2 = T1 # eV
   Emin = 1e6 * Float64(@fetchfrom 1 _Emin) # eV
