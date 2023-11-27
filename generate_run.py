@@ -29,15 +29,20 @@ th_spread_beam = ' 0.01'   # with spacing before
 th_spread_ring = ' 0.001 ' # "			" and after
 th_spreads = th_spread_beam+th_spread_ring
 upperlog = 3 ; lowerlog = -6
-upperlin = 10.0; lowerlin = 1.0
+upperlin = 15.0; lowerlin = 1.0
 llog = upperlog-lowerlog # 10^l MeV == 10^(l+6) eV
 llin = upperlin-lowerlin # l MeV == l * 10^6 eV
-Eminarr = np.logspace(lowerlog,upperlog,int(llog+1))
-Eminarr = np.linspace(lowerlin,upperlin,int(llin+1))
+#Eminarr = np.logspace(lowerlog,upperlog,int(llog+1))
+Eminarr = np.linspace(lowerlin,upperlin,int(2*llin+1))
+Temparr = [1.0,2.0,4.0]
+
+# loop over temperatures and energies
 with open('Erun.txt', 'a') as file:
     # loop over each concentration
-    for Emin in Eminarr:
-        file.write(btext+str(Emin)+' --nameextension '+str(int(Emin))+'MeV'+'\n')
+    for Temp in Temparr:
+	    for Emin in Eminarr:
+	        file.write(btext+str(Emin)+' --temperaturekeV '+str(Temp)+' --nameextension '+str(np.around(Emin,2))+'MeV'+'\n')
+
 #    for xi2 in prcnt_conc:
 #        print(xi2)
 #        xi2 /= 100 # decimal

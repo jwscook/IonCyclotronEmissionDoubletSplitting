@@ -11,7 +11,7 @@ const argsettings = ArgParseSettings()
     "--secondfuelionconcentrationratio"
         help = "The concentration ratio of the second fuel ion species with respect to electron density"
         arg_type = Float64
-        default = 0.0
+        default = 0.11
     "--pitch"
         help = "The coseine of the pitch angle, or pitch of the energetic species"
         arg_type = Float64
@@ -40,7 +40,7 @@ const argsettings = ArgParseSettings()
         help = "The name extension to append to the figure files"
         arg_type = String
         default = ""
-    "--temperature"
+    "--temperaturekeV"
         help = "The temperature (in keV) of the electrons and bulks ions, assumed equal"
         arg_type = Float64
         default = 1.0
@@ -61,7 +61,7 @@ const pitchanglecosine = parsedargs["pitch"]
 @assert -1 <= pitchanglecosine <= 1
 # energy of minority particle and temperature
 const _Emin = parsedargs["minorityenergyMeV"]
-const _Te = parsedargs["temperature"] # temperature of the electrons
+const _Te = parsedargs["temperaturekeV"] # temperature (in keV) of the electrons
 # thermal width of ring as a fraction of its speed # Dendy PRL 1993
 const vthermalfractionz = parsedargs["vthpararatio"]
 const vthermalfraction⊥ = parsedargs["vthperpratio"]
@@ -100,29 +100,29 @@ addprocs(nprocsadded, exeflags="--project")
   # mass and charge of ions
   # D-T-α
   # masses
-  m1 = md*mₑ
-  m2 = mT*mₑ
-  mmin = mα*mₑ
-  # charge numbers
-  z1 = 1
-  z2 = 1
-  zmin = 2
-#  # D-He3-p
-#  # masses
 #  m1 = md*mₑ
-#  m2 = mHe3*mₑ
-#  mmin = mp*mₑ
+#  m2 = mT*mₑ
+#  mmin = mα*mₑ
 #  # charge numbers
 #  z1 = 1
-#  z2 = 2
-#  zmin = 1
+#  z2 = 1
+#  zmin = 2
+  # D-He3-p
+  # masses
+  m1 = md*mₑ
+  m2 = mHe3*mₑ
+  mmin = mp*mₑ
+  # charge numbers
+  z1 = 1
+  z2 = 2
+  zmin = 1
 
   # concentrations and densities
   # Fig 18 Cottrell 1993
-  n0 = 1.7e19 #1.5e19# 5e19 # 1.7e19 # central electron density 3.6e19
-  B0 = 2.07 #3.7 #2.07 = 2.8T * 2.96 m / 4m
+  n0 = 5e19 #1.5e19# 5e19 # 1.7e19 # central electron density 3.6e19
+  B0 = 3.7 #3.7 #2.07 = 2.8T * 2.96 m / 4m
   # 2.23 T is 17MHz for deuterium cyclotron frequency
-  ξ = 1.5e-4#1.5e-4 # nα / ni = 1.5 x 10^-4
+  ξ = 1e-4#1.5e-4 # nα / ni = 1.5 x 10^-4
   ξ2 = Float64(@fetchfrom 1 xi2) # 0.15
   n2 = ξ2*n0
   nmin = ξ*n0

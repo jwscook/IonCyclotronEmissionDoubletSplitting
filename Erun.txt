@@ -7,7 +7,6 @@
 ../julia-1.9.3/bin/julia --proj LMV.jl  10000000.0
 ../julia-1.9.3/bin/julia --proj LMV.jl  100000000.0
 
-
 ../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 1e-06 --nameextension 0MeV
 ../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 1e-05 --nameextension 0MeV
 ../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 0.0001 --nameextension 0MeV
@@ -29,3 +28,92 @@
 ../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 8.0 --nameextension 8MeV
 ../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 9.0 --nameextension 9MeV
 ../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 10.0 --nameextension 10MeV
+
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 1.0 --temperaturekeV 1.0 --nameextension 1.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 1.5 --temperaturekeV 1.0 --nameextension 1.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 2.0 --temperaturekeV 1.0 --nameextension 2.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 2.5 --temperaturekeV 1.0 --nameextension 2.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 3.0 --temperaturekeV 1.0 --nameextension 3.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 3.5 --temperaturekeV 1.0 --nameextension 3.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 4.0 --temperaturekeV 1.0 --nameextension 4.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 4.5 --temperaturekeV 1.0 --nameextension 4.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 5.0 --temperaturekeV 1.0 --nameextension 5.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 5.5 --temperaturekeV 1.0 --nameextension 5.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 6.0 --temperaturekeV 1.0 --nameextension 6.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 6.5 --temperaturekeV 1.0 --nameextension 6.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 7.0 --temperaturekeV 1.0 --nameextension 7.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 7.5 --temperaturekeV 1.0 --nameextension 7.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 8.0 --temperaturekeV 1.0 --nameextension 8.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 8.5 --temperaturekeV 1.0 --nameextension 8.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 9.0 --temperaturekeV 1.0 --nameextension 9.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 9.5 --temperaturekeV 1.0 --nameextension 9.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 10.0 --temperaturekeV 1.0 --nameextension 10.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 10.5 --temperaturekeV 1.0 --nameextension 10.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 11.0 --temperaturekeV 1.0 --nameextension 11.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 11.5 --temperaturekeV 1.0 --nameextension 11.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 12.0 --temperaturekeV 1.0 --nameextension 12.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 12.5 --temperaturekeV 1.0 --nameextension 12.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 13.0 --temperaturekeV 1.0 --nameextension 13.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 13.5 --temperaturekeV 1.0 --nameextension 13.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 14.0 --temperaturekeV 1.0 --nameextension 14.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 14.5 --temperaturekeV 1.0 --nameextension 14.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 15.0 --temperaturekeV 1.0 --nameextension 15.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 1.0 --temperaturekeV 2.0 --nameextension 1.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 1.5 --temperaturekeV 2.0 --nameextension 1.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 2.0 --temperaturekeV 2.0 --nameextension 2.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 2.5 --temperaturekeV 2.0 --nameextension 2.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 3.0 --temperaturekeV 2.0 --nameextension 3.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 3.5 --temperaturekeV 2.0 --nameextension 3.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 4.0 --temperaturekeV 2.0 --nameextension 4.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 4.5 --temperaturekeV 2.0 --nameextension 4.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 5.0 --temperaturekeV 2.0 --nameextension 5.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 5.5 --temperaturekeV 2.0 --nameextension 5.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 6.0 --temperaturekeV 2.0 --nameextension 6.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 6.5 --temperaturekeV 2.0 --nameextension 6.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 7.0 --temperaturekeV 2.0 --nameextension 7.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 7.5 --temperaturekeV 2.0 --nameextension 7.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 8.0 --temperaturekeV 2.0 --nameextension 8.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 8.5 --temperaturekeV 2.0 --nameextension 8.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 9.0 --temperaturekeV 2.0 --nameextension 9.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 9.5 --temperaturekeV 2.0 --nameextension 9.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 10.0 --temperaturekeV 2.0 --nameextension 10.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 10.5 --temperaturekeV 2.0 --nameextension 10.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 11.0 --temperaturekeV 2.0 --nameextension 11.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 11.5 --temperaturekeV 2.0 --nameextension 11.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 12.0 --temperaturekeV 2.0 --nameextension 12.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 12.5 --temperaturekeV 2.0 --nameextension 12.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 13.0 --temperaturekeV 2.0 --nameextension 13.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 13.5 --temperaturekeV 2.0 --nameextension 13.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 14.0 --temperaturekeV 2.0 --nameextension 14.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 14.5 --temperaturekeV 2.0 --nameextension 14.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 15.0 --temperaturekeV 2.0 --nameextension 15.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 1.0 --temperaturekeV 4.0 --nameextension 1.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 1.5 --temperaturekeV 4.0 --nameextension 1.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 2.0 --temperaturekeV 4.0 --nameextension 2.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 2.5 --temperaturekeV 4.0 --nameextension 2.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 3.0 --temperaturekeV 4.0 --nameextension 3.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 3.5 --temperaturekeV 4.0 --nameextension 3.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 4.0 --temperaturekeV 4.0 --nameextension 4.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 4.5 --temperaturekeV 4.0 --nameextension 4.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 5.0 --temperaturekeV 4.0 --nameextension 5.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 5.5 --temperaturekeV 4.0 --nameextension 5.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 6.0 --temperaturekeV 4.0 --nameextension 6.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 6.5 --temperaturekeV 4.0 --nameextension 6.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 7.0 --temperaturekeV 4.0 --nameextension 7.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 7.5 --temperaturekeV 4.0 --nameextension 7.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 8.0 --temperaturekeV 4.0 --nameextension 8.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 8.5 --temperaturekeV 4.0 --nameextension 8.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 9.0 --temperaturekeV 4.0 --nameextension 9.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 9.5 --temperaturekeV 4.0 --nameextension 9.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 10.0 --temperaturekeV 4.0 --nameextension 10.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 10.5 --temperaturekeV 4.0 --nameextension 10.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 11.0 --temperaturekeV 4.0 --nameextension 11.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 11.5 --temperaturekeV 4.0 --nameextension 11.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 12.0 --temperaturekeV 4.0 --nameextension 12.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 12.5 --temperaturekeV 4.0 --nameextension 12.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 13.0 --temperaturekeV 4.0 --nameextension 13.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 13.5 --temperaturekeV 4.0 --nameextension 13.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 14.0 --temperaturekeV 4.0 --nameextension 14.0MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 14.5 --temperaturekeV 4.0 --nameextension 14.5MeV
+../julia-1.9.3/bin/julia --proj LMV.jl --minorityenergyMeV 15.0 --temperaturekeV 4.0 --nameextension 15.0MeV
+
