@@ -44,6 +44,14 @@ const argsettings = ArgParseSettings()
         help = "The temperature (in keV) of the electrons and bulks ions, assumed equal"
         arg_type = Float64
         default = 1.0
+    "--magneticField"
+        help = "The magnetic field (T)"
+        arg_type = Float64
+        default = 2.07
+    "--electronDensity"
+        help = "The number density of the electrons (n0 == ne) "
+        arg_type = Float64
+        default = 1.7e19
 end
 
 const parsedargs = parse_args(ARGS, argsettings)
@@ -70,6 +78,9 @@ const _kperpmax = parsedargs["kperpmax"]
 const _ngridpoints = parsedargs["ngridpoints"]
 # secondary fuel concentration
 const xi2 = parsedargs["secondfuelionconcentrationratio"]
+# density and magnetic field
+const _B0 = parsedargs["magneticField"]
+const _n0 = parsedargs["electronDensity"]
 # name of file
 const name_extension = parsedargs["nameextension"]
 const dirpath = mapreduce(i->"_$(i[2])", *, parsedargs; init="run")
@@ -119,8 +130,8 @@ addprocs(nprocsadded, exeflags="--project")
 
   # concentrations and densities
   # Fig 18 Cottrell 1993
-  n0 = 5e19 #1.5e19# 5e19 # 1.7e19 # central electron density 3.6e19
-  B0 = 3.7 #3.7 #2.07 = 2.8T * 2.96 m / 4m
+  n0 = Float64(@fetchfrom 1 _n0) #1.5e19# 5e19 # 1.7e19 # central electron density 3.6e19
+  B0 = Float64(@fetchfrom 1 _B0) #3.7 #2.07 = 2.8T * 2.96 m / 4m
   # 2.23 T is 17MHz for deuterium cyclotron frequency
   ξ = 1e-4#1.5e-4 # nα / ni = 1.5 x 10^-4
   ξ2 = Float64(@fetchfrom 1 xi2) # 0.15
