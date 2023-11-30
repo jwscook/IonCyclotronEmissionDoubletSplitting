@@ -27,7 +27,7 @@ vperp_vA = 0.9 #
 
 ## formatting 
 name = 'D_He3_p_0'
-btext = '../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --minorityenergyMeV '
+btext = '../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --secondfuelionconcentrationratio 0.25 --minorityenergyMeV '
 prcnt_conc = np.arange(0,110,5) # concentrations as %
 th_spread_beam = ' 0.01'   # with spacing before
 th_spread_ring = ' 0.001 ' # "			" and after

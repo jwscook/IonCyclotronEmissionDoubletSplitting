@@ -13,7 +13,7 @@ const argsettings = ArgParseSettings()
         arg_type = Float64
         default = 0.11
     "--pitch"
-        help = "The coseine of the pitch angle, or pitch of the energetic species"
+        help = "The cosine of the pitch angle, or pitch of the energetic species"
         arg_type = Float64
         default = -0.646
     "--ngridpoints"
@@ -52,6 +52,10 @@ const argsettings = ArgParseSettings()
         help = "The number density of the electrons (n0 == ne) "
         arg_type = Float64
         default = 1.7e19
+    "--minorityConcentration"
+        help = "The concentration of the minority ion"
+        arg_type = Float64
+        default = 1.5e-4
 end
 
 const parsedargs = parse_args(ARGS, argsettings)
@@ -76,8 +80,9 @@ const vthermalfraction⊥ = parsedargs["vthperpratio"]
 const _kparamax = parsedargs["kparamax"]
 const _kperpmax = parsedargs["kperpmax"]
 const _ngridpoints = parsedargs["ngridpoints"]
-# secondary fuel concentration
+# concentrations
 const xi2 = parsedargs["secondfuelionconcentrationratio"]
+const ximin = parsedargs["minorityConcentration"]
 # density and magnetic field
 const _B0 = parsedargs["magneticField"]
 const _n0 = parsedargs["electronDensity"]
@@ -133,7 +138,7 @@ addprocs(nprocsadded, exeflags="--project")
   n0 = Float64(@fetchfrom 1 _n0) #1.5e19# 5e19 # 1.7e19 # central electron density 3.6e19
   B0 = Float64(@fetchfrom 1 _B0) #3.7 #2.07 = 2.8T * 2.96 m / 4m
   # 2.23 T is 17MHz for deuterium cyclotron frequency
-  ξ = 1e-4#1.5e-4 # nα / ni = 1.5 x 10^-4
+  ξ = Float64(@fetchfrom 1 ximin) #1e-4#1.5e-4 # nα / ni = 1.5 x 10^-4
   ξ2 = Float64(@fetchfrom 1 xi2) # 0.15
   n2 = ξ2*n0
   nmin = ξ*n0
