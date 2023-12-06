@@ -55,7 +55,7 @@ const argsettings = ArgParseSettings()
     "--minorityConcentration"
         help = "The concentration of the minority ion"
         arg_type = Float64
-        default = 1.5e-4
+        default = 1e-4 # 1.5e-4
 end
 
 const parsedargs = parse_args(ARGS, argsettings)
@@ -123,8 +123,8 @@ addprocs(nprocsadded, exeflags="--project")
   z1 = 1
   z2 = 1
   zmin = 2
-#  # D-He3-p
-#  # masses
+  # D-He3-p
+  # masses
 #  m1 = md*mₑ
 #  m2 = mHe3*mₑ
 #  mmin = mp*mₑ

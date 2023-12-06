@@ -7,16 +7,16 @@
 ../julia-1.9.3/bin/julia --proj LMV.jl  10000000.0
 ../julia-1.9.3/bin/julia --proj LMV.jl  100000000.0
 
-../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --minorityenergyMeV 0.9175 --magneticField 2.5 --electronDensity 1e+19
-../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --minorityenergyMeV 3.67 --magneticField 2.5 --electronDensity 1e+19
-../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --minorityenergyMeV 14.68 --magneticField 2.5 --electronDensity 1e+19
-../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --minorityenergyMeV 0.9175 --magneticField 5 --electronDensity 1e+19
-../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --minorityenergyMeV 3.67 --magneticField 5 --electronDensity 1e+19
-../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --minorityenergyMeV 14.68 --magneticField 5 --electronDensity 1e+19
-../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --minorityenergyMeV 0.9175 --magneticField 2.5 --electronDensity 4e+19
-../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --minorityenergyMeV 3.67 --magneticField 2.5 --electronDensity 4e+19
-../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --minorityenergyMeV 14.68 --magneticField 2.5 --electronDensity 4e+19
-../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --minorityenergyMeV 0.9175 --magneticField 5 --electronDensity 4e+19
-../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --minorityenergyMeV 3.67 --magneticField 5 --electronDensity 4e+19
-../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --minorityenergyMeV 14.68 --magneticField 5 --electronDensity 4e+19
+../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --secondfuelionconcentrationratio 0.25 --minorityenergyMeV 0.9175 --magneticField 2.5 --electronDensity 1e+19
+../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --secondfuelionconcentrationratio 0.25 --minorityenergyMeV 3.67 --magneticField 2.5 --electronDensity 1e+19
+../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --secondfuelionconcentrationratio 0.25 --minorityenergyMeV 14.68 --magneticField 2.5 --electronDensity 1e+19
+../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --secondfuelionconcentrationratio 0.25 --minorityenergyMeV 0.9175 --magneticField 5 --electronDensity 1e+19
+../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --secondfuelionconcentrationratio 0.25 --minorityenergyMeV 3.67 --magneticField 5 --electronDensity 1e+19
+../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --secondfuelionconcentrationratio 0.25 --minorityenergyMeV 14.68 --magneticField 5 --electronDensity 1e+19
+../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --secondfuelionconcentrationratio 0.25 --minorityenergyMeV 0.9175 --magneticField 2.5 --electronDensity 4e+19
+../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --secondfuelionconcentrationratio 0.25 --minorityenergyMeV 3.67 --magneticField 2.5 --electronDensity 4e+19
+../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --secondfuelionconcentrationratio 0.25 --minorityenergyMeV 14.68 --magneticField 2.5 --electronDensity 4e+19
+../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --secondfuelionconcentrationratio 0.25 --minorityenergyMeV 0.9175 --magneticField 5 --electronDensity 4e+19
+../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --secondfuelionconcentrationratio 0.25 --minorityenergyMeV 3.67 --magneticField 5 --electronDensity 4e+19
+../julia-1.9.3/bin/julia --proj LMV.jl --temperaturekeV 10.0 --secondfuelionconcentrationratio 0.25 --minorityenergyMeV 14.68 --magneticField 5 --electronDensity 4e+19
 
