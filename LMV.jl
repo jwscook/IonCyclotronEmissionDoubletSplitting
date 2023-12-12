@@ -17,7 +17,7 @@ const argsettings = ArgParseSettings()
         arg_type = Float64
         default = -0.646
     "--ngridpoints"
-        help = "The number of grid points in each direciton cyclotronfrequency wavenumber space"
+        help = "The number of grid points in each direciton cyclotronfrequency wavenumber space (default 1024)"
         arg_type = Int
         default = 2^10
     "--kparamax"
