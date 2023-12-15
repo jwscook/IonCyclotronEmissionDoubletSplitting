@@ -215,7 +215,7 @@ addprocs(nprocsadded, exeflags="--project")
   w0 = abs(Ωmin)
   k0 = w0 / abs(Va)
 
-  γmax = abs(Ωmin) * 0.3
+  γmax = abs(Ωmin) * 1.5 # search larger maximum growth rates
   γmin = -abs(Ωmin) * 0.075
   function bounds(ω0)
     lb = @SArray [ω0 * 0.5, γmin]
@@ -239,11 +239,14 @@ addprocs(nprocsadded, exeflags="--project")
 
     config = Configuration(K, options)
 
-    ics = ((@SArray [ω0*0.8, γmax*0.9]),
-           (@SArray [ω0*0.9, γmax*0.7]),
-           (@SArray [ω0*0.9, γmax*0.3]),
-           (@SArray [ω0*1.0, γmax*0.1]))
-
+#    ics = ((@SArray [ω0*0.8, γmax*0.9]),
+#           (@SArray [ω0*0.9, γmax*0.7]),
+#           (@SArray [ω0*0.9, γmax*0.3]),
+#           (@SArray [ω0*1.0, γmax*0.1]))
+    ics = ((@SArray [ω0*0.8, γmax*0.9]), # adjust initial conditions
+           (@SArray [ω0*0.9, γmax*0.7]), # to look in the right growth
+           (@SArray [ω0*0.9, γmax*0.1]), # rate range
+           (@SArray [ω0*1.0, γmax*0.01]))
 
     function unitobjective!(c, x::T) where {T}
       return objective!(c,
@@ -585,7 +588,7 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   h2 = Plots.scatter(real.(ωs[mask]), imag.(ωs[mask]),
     zcolor=zcolor, framestyle=:box, lims=:round,
     markersize=msize+1, markerstrokewidth=-1, markershape=:circle,
-    c=colorgrad1, clims=(0, 13), xticks=(0:maxrealfreq),
+    c=colorgrad1, clims=(0, 15), xticks=(0:maxrealfreq), # increase maximum freq for doppler shift plot
     xlabel=xlabel, ylabel=ylabel, legend=:topleft)
   Plots.plot!(legend=false)
   Plots.savefig("$dirpath/ICE2D_F_Doppler_$file_extension.pdf")
