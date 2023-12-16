@@ -593,6 +593,24 @@ function plotit(sols, file_extension=name_extension, fontsize=9)
   Plots.plot!(legend=false)
   Plots.savefig("$dirpath/ICE2D_F_Doppler_$file_extension.pdf")
 
+  maxw = 25
+  Δθ = 0.1
+  for θ in 85:0.5:95
+    try
+      mask1 = [-Δθ < angle(sol.wavenumber) * 180 / pi - θ < Δθ for sol in sols]
+      mask2 = collect(@. (imag(ωs) > imaglolim) & (real(ωs) <= maxw))
+      mask = findall(mask1 .& mask2)
+      h1 = Plots.scatter(real.(ωs[mask]), imag.(ωs[mask]),
+        zcolor=kzs[mask], framestyle=:box, lims=:round, xlims=(0, maxw),
+        markersize=msize+1, markerstrokewidth=0, markershape=:circle,
+        c=colorgrad, xticks=(0:2:maxw), label="($θ)ᵒ",
+        xlabel=xlabel, ylabel=ylabel, legend=:topleft)
+      Plots.plot!(legend=false)
+      Plots.savefig("$dirpath/ICE2D_1D_Angle_$(θ)_$file_extension.pdf")
+    catch
+    end
+  end
+
   xlabel = "\$\\mathrm{Frequency} \\ [\\Omega_{i}]\$"
   ylabel = "\$\\mathrm{Propagation\\ Angle} \\ [^{\\circ}]\$"
 
